@@ -1,0 +1,45 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import { origins } from "../data/site";
+import hero from "../assets/media/hero-aerial.webp";
+import aerialStation from "../assets/media/aerial-station.webp";
+import aerialScale from "../assets/media/aerial-scale.webp";
+import dryingLandscape from "../assets/media/drying-landscape.webp";
+import coffeePicker from "../assets/media/coffee-picker.webp";
+---
+
+<BaseLayout title="Origins & Farms | Sibu Trading PLC" description="Explore the Ethiopian coffee origins and producing communities connected with Sibu Trading PLC.">
+  <PageHero eyebrow="Origins & farms" title="From Guji to the world" description="High elevations, fertile soils, local varieties and generations of farming knowledge shape the coffees Sibu prepares." image={hero} alt="Guji highlands and coffee drying infrastructure" />
+
+  <section class="section">
+    <div class="shell">
+      <p class="eyebrow">Coffee origins</p>
+      <h2 class="section-title">A network grounded in place</h2>
+      <p class="section-lead">Many Sibu coffees grow between approximately 1,800 and 2,200 metres above sea level. Lot details and eligibility are confirmed for customers according to crop year and preparation.</p>
+      <div class="process-list">
+        {origins.map((origin, index) => (
+          <article class="process-item">
+            <span class="process-item__number">{String(index + 1).padStart(2, "0")}</span>
+            <h3>{origin.name}</h3>
+            <p>{origin.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="shell">
+      <p class="eyebrow">At origin</p>
+      <h2 class="section-title">Coffee landscapes shaped by work</h2>
+      <div class="mosaic">
+        <div class="image-frame"><Image src={coffeePicker} alt="Coffee picker harvesting ripe cherries" widths={[640, 1000]} sizes="(max-width: 700px) 100vw, 40vw" /></div>
+        <div class="image-frame"><Image src={aerialStation} alt="Aerial view of coffee drying beds and station buildings" widths={[720, 1200]} sizes="(max-width: 700px) 100vw, 60vw" /></div>
+        <div class="image-frame"><Image src={dryingLandscape} alt="Coffee drying beds across a forested landscape" widths={[520, 850]} sizes="50vw" /></div>
+        <div class="image-frame"><Image src={aerialScale} alt="Wide view of coffee drying infrastructure" widths={[520, 850]} sizes="50vw" /></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

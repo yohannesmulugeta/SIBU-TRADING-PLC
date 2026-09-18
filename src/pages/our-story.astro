@@ -1,0 +1,50 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import StoryJourney from "../components/StoryJourney";
+import { generations } from "../data/site";
+import aerialDrying from "../assets/media/aerial-drying.webp";
+import coffeeHost from "../assets/media/coffee-host.webp";
+import communityPortrait from "../assets/media/community-portrait.webp";
+---
+
+<BaseLayout title="Our Story | Sibu Trading PLC" description="Discover Sibu Trading PLC’s three-generation coffee legacy and its roots in Guji.">
+  <PageHero eyebrow="Our story" title="A coffee legacy across three generations" description="Long before Sibu Trading PLC was established in 2014, coffee was already part of a longer family journey." image={aerialDrying} alt="Aerial view of Sibu coffee drying beds surrounded by Guji forest" />
+
+  <section class="section">
+    <div class="shell split">
+      <div>
+        <p class="eyebrow">Identity & heritage</p>
+        <h2 class="section-title">The story behind Sibu</h2>
+        <p class="section-lead">The name Sibu represents the company’s connection to its roots in the Guji coffee-growing community. Coffee is not treated only as an agricultural commodity, but as part of the identity and cultural life of the communities from which the company originates.</p>
+        <p class="story-callout">When a customer receives coffee from Sibu, they receive more than green beans. They receive a piece of Guji.</p>
+      </div>
+      <div class="image-frame image-frame--portrait">
+        <Image src={coffeeHost} alt="Coffee professional holding prepared coffee at a drying station" widths={[560, 900, 1200]} sizes="(max-width: 980px) 100vw, 50vw" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="shell split">
+      <div class="image-frame image-frame--portrait">
+        <Image src={communityPortrait} alt="Coffee community member at a Sibu processing site" widths={[560, 900, 1200]} sizes="(max-width: 980px) 100vw, 50vw" />
+      </div>
+      <div>
+        <p class="eyebrow">Our logo</p>
+        <h2 class="section-title">Inspired by Buna Qalaa</h2>
+        <p class="section-lead">The Sibu identity draws inspiration from Buna Qalaa, an Oromo coffee tradition connected with hospitality, gathering, blessing, respect and continuity. For Sibu, it represents where the journey begins: Guji, its people and the generations who carried coffee knowledge forward.</p>
+        <p class="section-lead">The final cultural wording and any future ceremony imagery will be reviewed with the family before publication.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="shell">
+      <p class="eyebrow">The generational continuum</p>
+      <h2 class="section-title">Different chapters. One continuing legacy.</h2>
+      <StoryJourney client:visible generations={generations} />
+    </div>
+  </section>
+</BaseLayout>

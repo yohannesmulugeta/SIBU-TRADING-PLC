@@ -1,0 +1,52 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import qualityReview from "../assets/media/quality-review.webp";
+import beanInspection from "../assets/media/bean-inspection.webp";
+import sortingDuo from "../assets/media/sorting-duo.webp";
+import communityTeam from "../assets/media/community-team.webp";
+import baggingTeam from "../assets/media/bagging-team.webp";
+---
+
+<BaseLayout title="Quality & Impact | Sibu Trading PLC" description="How Sibu protects coffee quality, strengthens traceability and works with producing communities.">
+  <PageHero eyebrow="Quality & impact" title="Trust is built lot by lot" description="Reliability means protecting preparation, communicating honestly and connecting each important coffee with a clearer origin story." image={qualityReview} alt="Sibu coffee team inspecting prepared coffee in a warehouse" />
+
+  <section class="section">
+    <div class="shell split">
+      <div>
+        <p class="eyebrow">Quality control</p>
+        <h2 class="section-title">Every story must be proven in the cup</h2>
+        <p class="section-lead">Sibu evaluates physical preparation, moisture, bean size, defects, density and process consistency alongside aroma, acidity, sweetness, body, balance and clean cup.</p>
+        <div class="stats-row">
+          <div class="stat"><strong>Origin</strong><span>Separated by producing area</span></div>
+          <div class="stat"><strong>Process</strong><span>Prepared with repeatability</span></div>
+          <div class="stat"><strong>Physical</strong><span>Moisture and defects reviewed</span></div>
+          <div class="stat"><strong>Sensory</strong><span>Quality verified in the cup</span></div>
+        </div>
+      </div>
+      <div class="image-frame image-frame--portrait"><Image src={beanInspection} alt="Coffee worker inspecting a green coffee bean" widths={[560, 900, 1200]} sizes="(max-width: 980px) 100vw, 50vw" /></div>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="shell">
+      <p class="eyebrow">Responsibility</p>
+      <h2 class="section-title">The future of Sibu depends on the future of its communities</h2>
+      <p class="section-lead">Sibu’s company profile records work connected with education, learning resources, clean water, employment, infrastructure and long-term farmer relationships. Public impact figures will be added after current records are confirmed.</p>
+      <div class="card-grid">
+        <article class="editorial-card"><Image src={sortingDuo} alt="Two women sorting coffee together" widths={[540, 900]} sizes="33vw" /><div class="editorial-card__content"><h3>Employment</h3><p>Permanent and seasonal work across coffee operations.</p></div></article>
+        <article class="editorial-card"><Image src={communityTeam} alt="Coffee community members at a processing station" widths={[540, 900]} sizes="33vw" /><div class="editorial-card__content"><h3>Community</h3><p>Relationships that extend beyond purchasing coffee.</p></div></article>
+        <article class="editorial-card"><Image src={baggingTeam} alt="Coffee team preparing bags inside a warehouse" widths={[540, 900]} sizes="33vw" /><div class="editorial-card__content"><h3>Opportunity</h3><p>Skills and livelihoods connected across the value chain.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="shell">
+      <p class="eyebrow">Certifications</p>
+      <h2 class="section-title">Confirm eligibility for each crop and lot</h2>
+      <p class="section-lead">Sibu’s profile references EU Organic, NOP Organic, JAS Organic, Rainforest Alliance and C.A.F.E. Practices programs. Current certificates and lot eligibility must be confirmed directly with the Sibu team before purchase.</p>
+    </div>
+  </section>
+</BaseLayout>

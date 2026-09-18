@@ -1,0 +1,62 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import { processes } from "../data/site";
+import { withBase } from "../lib/paths";
+import wetProcessing from "../assets/media/wet-processing.webp";
+import cherrySorting from "../assets/media/cherry-sorting.webp";
+import greenCoffee from "../assets/media/green-coffee.webp";
+import coffeeHands from "../assets/media/coffee-in-hands.webp";
+import warehouse from "../assets/media/warehouse-coffee.webp";
+---
+
+<BaseLayout title="Coffee & Processing | Sibu Trading PLC" description="Natural, washed, honey and specialty Ethiopian coffees prepared from farm to export.">
+  <PageHero eyebrow="Coffee & processing" title="Protecting the identity of every coffee" description="Quality must be protected from the moment the cherry is harvested—not added only at the final stage of export." image={wetProcessing} alt="Sibu team working at a coffee washing station" />
+
+  <section class="section">
+    <div class="shell">
+      <p class="eyebrow">Integrated value chain</p>
+      <h2 class="section-title">From harvest to export preparation</h2>
+      <div class="process-list">
+        {processes.map((process) => (
+          <article class="process-item">
+            <span class="process-item__number">{process.number}</span>
+            <h3>{process.title}</h3>
+            <p>{process.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="video-panel">
+    <video muted loop playsinline preload="metadata" poster={cherrySorting.src}>
+      <source src={withBase("/video/processing.mp4")} type="video/mp4" />
+    </video>
+    <div class="video-panel__overlay"><div><p class="eyebrow">At the station</p><h2>Selection, movement and care at every stage.</h2></div></div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="shell">
+      <p class="eyebrow">Coffee portfolio</p>
+      <h2 class="section-title">Prepared for different buyer requirements</h2>
+      <div class="card-grid">
+        <article class="editorial-card"><Image src={cherrySorting} alt="Ripe coffee cherries being sorted" widths={[540, 900]} sizes="33vw" /><div class="editorial-card__content"><h3>Natural</h3><p>Whole cherries carefully dried for sweetness, fruit intensity and body.</p></div></article>
+        <article class="editorial-card"><Image src={coffeeHands} alt="Prepared green coffee held for inspection" widths={[540, 900]} sizes="33vw" /><div class="editorial-card__content"><h3>Washed</h3><p>Clean, bright and articulate profiles protected through careful processing.</p></div></article>
+        <article class="editorial-card"><Image src={greenCoffee} alt="Detailed view of Ethiopian green coffee" widths={[540, 900]} sizes="33vw" /><div class="editorial-card__content"><h3>Specialty lots</h3><p>Separated by origin, process and quality potential before presentation.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell split">
+      <div>
+        <p class="eyebrow">Preparation & warehousing</p>
+        <h2 class="section-title">Ready for the customer’s specification</h2>
+        <p class="section-lead">Dry milling, hulling, sorting, grading, quality review, warehousing and export coordination bring the lot from origin to shipment readiness.</p>
+      </div>
+      <div class="image-frame image-frame--portrait"><Image src={warehouse} alt="Prepared green coffee in a Sibu warehouse" widths={[560, 900, 1200]} sizes="(max-width: 980px) 100vw, 50vw" /></div>
+    </div>
+  </section>
+</BaseLayout>

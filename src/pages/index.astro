@@ -1,0 +1,168 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HeroMedia from "../components/HeroMedia";
+import StoryJourney from "../components/StoryJourney";
+import { generations } from "../data/site";
+import { withBase } from "../lib/paths";
+import heroAerial from "../assets/media/hero-aerial.webp";
+import coffeePicker from "../assets/media/coffee-picker.webp";
+import sortingLine from "../assets/media/sorting-line.webp";
+import wetProcessing from "../assets/media/wet-processing.webp";
+import qualityReview from "../assets/media/quality-review.webp";
+import greenCoffee from "../assets/media/green-coffee.webp";
+import communityTeam from "../assets/media/community-team.webp";
+import aerialScale from "../assets/media/aerial-scale.webp";
+---
+
+<BaseLayout
+  title="Sibu Trading PLC | Ethiopian Coffee from Guji"
+  description="Three generations of Ethiopian coffee experience, connecting Guji origins with specialty buyers around the world."
+  image={heroAerial.src}
+>
+  <section class="hero">
+    <HeroMedia client:load poster={heroAerial.src} videoSrc={withBase("/video/hero-guji.mp4")} />
+    <div class="shell hero__content">
+      <div class="hero__copy">
+        <p class="eyebrow">Ethiopian green Arabica coffee</p>
+        <h1 class="display-title">Three generations. One origin. One legacy.</h1>
+        <p>Sibu connects the coffee-growing communities of Guji with buyers who value quality, reliability and a clear relationship to origin.</p>
+        <div class="hero__actions">
+          <a class="button" href={withBase("/coffee-processing/")}>Explore our coffee</a>
+          <a class="button button--outline" href={withBase("/our-story/")}>Discover our story</a>
+        </div>
+      </div>
+      <div class="hero__index" aria-label="Sibu values">
+        <span>Coffee</span>
+        <span>Guji</span>
+        <span>Heritage</span>
+        <span>Trust</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell split">
+      <div>
+        <p class="eyebrow">Identity & heritage</p>
+        <h2 class="section-title">Before Sibu became a company, coffee was already our heritage.</h2>
+        <p class="section-lead">The Sibu identity is inspired by Buna Qalaa and by coffee’s place within Oromo cultural life—hospitality, gathering, blessing, respect and continuity.</p>
+        <p class="story-callout">For Sibu, every coffee carries an origin and a responsibility: honour the knowledge inherited from earlier generations while building its future.</p>
+        <a class="text-link" href={withBase("/our-story/")}>Read the Sibu story</a>
+      </div>
+      <div class="image-frame image-frame--portrait">
+        <Image src={coffeePicker} alt="Coffee picker harvesting ripe cherries in a forested coffee farm" widths={[560, 900, 1200]} sizes="(max-width: 980px) 100vw, 50vw" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="shell">
+      <p class="eyebrow">A continuing story</p>
+      <h2 class="section-title">Built across three generations</h2>
+      <p class="section-lead">Each generation has carried the same foundation forward while responding to a changing coffee industry.</p>
+      <StoryJourney client:visible generations={generations} />
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="shell">
+      <p class="eyebrow">From farm to export</p>
+      <h2 class="section-title">Quality protected at every stage</h2>
+      <p class="section-lead">Sibu participates across the value chain, connecting harvest, processing, drying, quality control, warehousing and export preparation.</p>
+      <div class="card-grid">
+        <article class="editorial-card">
+          <Image src={sortingLine} alt="Coffee workers sorting parchment on raised drying beds" widths={[540, 900]} sizes="(max-width: 700px) 100vw, 33vw" />
+          <div class="editorial-card__content"><h3>People</h3><p>Skilled hands protect quality from the first selection.</p></div>
+        </article>
+        <article class="editorial-card">
+          <Image src={wetProcessing} alt="Coffee workers managing wet processing" widths={[540, 900]} sizes="(max-width: 700px) 100vw, 33vw" />
+          <div class="editorial-card__content"><h3>Process</h3><p>Washed, natural and selected specialty preparations.</p></div>
+        </article>
+        <article class="editorial-card">
+          <Image src={qualityReview} alt="Coffee team reviewing green beans in a warehouse" widths={[540, 900]} sizes="(max-width: 980px) 100vw, 33vw" />
+          <div class="editorial-card__content"><h3>Proof</h3><p>Preparation and quality are reviewed before shipment.</p></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="video-panel">
+    <video muted loop playsinline preload="none" poster={aerialScale.src} data-lazy-video>
+      <source data-src={withBase("/video/processing.mp4")} type="video/mp4" />
+    </video>
+    <div class="video-panel__overlay">
+      <div>
+        <p class="eyebrow">The work behind every lot</p>
+        <h2>From Guji’s highlands to the customer’s warehouse.</h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell split">
+      <div class="image-frame image-frame--portrait">
+        <Image src={greenCoffee} alt="Close view of prepared Ethiopian green coffee" widths={[560, 900, 1200]} sizes="(max-width: 980px) 100vw, 50vw" />
+      </div>
+      <div>
+        <p class="eyebrow">Coffee portfolio</p>
+        <h2 class="section-title">Distinctive lots and reliable programs</h2>
+        <p class="section-lead">Sibu works with specialty roasters, importers, traders, distributors and commercial buyers seeking Ethiopian coffee prepared to clear specifications.</p>
+        <div class="stats-row">
+          <div class="stat"><strong>Natural</strong><span>Fruit intensity and sweetness</span></div>
+          <div class="stat"><strong>Washed</strong><span>Clean, bright cup profiles</span></div>
+          <div class="stat"><strong>Honey</strong><span>Clarity with retained sweetness</span></div>
+          <div class="stat"><strong>Specialty</strong><span>Traceable, separated lots</span></div>
+        </div>
+        <a class="text-link" href={withBase("/coffee-processing/")}>View coffee and processing</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--cream">
+    <div class="shell split">
+      <div>
+        <p class="eyebrow">People behind the coffee</p>
+        <h2 class="section-title">The value of Ethiopian coffee is human.</h2>
+        <p class="section-lead">Behind each prepared lot are farming families, seasonal teams, station workers, quality professionals and export coordinators.</p>
+        <a class="button" href={withBase("/quality-impact/")}>Quality & impact</a>
+      </div>
+      <div class="image-frame image-frame--portrait">
+        <Image src={communityTeam} alt="Members of a coffee-producing community at a drying station" widths={[560, 900, 1200]} sizes="(max-width: 980px) 100vw, 50vw" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="shell split">
+      <div>
+        <p class="eyebrow">Start a conversation</p>
+        <h2 class="section-title">Looking for Ethiopian coffee with a clear connection to origin?</h2>
+      </div>
+      <div>
+        <p class="section-lead">Tell us the origin, process, preparation and volume you need. Sibu will respond with relevant availability and next steps.</p>
+        <a class="button button--light" href={withBase("/contact/")}>Request samples</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const videos = document.querySelectorAll("[data-lazy-video]");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const video = entry.target;
+        if (!(video instanceof HTMLVideoElement)) return;
+        const source = video.querySelector("source[data-src]");
+        if (source instanceof HTMLSourceElement && source.dataset.src) {
+          source.src = source.dataset.src;
+          source.removeAttribute("data-src");
+          video.load();
+          if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) video.play().catch(() => undefined);
+        }
+        observer.unobserve(video);
+      });
+    }, { rootMargin: "200px" });
+    videos.forEach((video) => observer.observe(video));
+  </script>
+</BaseLayout>

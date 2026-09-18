@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+*.log
+
+# High-resolution source media stays local. Only generated web assets are committed.
+image and video/
+media-masters/
+
+# Browser test output
+playwright-report/
+test-results/
+
+# Local environment files
+.env
+.env.local

@@ -1,0 +1,32 @@
+---
+import logo from "../assets/brand/sibu-logo.png";
+import { contact, navigation } from "../data/site";
+import { withBase } from "../lib/paths";
+---
+
+<footer class="site-footer">
+  <div class="shell footer-grid">
+    <div>
+      <img class="footer-logo" src={logo.src} width="132" height="81" alt="Sibu Trading" />
+      <p class="footer-statement">Rooted in Guji. Built through generations. Shared with the world.</p>
+    </div>
+    <div>
+      <p class="footer-title">Explore</p>
+      <nav class="footer-links" aria-label="Footer navigation">
+        {navigation.map((item) => <a href={withBase(item.href)}>{item.label}</a>)}
+      </nav>
+    </div>
+    <div>
+      <p class="footer-title">Contact</p>
+      <address>
+        <span>{contact.address}</span>
+        <a href={`tel:${contact.telephone.replace(/\s/g, "")}`}>{contact.telephone}</a>
+        <a href={`mailto:${contact.email}`}>{contact.email}</a>
+      </address>
+    </div>
+  </div>
+  <div class="shell footer-bottom">
+    <span>© {new Date().getFullYear()} Sibu Trading PLC</span>
+    <span>Coffee · Guji · Heritage · Trust</span>
+  </div>
+</footer>

@@ -1,0 +1,23 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  description: string;
+  image: ImageMetadata;
+  alt: string;
+}
+
+const { eyebrow, title, description, image, alt } = Astro.props;
+---
+
+<section class="page-hero">
+  <Image src={image} alt={alt} widths={[720, 1200, 1800, 2200]} sizes="100vw" loading="eager" />
+  <div class="shell page-hero__content">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1 class="display-title">{title}</h1>
+    <p>{description}</p>
+  </div>
+</section>

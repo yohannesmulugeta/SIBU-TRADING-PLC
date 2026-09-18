@@ -1,0 +1,35 @@
+---
+import logo from "../assets/brand/sibu-logo.png";
+import { navigation } from "../data/site";
+import { withBase } from "../lib/paths";
+
+const currentPath = Astro.url.pathname;
+const items = navigation.map((item) => ({ ...item, href: withBase(item.href) }));
+const normalizedCurrent = currentPath.endsWith("/") ? currentPath : `${currentPath}/`;
+---
+
+<header class="site-header">
+  <div class="shell site-header__inner">
+    <a class="brand" href={withBase("/")} aria-label="Sibu Trading PLC home">
+      <img src={logo.src} width="108" height="66" alt="Sibu Trading" />
+    </a>
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      {items.map((item) => (
+        <a href={item.href} aria-current={normalizedCurrent === item.href ? "page" : undefined}>{item.label}</a>
+      ))}
+    </nav>
+    <a class="header-cta" href={withBase("/contact/")}>Request samples</a>
+    <details class="mobile-menu">
+      <summary class="mobile-menu__trigger">
+        <span class="sr-only">Toggle navigation</span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </summary>
+      <nav id="mobile-navigation" class="mobile-menu__panel" aria-label="Mobile navigation">
+        {items.map((item) => (
+          <a href={item.href} aria-current={normalizedCurrent === item.href ? "page" : undefined}>{item.label}</a>
+        ))}
+      </nav>
+    </details>
+  </div>
+</header>

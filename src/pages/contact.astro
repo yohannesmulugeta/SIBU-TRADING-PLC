@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import EnquiryForm from "../components/EnquiryForm";
+import { contact } from "../data/site";
+import warehouse from "../assets/media/warehouse-coffee.webp";
+---
+
+<BaseLayout title="Contact & Request Samples | Sibu Trading PLC" description="Contact Sibu Trading PLC about Ethiopian coffee availability, samples and buyer requirements.">
+  <PageHero eyebrow="Contact" title="Start with your coffee requirements" description="Share the origin, process, preparation and volume you need. The Sibu team can respond with relevant availability and next steps." image={warehouse} alt="Prepared Ethiopian green coffee in a warehouse" />
+
+  <section class="section section--cream">
+    <div class="shell contact-grid">
+      <div>
+        <p class="eyebrow">Sibu Trading PLC</p>
+        <h2 class="section-title">Let’s talk coffee</h2>
+        <dl class="contact-list">
+          <div><dt>Address</dt><dd>{contact.address}<br />{contact.poBox}</dd></div>
+          <div><dt>Telephone</dt><dd><a href={`tel:${contact.telephone.replace(/\s/g, "")}`}>{contact.telephone}</a></dd></div>
+          <div><dt>Mobile</dt><dd>{contact.mobiles.map((mobile) => <a style="display:block" href={`tel:${mobile.replace(/\s/g, "")}`}>{mobile}</a>)}</dd></div>
+          <div><dt>Email</dt><dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd></div>
+        </dl>
+      </div>
+      <EnquiryForm client:visible email={contact.email} />
+    </div>
+  </section>
+</BaseLayout>
