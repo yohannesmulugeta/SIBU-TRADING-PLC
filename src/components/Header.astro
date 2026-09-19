@@ -1,5 +1,5 @@
 ---
-import logo from "../assets/brand/sibu-logo.png";
+import logo from "../assets/brand/heritage/heritage-bowl-light.png";
 import navCoffee from "../assets/media/nav-coffee-cherries.webp";
 import { navigation } from "../data/site";
 import { withBase } from "../lib/paths";
@@ -10,6 +10,7 @@ const shortLabels = new Map([
   [withBase("/origins/"), "Origins"],
   [withBase("/coffee-processing/"), "Coffee"],
   [withBase("/quality-impact/"), "Quality"],
+  [withBase("/recognition/"), "Awards"],
 ]);
 const primaryItems = items
   .filter((item) => item.href !== withBase("/contact/"))
@@ -21,7 +22,7 @@ const isHome = normalizedCurrent === withBase("/");
 <header class:list={["site-header", { "site-header--hero-gated": isHome }]} data-hero-gated={isHome ? "true" : undefined}>
   <div class="shell site-header__inner">
     <a class="brand" href={withBase("/")} aria-label="Sibu Trading PLC home">
-      <img src={logo.src} width="108" height="66" alt="Sibu Trading" />
+      <img src={logo.src} width="108" height="69" alt="Sibu Trading heritage bowl" />
       <span><strong>Green coffee</strong><small>Guji · Ethiopia</small></span>
     </a>
     <nav class="desktop-nav" aria-label="Primary navigation">
@@ -33,7 +34,7 @@ const isHome = normalizedCurrent === withBase("/");
     </nav>
     <a class="header-cta" href={withBase("/contact/")}><span>Request samples</span><i aria-hidden="true">↗</i></a>
     <details class="mobile-menu" data-mobile-menu>
-      <summary class="mobile-menu__trigger">
+      <summary class="mobile-menu__trigger" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -61,7 +62,26 @@ const isHome = normalizedCurrent === withBase("/");
 
 <script>
   document.querySelectorAll<HTMLDetailsElement>("[data-mobile-menu]").forEach((menu) => {
-    const setOpenState = () => document.documentElement.classList.toggle("mobile-nav-open", menu.open);
+    const trigger = menu.querySelector<HTMLElement>("summary");
+    const panel = menu.querySelector<HTMLElement>(".mobile-menu__panel");
+    const background = [document.querySelector("main"), document.querySelector("footer")].filter(
+      (element): element is HTMLElement => element instanceof HTMLElement,
+    );
+
+    const focusable = () => [
+      trigger,
+      ...Array.from(panel?.querySelectorAll<HTMLElement>("a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex='-1'])") ?? []),
+    ].filter((element): element is HTMLElement => element instanceof HTMLElement);
+
+    const setOpenState = () => {
+      document.documentElement.classList.toggle("mobile-nav-open", menu.open);
+      trigger?.setAttribute("aria-expanded", String(menu.open));
+      background.forEach((element) => {
+        if (menu.open) element.setAttribute("inert", "");
+        else element.removeAttribute("inert");
+      });
+      if (menu.open) requestAnimationFrame(() => panel?.querySelector<HTMLElement>("a[href]")?.focus());
+    };
     menu.addEventListener("toggle", setOpenState);
     menu.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
       menu.open = false;
@@ -71,7 +91,22 @@ const isHome = normalizedCurrent === withBase("/");
       if (event.key === "Escape" && menu.open) {
         menu.open = false;
         setOpenState();
-        menu.querySelector<HTMLElement>("summary")?.focus();
+        trigger?.focus();
+        return;
+      }
+
+      if (event.key === "Tab" && menu.open) {
+        const elements = focusable();
+        const first = elements[0];
+        const last = elements.at(-1);
+        if (!first || !last) return;
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
       }
     });
   });

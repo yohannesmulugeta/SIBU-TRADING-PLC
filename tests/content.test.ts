@@ -11,16 +11,23 @@ import {
 } from "../src/data/site";
 import { galleryCategories, galleryItems } from "../src/data/gallery";
 import { heroStoryChapters, heroStoryIntro } from "../src/data/heroStory";
+import {
+  homepageRecognition,
+  qualityRecognition,
+  recognitionCategories,
+  recognitionItems,
+} from "../src/data/recognition";
 
 describe("Sibu website content model", () => {
-  it("defines the approved seven-page navigation", () => {
-    expect(navigation).toHaveLength(7);
+  it("defines the approved eight-page navigation", () => {
+    expect(navigation).toHaveLength(8);
     expect(navigation.map((item) => item.href)).toEqual([
       "/",
       "/our-story/",
       "/origins/",
       "/coffee-processing/",
       "/quality-impact/",
+      "/recognition/",
       "/gallery/",
       "/contact/",
     ]);
@@ -47,5 +54,14 @@ describe("Sibu website content model", () => {
     expect(galleryCategories).toHaveLength(6);
     expect(galleryItems).toHaveLength(22);
     expect(new Set(galleryItems.map((item) => item.id)).size).toBe(galleryItems.length);
+  });
+
+  it("defines a complete, deduplicated recognition archive", () => {
+    expect(recognitionCategories).toHaveLength(5);
+    expect(recognitionItems).toHaveLength(20);
+    expect(new Set(recognitionItems.map((item) => item.id)).size).toBe(recognitionItems.length);
+    expect(recognitionItems.some((item) => /contractor/i.test(`${item.title} ${item.summary}`))).toBe(false);
+    expect(homepageRecognition).toHaveLength(3);
+    expect(qualityRecognition).toHaveLength(3);
   });
 });

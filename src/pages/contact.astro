@@ -4,6 +4,8 @@ import PageHero from "../components/PageHero.astro";
 import EnquiryForm from "../components/EnquiryForm";
 import { contact } from "../data/site";
 import warehouse from "../assets/media/warehouse-coffee.webp";
+
+const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT?.trim() || undefined;
 ---
 
 <BaseLayout title="Contact & Request Samples | Sibu Trading PLC" description="Contact Sibu Trading PLC about Ethiopian coffee availability, samples and buyer requirements.">
@@ -21,7 +23,7 @@ import warehouse from "../assets/media/warehouse-coffee.webp";
           <div><dt>Email</dt><dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd></div>
         </dl>
       </div>
-      <EnquiryForm client:visible email={contact.email} />
+      <EnquiryForm client:visible email={contact.email} endpoint={formEndpoint} />
     </div>
   </section>
 </BaseLayout>

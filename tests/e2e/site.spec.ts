@@ -6,6 +6,7 @@ const routes = [
   "origins/",
   "coffee-processing/",
   "quality-impact/",
+  "recognition/",
   "gallery/",
   "contact/",
 ];
@@ -21,6 +22,7 @@ for (const route of routes) {
     const response = await page.goto(route);
     expect(response?.ok()).toBeTruthy();
     await expect(page.locator("main h1").first()).toBeVisible();
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /^https:\/\//);
     const overflow = await page.evaluate(() => {
       const viewport = document.documentElement.clientWidth;
       const offenders = [...document.querySelectorAll<HTMLElement>("body *")]
@@ -60,7 +62,7 @@ for (const route of routes) {
   });
 }
 
-test("mobile navigation exposes all seven routes", async ({ page, isMobile }) => {
+test("mobile navigation exposes all eight routes", async ({ page, isMobile }) => {
   test.skip(!isMobile, "Mobile navigation test");
   await page.goto("");
   const trigger = page.locator(".mobile-menu__trigger");
@@ -68,8 +70,15 @@ test("mobile navigation exposes all seven routes", async ({ page, isMobile }) =>
   await trigger.click();
   await expect(page.locator("details.mobile-menu")).toHaveAttribute("open", "");
   const links = page.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link");
-  await expect(links).toHaveCount(7);
+  await expect(links).toHaveCount(8);
   await expect(links.first()).toBeVisible();
+  const finalAction = page.locator(".mobile-menu__cta");
+  await finalAction.focus();
+  await page.keyboard.press("Tab");
+  await expect(trigger).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("details.mobile-menu")).not.toHaveAttribute("open", "");
+  await expect(trigger).toBeFocused();
 });
 
 test("homepage exposes the scroll story and responsive video sources", async ({ page }) => {
@@ -85,13 +94,23 @@ test("homepage exposes the scroll story and responsive video sources", async ({ 
   await expect(story.locator("[data-progress-item]")).toHaveCount(3);
 });
 
-test("homepage reveals the full navigation after the scroll story", async ({ page, isMobile }) => {
-  test.skip(isMobile, "Desktop navigation reveal test");
+test("homepage defers the hero film until the visitor interacts", async ({ page }) => {
+  await page.goto("");
+  const video = page.locator(".scroll-story__video");
+  await expect.poll(() => video.evaluate((element) => (element as HTMLVideoElement).currentSrc)).toBe("");
+
+  await page.mouse.wheel(0, 240);
+  await expect.poll(() => video.evaluate((element) => (element as HTMLVideoElement).currentSrc), { timeout: 10_000 }).toMatch(/coffee-scrub-.*\.mp4$/);
+});
+
+test("homepage keeps the full navigation visible over the scroll story", async ({ page, isMobile }) => {
+  test.skip(isMobile, "Desktop navigation visibility test");
   await page.goto("");
   const header = page.locator(".site-header");
   const navigation = page.getByRole("navigation", { name: "Primary navigation" });
   await expect(header).not.toHaveClass(/site-header--revealed/);
-  await expect(navigation).toBeHidden();
+  await expect(navigation).toBeVisible();
+  await expect(page.getByRole("link", { name: "Skip the film" })).toHaveCount(0);
 
   await page.locator(".story-intro").scrollIntoViewIfNeeded();
   await expect(header).toHaveClass(/site-header--revealed/);
@@ -114,7 +133,30 @@ test("data saver keeps the scroll story poster-only", async ({ page }) => {
   await page.goto("");
   const story = page.getByRole("region", { name: "Three generations of Sibu coffee heritage" });
   await expect(story).toHaveAttribute("data-media-mode", "poster");
+  await page.locator(".video-panel").scrollIntoViewIfNeeded();
+  await page.waitForTimeout(400);
   expect(videoRequests).toEqual([]);
+});
+
+test("reduced motion renders a static story without hydration errors", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("");
+
+  const story = page.getByRole("region", { name: "Three generations of Sibu coffee heritage" });
+  await expect(story).toHaveClass(/scroll-story--static/);
+  await expect(story.locator("[data-story-copy]")).toHaveCount(4);
+  expect(errors).toEqual([]);
+});
+
+test("contact form has progressive validation and a delivery fallback", async ({ page }) => {
+  await page.goto("contact/");
+  const form = page.locator(".enquiry-form");
+  await form.scrollIntoViewIfNeeded();
+  await expect(form).toHaveAttribute("action", /^mailto:/);
+  await form.getByRole("button", { name: "Prepare email enquiry" }).click();
+  await expect(form.locator(":invalid")).not.toHaveCount(0);
 });
 
 test("origins visualizes Ethiopia-to-market connections", async ({ page }) => {
@@ -179,4 +221,23 @@ test("gallery filters images and opens the full-screen viewer", async ({ page })
   await expect(dialog.locator("[data-dialog-image]")).toBeVisible();
   await dialog.getByRole("button", { name: "Close image" }).click();
   await expect(dialog).not.toBeVisible();
+});
+
+test("recognition filters historical records and opens accessible detail", async ({ page }) => {
+  await page.goto("recognition/");
+  const cards = page.locator("[data-recognition-card]");
+  await expect(cards).toHaveCount(20);
+
+  await page.getByRole("button", { name: "Certifications", exact: true }).click();
+  await expect(page.locator("[data-recognition-card]:visible")).toHaveCount(3);
+
+  const firstCard = page.locator("[data-recognition-card]:visible").first();
+  await firstCard.click();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toBeVisible();
+  await expect(dialog.locator("[data-dialog-status]")).toContainText(/Expired|Historical/);
+  await expect(dialog.getByRole("button", { name: "Close recognition" })).toBeFocused();
+  await dialog.getByRole("button", { name: "Close recognition" }).click();
+  await expect(dialog).not.toBeVisible();
+  await expect(firstCard).toBeFocused();
 });

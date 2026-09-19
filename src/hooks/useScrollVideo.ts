@@ -54,16 +54,19 @@ function visibilityAt(progress: number, start: number, end: number) {
 }
 
 export function useScrollVideo({ containerRef, videoRef }: ScrollVideoOptions) {
-  const [status, setStatus] = useState<ScrollVideoStatus>("loading");
-  const [loadProgress, setLoadProgress] = useState(0);
+  const [status, setStatus] = useState<ScrollVideoStatus>("ready");
   const [posterOnly, setPosterOnly] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
+  const [videoReady, setVideoReady] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [preferenceReady, setPreferenceReady] = useState(false);
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const updatePreference = () => setReducedMotion(query.matches);
+    const updatePreference = () => {
+      setReducedMotion(query.matches);
+      setPreferenceReady(true);
+    };
+    updatePreference();
     query.addEventListener("change", updatePreference);
     return () => query.removeEventListener("change", updatePreference);
   }, []);
@@ -71,22 +74,22 @@ export function useScrollVideo({ containerRef, videoRef }: ScrollVideoOptions) {
   useEffect(() => {
     const container = containerRef.current;
     const video = videoRef.current;
-    if (!container || !video) return;
+    if (!container || !video || !preferenceReady) return;
 
     if (reducedMotion) {
       setPosterOnly(true);
+      setVideoReady(false);
       setStatus("ready");
       return;
     }
 
-    const download = new AbortController();
     const playhead = { progress: 0 };
-    let blobUrl: string | undefined;
     let frameId = 0;
     let tween: gsap.core.Tween | undefined;
     let disposed = false;
     let unlocked = false;
     let unlocking = false;
+    let loadingTimeout = 0;
 
     const copies = Array.from(container.querySelectorAll<HTMLElement>("[data-story-copy]")).map(
       (element) => ({
@@ -137,7 +140,6 @@ export function useScrollVideo({ containerRef, videoRef }: ScrollVideoOptions) {
 
     const startScrub = () => {
       if (tween) return;
-      renderCopy(0);
       tween = gsap.to(playhead, {
         progress: 1,
         ease: "none",
@@ -167,14 +169,8 @@ export function useScrollVideo({ containerRef, videoRef }: ScrollVideoOptions) {
         element.removeAttribute("aria-hidden");
       });
       setStatus("error");
+      setVideoReady(false);
     };
-
-    const loadingTimeout = window.setTimeout(() => {
-      if (!unlocked) {
-        download.abort();
-        fail();
-      }
-    }, 120_000);
 
     const prepare = () => {
       if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) return;
@@ -185,6 +181,7 @@ export function useScrollVideo({ containerRef, videoRef }: ScrollVideoOptions) {
       }
 
       window.clearTimeout(loadingTimeout);
+      setVideoReady(true);
       setStatus("ready");
       startScrub();
       requestSeek();
@@ -210,9 +207,8 @@ export function useScrollVideo({ containerRef, videoRef }: ScrollVideoOptions) {
         });
     };
 
-    setStatus("loading");
-    setLoadProgress(0);
     setPosterOnly(false);
+    setVideoReady(false);
     video.addEventListener("loadeddata", prepare);
     video.addEventListener("canplay", prepare);
     video.addEventListener("seeked", handleSeeked);
@@ -220,64 +216,46 @@ export function useScrollVideo({ containerRef, videoRef }: ScrollVideoOptions) {
 
     const gestureEvents = ["pointerdown", "touchstart", "keydown", "wheel"] as const;
     gestureEvents.forEach((event) => window.addEventListener(event, unlock, { passive: true }));
-    startScrub();
 
-    void (async () => {
-      try {
-        const decision = chooseVideoSource(video);
-        if (decision.mode === "poster") {
-          window.clearTimeout(loadingTimeout);
-          setPosterOnly(true);
-          setStatus("ready");
-          return;
-        }
+    const decision = chooseVideoSource(video);
+    const intentEvents = ["pointerdown", "touchstart", "keydown", "wheel", "scroll"] as const;
+    let beginOnIntent = () => startScrub();
+    let waitForIntent = true;
 
-        const source = decision.source;
-        if (!source) throw new Error("No video source is available");
+    if (decision.mode === "poster") {
+      setPosterOnly(true);
+      setVideoReady(false);
+      setStatus("ready");
+    } else if (decision.source) {
+      let loadingStarted = false;
+      beginOnIntent = () => {
+        startScrub();
+        if (loadingStarted || disposed) return;
+        loadingStarted = true;
+        setStatus("loading");
+        loadingTimeout = window.setTimeout(() => {
+          if (!unlocked) fail();
+        }, 30_000);
 
-        const response = await fetch(source, { signal: download.signal });
-        if (!response.ok) throw new Error("The story video could not be downloaded");
-
-        const total = Number(response.headers.get("content-length"));
-        const reader = response.body?.getReader();
-        let blob: Blob;
-
-        if (reader) {
-          const parts: Uint8Array<ArrayBuffer>[] = [];
-          let received = 0;
-          let lastPercent = 0;
-
-          for (;;) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            parts.push(new Uint8Array(value));
-            received += value.byteLength;
-
-            const percent = total > 0 ? Math.min(99, Math.floor((received / total) * 100)) : 0;
-            if (!disposed && percent !== lastPercent) {
-              lastPercent = percent;
-              setLoadProgress(percent);
-            }
-          }
-          blob = new Blob(parts, { type: "video/mp4" });
-        } else {
-          blob = await response.blob();
-        }
-
-        if (disposed || download.signal.aborted) return;
-        blobUrl = URL.createObjectURL(blob);
-        video.src = blobUrl;
+        // Assign the media URL directly so the browser can stream byte ranges instead
+        // of downloading the complete film into memory before the first frame appears.
+        video.src = decision.source ?? "";
         video.load();
         if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) prepare();
-      } catch {
-        if (!disposed && !download.signal.aborted) fail();
-      }
-    })();
+      };
+    } else {
+      waitForIntent = false;
+      fail();
+    }
+
+    if (waitForIntent) {
+      intentEvents.forEach((event) => window.addEventListener(event, beginOnIntent, { passive: true, once: true }));
+      if (window.scrollY > 0) beginOnIntent();
+    }
 
     return () => {
       disposed = true;
       window.clearTimeout(loadingTimeout);
-      download.abort();
       window.cancelAnimationFrame(frameId);
       tween?.scrollTrigger?.kill();
       tween?.kill();
@@ -286,12 +264,12 @@ export function useScrollVideo({ containerRef, videoRef }: ScrollVideoOptions) {
       video.removeEventListener("seeked", handleSeeked);
       video.removeEventListener("error", fail);
       gestureEvents.forEach((event) => window.removeEventListener(event, unlock));
+      intentEvents.forEach((event) => window.removeEventListener(event, beginOnIntent));
       video.pause();
       video.removeAttribute("src");
       video.load();
-      if (blobUrl) URL.revokeObjectURL(blobUrl);
     };
-  }, [containerRef, reducedMotion, videoRef]);
+  }, [containerRef, preferenceReady, reducedMotion, videoRef]);
 
-  return { status, reducedMotion, loadProgress, posterOnly };
+  return { status, reducedMotion, loadProgress: 0, posterOnly, videoReady };
 }

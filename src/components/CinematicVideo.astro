@@ -1,0 +1,112 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  poster: ImageMetadata;
+  source: string;
+  eyebrow: string;
+  title: string;
+  alt: string;
+}
+
+const { poster, source, eyebrow, title, alt } = Astro.props;
+---
+
+<section class="video-panel" data-cinematic-video data-media-mode="poster">
+  <Image
+    class="video-panel__poster"
+    src={poster}
+    alt={alt}
+    widths={[720, 1200, 1800]}
+    sizes="100vw"
+  />
+  <video muted loop playsinline preload="none" aria-hidden="true">
+    <source data-src={source} type="video/mp4" />
+  </video>
+  <div class="video-panel__overlay">
+    <div>
+      <p class="eyebrow">{eyebrow}</p>
+      <h2>{title}</h2>
+    </div>
+    <button class="video-panel__toggle" type="button" aria-pressed="false">Play film</button>
+  </div>
+</section>
+
+<script>
+  type NetworkInformation = {
+    saveData?: boolean;
+    effectiveType?: string;
+    downlink?: number;
+  };
+
+  const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const constrainedNetwork = Boolean(
+    connection?.saveData ||
+    connection?.effectiveType === "slow-2g" ||
+    connection?.effectiveType === "2g" ||
+    (connection?.downlink !== undefined && connection.downlink < 1.5),
+  );
+
+  document.querySelectorAll<HTMLElement>("[data-cinematic-video]:not([data-video-ready])").forEach((panel) => {
+    panel.dataset.videoReady = "true";
+    const video = panel.querySelector<HTMLVideoElement>("video");
+    const source = video?.querySelector<HTMLSourceElement>("source[data-src]");
+    const toggle = panel.querySelector<HTMLButtonElement>(".video-panel__toggle");
+    if (!video || !source || !toggle) return;
+
+    let loaded = false;
+    let userPaused = false;
+
+    const updateControl = () => {
+      const playing = !video.paused && !video.ended;
+      toggle.textContent = playing ? "Pause film" : "Play film";
+      toggle.setAttribute("aria-pressed", String(playing));
+    };
+
+    const load = () => {
+      if (loaded || !source.dataset.src) return;
+      loaded = true;
+      source.src = source.dataset.src;
+      source.removeAttribute("data-src");
+      video.load();
+    };
+
+    const play = () => {
+      load();
+      void video.play().catch(() => updateControl());
+    };
+
+    if (reducedMotion || constrainedNetwork) {
+      toggle.hidden = true;
+      panel.dataset.mediaMode = "poster";
+      return;
+    }
+
+    video.addEventListener("loadeddata", () => {
+      panel.dataset.mediaMode = "video";
+      video.classList.add("is-ready");
+    });
+    video.addEventListener("play", updateControl);
+    video.addEventListener("pause", updateControl);
+    toggle.addEventListener("click", () => {
+      if (video.paused) {
+        userPaused = false;
+        play();
+      } else {
+        userPaused = true;
+        video.pause();
+      }
+    });
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry?.isIntersecting) {
+        if (!userPaused) play();
+      } else if (!video.paused) {
+        video.pause();
+      }
+    }, { rootMargin: "160px", threshold: 0.2 });
+
+    observer.observe(panel);
+  });
+</script>

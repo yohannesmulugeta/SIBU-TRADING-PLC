@@ -12,7 +12,7 @@ type Props = {
 export default function ScrollHero({ poster, lowVideoSrc, sdVideoSrc, hdVideoSrc }: Props) {
   const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const { status, reducedMotion, loadProgress, posterOnly } = useScrollVideo({ containerRef, videoRef });
+  const { status, reducedMotion, loadProgress, posterOnly, videoReady } = useScrollVideo({ containerRef, videoRef });
   const staticStory = status === "error" || reducedMotion;
 
   return (
@@ -24,15 +24,22 @@ export default function ScrollHero({ poster, lowVideoSrc, sdVideoSrc, hdVideoSrc
       data-media-mode={posterOnly ? "poster" : "video"}
     >
       <div className="scroll-story__viewport">
-        <div className={`scroll-story__media${status === "ready" ? " is-ready" : ""}`}>
-          <img className="scroll-story__poster" src={poster} alt="" aria-hidden="true" />
+        <div className={`scroll-story__media${videoReady ? " is-ready" : ""}`}>
+          <img
+            className="scroll-story__poster"
+            src={poster}
+            width={1280}
+            height={720}
+            fetchPriority="high"
+            alt=""
+            aria-hidden="true"
+          />
           <video
             ref={videoRef}
             className="scroll-story__video"
             data-src-low={lowVideoSrc}
             data-src-sd={sdVideoSrc}
             data-src-hd={hdVideoSrc}
-            poster={poster}
             muted
             playsInline
             preload="none"

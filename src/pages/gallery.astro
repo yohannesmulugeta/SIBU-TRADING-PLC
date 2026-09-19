@@ -65,7 +65,13 @@ import hero from "../assets/media/aerial-drying.webp";
       <button class="gallery-dialog__close" type="button" data-dialog-close aria-label="Close image">×</button>
       <button class="gallery-dialog__nav gallery-dialog__nav--previous" type="button" data-dialog-previous aria-label="Previous image">←</button>
       <figure>
-        <img data-dialog-image src={galleryItems[0].image.src} alt={galleryItems[0].alt} />
+        <img
+          data-dialog-image
+          src={galleryItems[0].image.src}
+          alt={galleryItems[0].alt}
+          width={galleryItems[0].image.width}
+          height={galleryItems[0].image.height}
+        />
         <figcaption>
           <p data-dialog-category>{galleryItems[0].category}</p>
           <h2 id="gallery-dialog-title" data-dialog-title>{galleryItems[0].title}</h2>

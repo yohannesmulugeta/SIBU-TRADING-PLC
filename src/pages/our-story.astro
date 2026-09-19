@@ -11,9 +11,12 @@ import generationKadir from "../assets/media/generation-kadir.webp";
 import generationSalimZidan from "../assets/media/generation-salim-zidan.webp";
 import bunaQalaaPhoto from "../assets/media/buna-qalaa-heritage-photo.webp";
 
+const generationImages = [generationHasan, generationKadir, generationSalimZidan];
 const generationProfiles = generations.map((generation, index) => ({
   ...generation,
-  image: [generationHasan.src, generationKadir.src, generationSalimZidan.src][index],
+  image: generationImages[index].src,
+  imageWidth: generationImages[index].width,
+  imageHeight: generationImages[index].height,
   imageAlt: [
     "Portrait of Mr. Hasan Areedo",
     "Portrait of Mr. Kadir Hasan",
@@ -49,7 +52,6 @@ const generationProfiles = generations.map((generation, index) => ({
         <p class="eyebrow">Heritage & identity</p>
         <h2 class="section-title">Inspired by Buna Qalaa</h2>
         <p class="section-lead">The Sibu identity draws inspiration from Buna Qalaa, an Oromo coffee tradition connected with hospitality, gathering, blessing, respect and continuity. For Sibu, it represents where the journey begins: Guji, its people and the generations who carried coffee knowledge forward.</p>
-        <p class="section-lead">The final cultural wording and any future ceremony imagery will be reviewed with the family before publication.</p>
       </div>
     </div>
   </section>

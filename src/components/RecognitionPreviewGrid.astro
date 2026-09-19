@@ -1,0 +1,32 @@
+---
+import { Image } from "astro:assets";
+import type { RecognitionItem } from "../data/recognition";
+import { withBase } from "../lib/paths";
+
+interface Props {
+  items: readonly RecognitionItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="recognition-preview-grid">
+  {items.map((item) => (
+    <a class="recognition-preview-card" href={`${withBase("/recognition/")}#${item.id}`}>
+      <span class="recognition-preview-card__media">
+        <Image
+          src={item.image}
+          alt={item.alt}
+          widths={[360, 640, 900]}
+          sizes="(max-width: 700px) 100vw, (max-width: 980px) 50vw, 33vw"
+          loading="lazy"
+        />
+      </span>
+      <span class="recognition-preview-card__content">
+        <small>{item.year} · {item.status}</small>
+        <strong>{item.title}</strong>
+        <span>{item.issuer}</span>
+      </span>
+    </a>
+  ))}
+</div>

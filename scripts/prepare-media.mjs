@@ -45,3 +45,10 @@ for (const [target, original] of Object.entries(selections)) {
     .toFile(path.join(output, target));
   console.log(`${original} -> ${target}`);
 }
+
+await sharp(path.join(source, "sibu_drone_photos-14.jpg"))
+  .rotate()
+  .resize({ width: 1400, height: 900, fit: "cover", position: "centre", withoutEnlargement: true })
+  .webp({ quality: 68, effort: 6, smartSubsample: true })
+  .toFile(path.join(output, "processing-poster.webp"));
+console.log("sibu_drone_photos-14.jpg -> processing-poster.webp");

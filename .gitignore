@@ -11,6 +11,15 @@ media-masters/
 # Browser test output
 playwright-report/
 test-results/
+.playwright-cli/
+output/
+
+# Local video drafts and held-back recognition media
+public/video/coffee-legacy.mp4
+public/video/coffee-scrub-1080.mp4
+public/video/coffee-scrub-v2.mp4
+public/video/coffee-scrub-v3.mp4
+src/assets/recognition/registrar-corp-fda-registration-2024.webp
 
 # Local environment files
 .env

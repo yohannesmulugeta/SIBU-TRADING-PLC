@@ -22,7 +22,8 @@ const counters = stats.map((stat) => {
 <div class="profile-metrics" data-profile-metrics>
   {counters.map((stat) => (
     <div class="profile-metric">
-      <strong aria-label={stat.value}>
+      <strong>
+        <span class="sr-only">{stat.value}</span>
         <span
           aria-hidden="true"
           data-counter={stat.target}

@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "media:prepare": "node scripts/prepare-media.mjs"
+    "media:prepare": "node scripts/prepare-media.mjs",
+    "media:recognition": "node scripts/prepare-recognition-media.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.6",

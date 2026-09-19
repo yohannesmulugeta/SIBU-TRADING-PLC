@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
+import CinematicVideo from "../components/CinematicVideo.astro";
 import { processes } from "../data/site";
 import { withBase } from "../lib/paths";
 import wetProcessing from "../assets/media/wet-processing.webp";
@@ -30,21 +31,22 @@ import warehouse from "../assets/media/warehouse-coffee.webp";
     </div>
   </section>
 
-  <section class="video-panel">
-    <video muted loop playsinline preload="metadata" poster={cherrySorting.src}>
-      <source src={withBase("/video/processing.mp4")} type="video/mp4" />
-    </video>
-    <div class="video-panel__overlay"><div><p class="eyebrow">At the station</p><h2>Selection, movement and care at every stage.</h2></div></div>
-  </section>
+  <CinematicVideo
+    poster={cherrySorting}
+    source={withBase("/video/processing.mp4")}
+    eyebrow="At the station"
+    title="Selection, movement and care at every stage."
+    alt="Ripe coffee cherries being sorted at a Sibu processing station"
+  />
 
   <section class="section section--cream">
     <div class="shell">
       <p class="eyebrow">Coffee portfolio</p>
       <h2 class="section-title">Prepared for different buyer requirements</h2>
       <div class="card-grid">
-        <article class="editorial-card"><Image src={cherrySorting} alt="Ripe coffee cherries being sorted" widths={[540, 900]} sizes="33vw" /><div class="editorial-card__content"><h3>Natural</h3><p>Whole cherries carefully dried for sweetness, fruit intensity and body.</p></div></article>
-        <article class="editorial-card"><Image src={coffeeHands} alt="Prepared green coffee held for inspection" widths={[540, 900]} sizes="33vw" /><div class="editorial-card__content"><h3>Washed</h3><p>Clean, bright and articulate profiles protected through careful processing.</p></div></article>
-        <article class="editorial-card"><Image src={greenCoffee} alt="Detailed view of Ethiopian green coffee" widths={[540, 900]} sizes="33vw" /><div class="editorial-card__content"><h3>Specialty lots</h3><p>Separated by origin, process and quality potential before presentation.</p></div></article>
+        <article class="editorial-card"><Image src={cherrySorting} alt="Ripe coffee cherries being sorted" widths={[540, 900]} sizes="(max-width: 700px) 100vw, (max-width: 980px) 50vw, 33vw" /><div class="editorial-card__content"><h3>Natural</h3><p>Whole cherries carefully dried for sweetness, fruit intensity and body.</p></div></article>
+        <article class="editorial-card"><Image src={coffeeHands} alt="Prepared green coffee held for inspection" widths={[540, 900]} sizes="(max-width: 700px) 100vw, (max-width: 980px) 50vw, 33vw" /><div class="editorial-card__content"><h3>Washed</h3><p>Clean, bright and articulate profiles protected through careful processing.</p></div></article>
+        <article class="editorial-card"><Image src={greenCoffee} alt="Detailed view of Ethiopian green coffee" widths={[540, 900]} sizes="(max-width: 700px) 100vw, (max-width: 980px) 50vw, 33vw" /><div class="editorial-card__content"><h3>Specialty lots</h3><p>Separated by origin, process and quality potential before presentation.</p></div></article>
       </div>
     </div>
   </section>

@@ -3,7 +3,10 @@ import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 import ProfileMetrics from "../components/ProfileMetrics.astro";
-import { certifications, companyStats } from "../data/site";
+import RecognitionPreviewGrid from "../components/RecognitionPreviewGrid.astro";
+import { companyStats } from "../data/site";
+import { qualityRecognition } from "../data/recognition";
+import { withBase } from "../lib/paths";
 import qualityReview from "../assets/media/quality-review.webp";
 import beanInspection from "../assets/media/bean-inspection.webp";
 import sortingDuo from "../assets/media/sorting-duo.webp";
@@ -49,11 +52,11 @@ import baggingTeam from "../assets/media/bagging-team.webp";
     <div class="shell">
       <p class="eyebrow">Responsibility</p>
       <h2 class="section-title">The future of Sibu depends on the future of its communities</h2>
-      <p class="section-lead">Sibu’s company profile records work connected with education, learning resources, clean water, employment, infrastructure and long-term farmer relationships. Public impact figures will be added after current records are confirmed.</p>
+      <p class="section-lead">Sibu’s company profile records work connected with education, learning resources, clean water, employment, infrastructure and long-term farmer relationships.</p>
       <div class="card-grid">
-        <article class="editorial-card"><Image src={sortingDuo} alt="Two women sorting coffee together" widths={[540, 900]} sizes="33vw" /><div class="editorial-card__content"><h3>Employment</h3><p>Permanent and seasonal work across coffee operations.</p></div></article>
-        <article class="editorial-card"><Image src={communityTeam} alt="Coffee community members at a processing station" widths={[540, 900]} sizes="33vw" /><div class="editorial-card__content"><h3>Community</h3><p>Relationships that extend beyond purchasing coffee.</p></div></article>
-        <article class="editorial-card"><Image src={baggingTeam} alt="Coffee team preparing bags inside a warehouse" widths={[540, 900]} sizes="33vw" /><div class="editorial-card__content"><h3>Opportunity</h3><p>Skills and livelihoods connected across the value chain.</p></div></article>
+        <article class="editorial-card"><Image src={sortingDuo} alt="Two women sorting coffee together" widths={[540, 900]} sizes="(max-width: 700px) 100vw, (max-width: 980px) 50vw, 33vw" /><div class="editorial-card__content"><h3>Employment</h3><p>Permanent and seasonal work across coffee operations.</p></div></article>
+        <article class="editorial-card"><Image src={communityTeam} alt="Coffee community members at a processing station" widths={[540, 900]} sizes="(max-width: 700px) 100vw, (max-width: 980px) 50vw, 33vw" /><div class="editorial-card__content"><h3>Community</h3><p>Relationships that extend beyond purchasing coffee.</p></div></article>
+        <article class="editorial-card"><Image src={baggingTeam} alt="Coffee team preparing bags inside a warehouse" widths={[540, 900]} sizes="(max-width: 700px) 100vw, (max-width: 980px) 50vw, 33vw" /><div class="editorial-card__content"><h3>Opportunity</h3><p>Skills and livelihoods connected across the value chain.</p></div></article>
       </div>
     </div>
   </section>
@@ -62,25 +65,16 @@ import baggingTeam from "../assets/media/bagging-team.webp";
     <div class="shell">
       <div class="section-heading-row">
         <div>
-          <p class="eyebrow">Certification programs</p>
-          <h2 id="certification-title" class="section-title">Confirm eligibility for every crop and lot</h2>
+          <p class="eyebrow">Documented history</p>
+          <h2 id="certification-title" class="section-title">Certificates shown with their dates and limits</h2>
         </div>
-        <p class="section-lead">The programs below are referenced in Sibu’s company profile. Official certificates will replace these status cards when supplied.</p>
+        <div>
+          <p class="section-lead">These supplied documents are historical records. Expired certificates do not establish current certification or lot eligibility.</p>
+          <a class="text-link" href={withBase("/recognition/")}>View the complete recognition archive</a>
+        </div>
       </div>
-      <div class="certification-grid">
-        {certifications.map((certification) => (
-          <article class="certification-card">
-            <div class="certification-card__top">
-              <span>{certification.number}</span>
-              <small>Program referenced</small>
-            </div>
-            <h3>{certification.name}</h3>
-            <p>{certification.description}</p>
-            <strong>Official document pending</strong>
-          </article>
-        ))}
-      </div>
-      <p class="certification-note">Certification status and individual lot eligibility must be confirmed directly with Sibu according to crop year, farm, station and export requirements.</p>
+      <RecognitionPreviewGrid items={qualityRecognition} />
+      <p class="certification-note">For purchasing or due diligence, confirm current certification status directly with Sibu for the relevant crop year, farm, station, lot and destination market.</p>
     </div>
   </section>
 </BaseLayout>

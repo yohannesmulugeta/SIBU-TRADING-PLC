@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import RecognitionGallery from "../components/RecognitionGallery.astro";
+import recognitionDisplay from "../assets/recognition/sibu-recognition-display.webp";
+---
+
+<BaseLayout
+  title="Recognition | Sibu Trading PLC"
+  description="Explore Sibu Trading PLC's documented coffee awards, company recognition, historical certificates, partnerships and leadership archive."
+  image={recognitionDisplay.src}
+>
+  <PageHero
+    eyebrow="Recognition archive"
+    title="A record built across years of work"
+    description="Awards, certificates, partnerships and physical recognitions preserved from Sibu’s company and leadership history."
+    image={recognitionDisplay}
+    alt="Sibu Coffee Exporter PLC recognition display with certificates, plaques and trophies"
+  />
+
+  <section class="section recognition-intro">
+    <div class="shell split">
+      <div>
+        <p class="eyebrow">What this collection shows</p>
+        <h2 class="section-title">Recognition belongs in context</h2>
+      </div>
+      <div>
+        <p class="section-lead">This archive brings together coffee awards, company recognition, community partnerships, historical certification documents and recognitions received by Sibu’s leadership.</p>
+        <p class="recognition-intro__note">Certification and registration documents are displayed as historical records. Current status and lot eligibility must always be confirmed directly for the relevant crop year, farm, station and destination market.</p>
+      </div>
+    </div>
+  </section>
+
+  <RecognitionGallery />
+</BaseLayout>

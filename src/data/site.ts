@@ -4,6 +4,7 @@ export const navigation = [
   { label: "Origins & Farms", href: "/origins/" },
   { label: "Coffee & Processing", href: "/coffee-processing/" },
   { label: "Quality & Impact", href: "/quality-impact/" },
+  { label: "Recognition", href: "/recognition/" },
   { label: "Gallery", href: "/gallery/" },
   { label: "Contact", href: "/contact/" },
 ] as const;

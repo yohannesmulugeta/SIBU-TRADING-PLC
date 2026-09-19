@@ -8,6 +8,8 @@ type Generation = {
   era: string;
   description: string;
   image: string;
+  imageWidth: number;
+  imageHeight: number;
   imageAlt: string;
 };
 
@@ -52,7 +54,14 @@ export default function StoryJourney({ generations }: Props) {
         <article key={generation.number} data-generation className="generation-card">
           <span className="generation-card__number">{generation.number}</span>
           <figure className="generation-card__portrait">
-            <img src={generation.image} alt={generation.imageAlt} loading="lazy" decoding="async" />
+            <img
+              src={generation.image}
+              alt={generation.imageAlt}
+              width={generation.imageWidth}
+              height={generation.imageHeight}
+              loading="lazy"
+              decoding="async"
+            />
           </figure>
           <div className="generation-card__content">
             <p className="generation-card__era">{generation.era}</p>

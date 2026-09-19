@@ -3,8 +3,11 @@ import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import GalleryPreview from "../components/GalleryPreview.astro";
 import ProfileMetrics from "../components/ProfileMetrics.astro";
+import RecognitionPreviewGrid from "../components/RecognitionPreviewGrid.astro";
 import ScrollHero from "../components/ScrollHero";
-import { certifications, companyStats } from "../data/site";
+import CinematicVideo from "../components/CinematicVideo.astro";
+import { companyStats } from "../data/site";
+import { homepageRecognition } from "../data/recognition";
 import { withBase } from "../lib/paths";
 import heroAerial from "../assets/media/hero-aerial.webp";
 import coffeePicker from "../assets/media/coffee-picker.webp";
@@ -13,7 +16,7 @@ import wetProcessing from "../assets/media/wet-processing.webp";
 import qualityReview from "../assets/media/quality-review.webp";
 import greenCoffee from "../assets/media/green-coffee.webp";
 import communityTeam from "../assets/media/community-team.webp";
-import aerialScale from "../assets/media/aerial-scale.webp";
+import processingPoster from "../assets/media/processing-poster.webp";
 ---
 
 <BaseLayout
@@ -84,17 +87,13 @@ import aerialScale from "../assets/media/aerial-scale.webp";
     </div>
   </section>
 
-  <section class="video-panel">
-    <video muted loop playsinline preload="none" poster={aerialScale.src} data-lazy-video>
-      <source data-src={withBase("/video/processing.mp4")} type="video/mp4" />
-    </video>
-    <div class="video-panel__overlay">
-      <div>
-        <p class="eyebrow">The work behind every lot</p>
-        <h2>From Guji’s highlands to the customer’s warehouse.</h2>
-      </div>
-    </div>
-  </section>
+  <CinematicVideo
+    poster={processingPoster}
+    source={withBase("/video/processing.mp4")}
+    eyebrow="The work behind every lot"
+    title="From Guji’s highlands to the customer’s warehouse."
+    alt="Aerial view of coffee processing infrastructure in the Guji highlands"
+  />
 
   <section id="coffee-portfolio" class="section">
     <div class="shell split">
@@ -116,27 +115,19 @@ import aerialScale from "../assets/media/aerial-scale.webp";
     </div>
   </section>
 
-  <section class="section section--cream certification-preview" aria-labelledby="certification-preview-title">
+  <section class="section section--cream recognition-preview" aria-labelledby="recognition-preview-title">
     <div class="shell">
       <div class="section-heading-row">
         <div>
-          <p class="eyebrow">Certification programs</p>
-          <h2 id="certification-preview-title" class="section-title">Structured for responsible sourcing</h2>
+          <p class="eyebrow">Recognition archive</p>
+          <h2 id="recognition-preview-title" class="section-title">Work recognized across quality, trade and partnership</h2>
         </div>
         <div>
-          <p class="section-lead">Programs referenced in the company profile. Eligibility remains specific to crop year, farm, station and lot.</p>
-          <a class="text-link" href={withBase("/quality-impact/")}>Review certification status</a>
+          <p class="section-lead">Selected records from Sibu’s documented history. Historical certificates are clearly labelled and never presented as current status.</p>
+          <a class="text-link" href={withBase("/recognition/")}>Explore all recognition</a>
         </div>
       </div>
-      <div class="certification-mini-grid">
-        {certifications.map((certification) => (
-          <article>
-            <span>{certification.number}</span>
-            <h3>{certification.name}</h3>
-            <p>Program referenced</p>
-          </article>
-        ))}
-      </div>
+      <RecognitionPreviewGrid items={homepageRecognition} />
     </div>
   </section>
 
@@ -156,36 +147,4 @@ import aerialScale from "../assets/media/aerial-scale.webp";
     </div>
   </section>
 
-  <section id="contact-cta" class="section section--dark buyer-cta">
-    <div class="shell split buyer-cta__grid">
-      <div class="buyer-cta__heading">
-        <p class="eyebrow">Start a conversation</p>
-        <h2 class="section-title">Looking for Ethiopian coffee with a clear connection to origin?</h2>
-      </div>
-      <div class="buyer-cta__action">
-        <p class="section-lead">Tell us the origin, process, preparation and volume you need. Sibu will respond with relevant availability and next steps.</p>
-        <a class="button button--light" href={withBase("/contact/")}>Request samples</a>
-      </div>
-    </div>
-  </section>
-
-  <script>
-    const videos = document.querySelectorAll("[data-lazy-video]");
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const video = entry.target;
-        if (!(video instanceof HTMLVideoElement)) return;
-        const source = video.querySelector("source[data-src]");
-        if (source instanceof HTMLSourceElement && source.dataset.src) {
-          source.src = source.dataset.src;
-          source.removeAttribute("data-src");
-          video.load();
-          if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) video.play().catch(() => undefined);
-        }
-        observer.unobserve(video);
-      });
-    }, { rootMargin: "200px" });
-    videos.forEach((video) => observer.observe(video));
-  </script>
 </BaseLayout>
