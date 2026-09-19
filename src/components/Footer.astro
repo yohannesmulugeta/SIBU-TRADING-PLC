@@ -1,15 +1,45 @@
 ---
+import { Image } from "astro:assets";
 import logo from "../assets/brand/sibu-logo.png";
+import footerCoffee from "../assets/media/footer-coffee-beans.webp";
+import footerOrigin from "../assets/media/footer-origin-drying.webp";
 import { contact, navigation } from "../data/site";
 import { withBase } from "../lib/paths";
 ---
 
-<footer class="site-footer">
+<footer id="site-footer" class="site-footer">
+  <div class="footer-feature">
+    <Image src={footerCoffee} alt="Close view of prepared Ethiopian green coffee" widths={[900, 1400, 1800]} sizes="100vw" />
+    <div class="footer-feature__shade"></div>
+    <div class="shell footer-feature__content">
+      <div>
+        <p class="eyebrow">From Guji to your coffee program</p>
+        <h2>A clearer connection to Ethiopian coffee.</h2>
+      </div>
+      <a class="button button--light" href={withBase("/contact/")}>Request samples <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+
+  <div class="footer-coffee-rail" aria-label="Sibu coffee portfolio">
+    <div class="shell">
+      <a href={withBase("/coffee-processing/")}>Natural</a><i aria-hidden="true"></i>
+      <a href={withBase("/coffee-processing/")}>Washed</a><i aria-hidden="true"></i>
+      <a href={withBase("/coffee-processing/")}>Honey</a><i aria-hidden="true"></i>
+      <a href={withBase("/coffee-processing/")}>Specialty</a><i aria-hidden="true"></i>
+      <span>Guji · Ethiopia</span>
+    </div>
+  </div>
+
   <div class="shell footer-grid">
-    <div>
+    <div class="footer-brand">
       <img class="footer-logo" src={logo.src} width="132" height="81" alt="Sibu Trading" />
       <p class="footer-statement">Rooted in Guji. Built through generations. Shared with the world.</p>
+      <a class="footer-brand__link" href={withBase("/our-story/")}>Discover the Sibu story <span aria-hidden="true">→</span></a>
     </div>
+    <figure class="footer-origin-photo">
+      <Image src={footerOrigin} alt="Coffee teams tending raised drying beds in the Guji highlands" widths={[480, 720, 960]} sizes="(max-width: 700px) 100vw, (max-width: 980px) 50vw, 24vw" />
+      <figcaption><span>At origin</span><strong>Guji highlands</strong></figcaption>
+    </figure>
     <div>
       <p class="footer-title">Explore</p>
       <nav class="footer-links" aria-label="Footer navigation">
@@ -27,6 +57,7 @@ import { withBase } from "../lib/paths";
   </div>
   <div class="shell footer-bottom">
     <span>© {new Date().getFullYear()} Sibu Trading PLC</span>
-    <span>Coffee · Guji · Heritage · Trust</span>
+    <span>Green coffee · Guji · Ethiopia</span>
+    <a href="#main-content">Back to top <span aria-hidden="true">↑</span></a>
   </div>
 </footer>

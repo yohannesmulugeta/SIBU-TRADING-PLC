@@ -1,0 +1,74 @@
+---
+interface Stat {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  stats: readonly Stat[];
+}
+
+const { stats } = Astro.props;
+const counters = stats.map((stat) => {
+  const match = stat.value.match(/^([\d,]+)(.*)$/);
+  return {
+    ...stat,
+    target: match ? Number(match[1].replaceAll(",", "")) : undefined,
+    suffix: match?.[2] ?? "",
+  };
+});
+---
+
+<div class="profile-metrics" data-profile-metrics>
+  {counters.map((stat) => (
+    <div class="profile-metric">
+      <strong aria-label={stat.value}>
+        <span
+          aria-hidden="true"
+          data-counter={stat.target}
+          data-suffix={stat.suffix}
+        >{stat.value}</span>
+      </strong>
+      <span>{stat.label}</span>
+    </div>
+  ))}
+</div>
+
+<script>
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  document.querySelectorAll<HTMLElement>("[data-profile-metrics]:not([data-counter-ready])").forEach((root) => {
+    root.dataset.counterReady = "true";
+    if (reducedMotion) {
+      root.dataset.counted = "true";
+      return;
+    }
+
+    const elements = [...root.querySelectorAll<HTMLElement>("[data-counter]")];
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting) return;
+      observer.disconnect();
+
+      const startedAt = performance.now();
+      const duration = 1450;
+      const render = (now: number) => {
+        const progress = Math.min(1, (now - startedAt) / duration);
+        const eased = 1 - Math.pow(1 - progress, 3);
+
+        elements.forEach((element) => {
+          const target = Number(element.dataset.counter);
+          if (!Number.isFinite(target)) return;
+          const value = Math.round(target * eased).toLocaleString("en-US");
+          element.textContent = `${value}${element.dataset.suffix ?? ""}`;
+        });
+
+        if (progress < 1) requestAnimationFrame(render);
+        else root.dataset.counted = "true";
+      };
+
+      requestAnimationFrame(render);
+    }, { threshold: 0.25 });
+
+    observer.observe(root);
+  });
+</script>

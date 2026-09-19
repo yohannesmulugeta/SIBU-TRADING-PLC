@@ -29,7 +29,10 @@ const selections = {
   "quality-review.webp": "sibu_export-155.jpg",
   "warehouse-coffee.webp": "sibu_export-159.jpg",
   "bagging-team.webp": "sibu_export-163.jpg",
-  "coffee-picker.webp": "sibu_export-167.jpg"
+  "coffee-picker.webp": "sibu_export-167.jpg",
+  "nav-coffee-cherries.webp": "sibu_export-34.jpg",
+  "footer-coffee-beans.webp": "sibu_export-143.jpg",
+  "footer-origin-drying.webp": "sibu_export-148.jpg",
 };
 
 await mkdir(output, { recursive: true });

@@ -1,0 +1,78 @@
+---
+import worldMap from "../assets/graphics/world-map.svg";
+
+interface Props {
+  markets: readonly string[];
+}
+
+const { markets } = Astro.props;
+
+const origin = { x: 611, y: 225 };
+const destinations = [
+  { label: "North America", x: 225, y: 150, cx: 418, cy: 64, tx: 202, ty: 132 },
+  { label: "Europe", x: 528, y: 112, cx: 558, cy: 152, tx: 503, ty: 92 },
+  { label: "The Gulf", x: 640, y: 182, cx: 626, cy: 194, tx: 657, ty: 170 },
+  { label: "China", x: 789, y: 153, cx: 700, cy: 108, tx: 770, ty: 137 },
+  { label: "South Korea", x: 853, y: 150, cx: 744, cy: 82, tx: 870, ty: 134 },
+  { label: "Australia", x: 872, y: 320, cx: 772, cy: 274, tx: 850, ty: 349 },
+] as const;
+---
+
+<div class="trade-map">
+  <div class="trade-map__frame">
+    <svg viewBox="0 0 1000 500" role="img" aria-labelledby="trade-map-title trade-map-description">
+      <title id="trade-map-title">Sibu coffee export connections from Ethiopia</title>
+      <desc id="trade-map-description">Routes extend from Ethiopia to buyer regions in North America, Europe, the Gulf, China, South Korea and Australia.</desc>
+
+      <defs>
+        <pattern id="map-grid" width="50" height="50" patternUnits="userSpaceOnUse">
+          <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+        </pattern>
+        <filter id="origin-glow" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="7" result="blur" />
+          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+      </defs>
+
+      <rect width="1000" height="500" fill="url(#map-grid)" />
+      <image href={worldMap.src} width="1000" height="500" class="trade-map__land" aria-hidden="true" />
+
+      <g class="trade-map__routes" aria-hidden="true">
+        {destinations.map((destination, index) => (
+          <path
+            d={`M ${origin.x} ${origin.y} Q ${destination.cx} ${destination.cy} ${destination.x} ${destination.y}`}
+            style={`--route-delay: ${index * 0.14}s`}
+          />
+        ))}
+      </g>
+
+      <g class="trade-map__destinations" aria-hidden="true">
+        {destinations.map((destination) => (
+          <g>
+            <circle cx={destination.x} cy={destination.y} r="5" />
+            <circle cx={destination.x} cy={destination.y} r="11" class="trade-map__destination-ring" />
+            <text x={destination.tx} y={destination.ty}>{destination.label}</text>
+          </g>
+        ))}
+      </g>
+
+      <g class="trade-map__origin" filter="url(#origin-glow)" aria-hidden="true">
+        <circle cx={origin.x} cy={origin.y} r="24" class="trade-map__origin-ring" />
+        <circle cx={origin.x} cy={origin.y} r="9" />
+        <path d="M 607 225 h 8 M 611 221 v 8" />
+        <text x="611" y="260" text-anchor="middle">Ethiopia · Sibu origin</text>
+      </g>
+    </svg>
+
+    <div class="trade-map__key" aria-hidden="true">
+      <span><i></i>Origin</span>
+      <span><i></i>Buyer region</span>
+    </div>
+  </div>
+
+  <div class="trade-map__markets" aria-label="Markets referenced in Sibu’s company profile">
+    {markets.map((market, index) => (
+      <div><span>{String(index + 1).padStart(2, "0")}</span><strong>{market}</strong></div>
+    ))}
+  </div>
+</div>

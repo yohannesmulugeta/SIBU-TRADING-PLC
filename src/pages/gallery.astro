@@ -1,0 +1,132 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import { galleryCategories, galleryItems } from "../data/gallery";
+import hero from "../assets/media/aerial-drying.webp";
+---
+
+<BaseLayout title="Gallery | Sibu Trading PLC" description="Explore the farms, harvest, people, processing and export preparation behind Sibu coffee.">
+  <PageHero
+    eyebrow="Sibu gallery"
+    title="The places and people behind every lot"
+    description="A visual journey through farms, harvest, processing, people, warehouses and export preparation."
+    image={hero}
+    alt="Aerial view of coffee drying beds among the Guji forest"
+  />
+
+  <section class="section gallery-page" data-gallery-page>
+    <div class="shell">
+      <div class="section-heading-row">
+        <div>
+          <p class="eyebrow">Explore the collection</p>
+          <h2 class="section-title">Coffee in place, process and people</h2>
+        </div>
+        <p class="section-lead">Choose a category or open any photograph for a full-screen view.</p>
+      </div>
+
+      <div class="gallery-filters" role="group" aria-label="Filter gallery images">
+        <button type="button" data-gallery-filter="All" aria-pressed="true">All</button>
+        {galleryCategories.map((category) => (
+          <button type="button" data-gallery-filter={category} aria-pressed="false">{category}</button>
+        ))}
+      </div>
+
+      <div class="gallery-grid" data-gallery-grid>
+        {galleryItems.map((item, index) => (
+          <button
+            class="gallery-card"
+            type="button"
+            data-gallery-card
+            data-category={item.category}
+            data-full-src={item.image.src}
+            data-title={item.title}
+            data-location={item.location}
+            data-alt={item.alt}
+            aria-label={`Open ${item.title}`}
+          >
+            <Image
+              src={item.image}
+              alt={item.alt}
+              widths={[420, 720, 1080]}
+              sizes="(max-width: 700px) 100vw, (max-width: 1050px) 50vw, 33vw"
+            />
+            <span class="gallery-card__overlay">
+              <small>{String(index + 1).padStart(2, "0")} · {item.category}</small>
+              <strong>{item.title}</strong>
+              <span>{item.location}</span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <dialog class="gallery-dialog" data-gallery-dialog aria-labelledby="gallery-dialog-title">
+      <button class="gallery-dialog__close" type="button" data-dialog-close aria-label="Close image">×</button>
+      <button class="gallery-dialog__nav gallery-dialog__nav--previous" type="button" data-dialog-previous aria-label="Previous image">←</button>
+      <figure>
+        <img data-dialog-image src={galleryItems[0].image.src} alt={galleryItems[0].alt} />
+        <figcaption>
+          <p data-dialog-category>{galleryItems[0].category}</p>
+          <h2 id="gallery-dialog-title" data-dialog-title>{galleryItems[0].title}</h2>
+          <span data-dialog-location>{galleryItems[0].location}</span>
+        </figcaption>
+      </figure>
+      <button class="gallery-dialog__nav gallery-dialog__nav--next" type="button" data-dialog-next aria-label="Next image">→</button>
+    </dialog>
+  </section>
+
+  <script>
+    const root = document.querySelector<HTMLElement>("[data-gallery-page]");
+    const dialog = root?.querySelector<HTMLDialogElement>("[data-gallery-dialog]");
+    const cards = Array.from(root?.querySelectorAll<HTMLButtonElement>("[data-gallery-card]") ?? []);
+    const filters = Array.from(root?.querySelectorAll<HTMLButtonElement>("[data-gallery-filter]") ?? []);
+    const dialogImage = dialog?.querySelector<HTMLImageElement>("[data-dialog-image]");
+    const dialogTitle = dialog?.querySelector<HTMLElement>("[data-dialog-title]");
+    const dialogCategory = dialog?.querySelector<HTMLElement>("[data-dialog-category]");
+    const dialogLocation = dialog?.querySelector<HTMLElement>("[data-dialog-location]");
+    let currentIndex = 0;
+
+    const visibleCards = () => cards.filter((card) => !card.hidden);
+
+    const showCard = (card: HTMLButtonElement) => {
+      const visible = visibleCards();
+      currentIndex = Math.max(0, visible.indexOf(card));
+      if (dialogImage) {
+        dialogImage.src = card.dataset.fullSrc ?? "";
+        dialogImage.alt = card.dataset.alt ?? "";
+      }
+      if (dialogTitle) dialogTitle.textContent = card.dataset.title ?? "";
+      if (dialogCategory) dialogCategory.textContent = card.dataset.category ?? "";
+      if (dialogLocation) dialogLocation.textContent = card.dataset.location ?? "";
+      if (dialog && !dialog.open) dialog.showModal();
+      document.documentElement.classList.add("gallery-dialog-open");
+    };
+
+    const move = (direction: number) => {
+      const visible = visibleCards();
+      if (!visible.length) return;
+      currentIndex = (currentIndex + direction + visible.length) % visible.length;
+      showCard(visible[currentIndex]);
+    };
+
+    filters.forEach((filter) => {
+      filter.addEventListener("click", () => {
+        const selected = filter.dataset.galleryFilter ?? "All";
+        filters.forEach((button) => button.setAttribute("aria-pressed", String(button === filter)));
+        cards.forEach((card) => {
+          card.hidden = selected !== "All" && card.dataset.category !== selected;
+        });
+      });
+    });
+
+    cards.forEach((card) => card.addEventListener("click", () => showCard(card)));
+    dialog?.querySelector("[data-dialog-close]")?.addEventListener("click", () => dialog.close());
+    dialog?.querySelector("[data-dialog-previous]")?.addEventListener("click", () => move(-1));
+    dialog?.querySelector("[data-dialog-next]")?.addEventListener("click", () => move(1));
+    dialog?.addEventListener("close", () => document.documentElement.classList.remove("gallery-dialog-open"));
+    dialog?.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  </script>
+</BaseLayout>

@@ -1,0 +1,111 @@
+---
+import { Image } from "astro:assets";
+import { galleryItems } from "../data/gallery";
+import { withBase } from "../lib/paths";
+
+function item(id: string) {
+  const match = galleryItems.find((galleryItem) => galleryItem.id === id);
+  if (!match) throw new Error(`Missing gallery item: ${id}`);
+  return match;
+}
+
+const panels = [
+  {
+    number: "01",
+    eyebrow: "Origins & farms",
+    title: "Where the coffee story begins.",
+    description: "Highland landscapes, coffee trees and the stations that connect each lot to place.",
+    primary: item("station-landscape"),
+    secondary: item("selective-picking"),
+  },
+  {
+    number: "02",
+    eyebrow: "People & harvest",
+    title: "Coffee begins with people.",
+    description: "Selective harvesting and shared knowledge protect quality before processing starts.",
+    primary: item("community-portrait"),
+    secondary: item("cherry-selection"),
+  },
+  {
+    number: "03",
+    eyebrow: "Process & preparation",
+    title: "Care continues through export.",
+    description: "Processing, sorting, quality review and careful preparation carry the work forward.",
+    primary: item("wet-processing"),
+    secondary: item("bagging-team"),
+  },
+];
+---
+
+<section id="gallery-preview" class="gallery-scroll" data-gallery-scroll aria-labelledby="gallery-preview-title">
+  <div class="gallery-scroll__viewport">
+    <header class="gallery-scroll__header shell">
+      <div>
+        <p class="eyebrow">Inside Sibu</p>
+        <h2 id="gallery-preview-title">Three views of the coffee journey.</h2>
+      </div>
+      <a class="button button--light" href={withBase("/gallery/")}>Explore the gallery</a>
+    </header>
+
+    <div class="gallery-scroll__track" data-gallery-track>
+      {panels.map((panel) => (
+        <article class="gallery-scroll__panel">
+          <Image
+            class="gallery-scroll__primary"
+            src={panel.primary.image}
+            alt={panel.primary.alt}
+            widths={[900, 1400, 1920]}
+            sizes="100vw"
+          />
+          <div class="gallery-scroll__shade"></div>
+          <div class="gallery-scroll__copy">
+            <p class="gallery-scroll__label"><span>{panel.number}</span>{panel.eyebrow}</p>
+            <h3>{panel.title}</h3>
+            <p>{panel.description}</p>
+          </div>
+          <figure class="gallery-scroll__detail">
+            <Image
+              src={panel.secondary.image}
+              alt={panel.secondary.alt}
+              widths={[360, 560, 800]}
+              sizes="(max-width: 700px) 38vw, 24vw"
+            />
+            <figcaption>{panel.secondary.title}</figcaption>
+          </figure>
+        </article>
+      ))}
+    </div>
+
+    <div class="gallery-scroll__progress" aria-hidden="true">
+      <span>01</span><i></i><span>03</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.querySelectorAll<HTMLElement>("[data-gallery-scroll]").forEach((root) => {
+    if (root.dataset.galleryEnhanced === "true") return;
+    root.dataset.galleryEnhanced = "true";
+
+    const track = root.querySelector<HTMLElement>("[data-gallery-track]");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!track || reducedMotion) return;
+
+    gsap.to(track, {
+      x: () => -(track.scrollWidth - root.clientWidth),
+      ease: "none",
+      scrollTrigger: {
+        trigger: root,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.55,
+        invalidateOnRefresh: true,
+      },
+    });
+  });
+</script>

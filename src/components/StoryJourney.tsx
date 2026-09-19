@@ -7,6 +7,8 @@ type Generation = {
   name: string;
   era: string;
   description: string;
+  image: string;
+  imageAlt: string;
 };
 
 type Props = {
@@ -49,7 +51,10 @@ export default function StoryJourney({ generations }: Props) {
       {generations.map((generation) => (
         <article key={generation.number} data-generation className="generation-card">
           <span className="generation-card__number">{generation.number}</span>
-          <div>
+          <figure className="generation-card__portrait">
+            <img src={generation.image} alt={generation.imageAlt} loading="lazy" decoding="async" />
+          </figure>
+          <div className="generation-card__content">
             <p className="generation-card__era">{generation.era}</p>
             <h3>{generation.name}</h3>
             <p>{generation.description}</p>

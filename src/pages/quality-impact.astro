@@ -2,6 +2,8 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
+import ProfileMetrics from "../components/ProfileMetrics.astro";
+import { certifications, companyStats } from "../data/site";
 import qualityReview from "../assets/media/quality-review.webp";
 import beanInspection from "../assets/media/bean-inspection.webp";
 import sortingDuo from "../assets/media/sorting-duo.webp";
@@ -18,7 +20,7 @@ import baggingTeam from "../assets/media/bagging-team.webp";
         <p class="eyebrow">Quality control</p>
         <h2 class="section-title">Every story must be proven in the cup</h2>
         <p class="section-lead">Sibu evaluates physical preparation, moisture, bean size, defects, density and process consistency alongside aroma, acidity, sweetness, body, balance and clean cup.</p>
-        <div class="stats-row">
+        <div class="stats-row quality-criteria">
           <div class="stat"><strong>Origin</strong><span>Separated by producing area</span></div>
           <div class="stat"><strong>Process</strong><span>Prepared with repeatability</span></div>
           <div class="stat"><strong>Physical</strong><span>Moisture and defects reviewed</span></div>
@@ -26,6 +28,20 @@ import baggingTeam from "../assets/media/bagging-team.webp";
         </div>
       </div>
       <div class="image-frame image-frame--portrait"><Image src={beanInspection} alt="Coffee worker inspecting a green coffee bean" widths={[560, 900, 1200]} sizes="(max-width: 980px) 100vw, 50vw" /></div>
+    </div>
+  </section>
+
+  <section class="section section--dark profile-proof" aria-labelledby="quality-scale-title">
+    <div class="shell">
+      <div class="section-heading-row">
+        <div>
+          <p class="eyebrow">Operational scale</p>
+          <h2 id="quality-scale-title" class="section-title">Infrastructure behind the promise</h2>
+        </div>
+        <p class="section-lead">Processing capacity and long-term origin relationships support both separated specialty lots and larger programs.</p>
+      </div>
+      <ProfileMetrics stats={companyStats} />
+      <p class="profile-note">Figures reported in Sibu’s company profile. Current operating figures are confirmed directly during buyer due diligence.</p>
     </div>
   </section>
 
@@ -42,11 +58,29 @@ import baggingTeam from "../assets/media/bagging-team.webp";
     </div>
   </section>
 
-  <section class="section section--dark">
+  <section class="section certification-section" aria-labelledby="certification-title">
     <div class="shell">
-      <p class="eyebrow">Certifications</p>
-      <h2 class="section-title">Confirm eligibility for each crop and lot</h2>
-      <p class="section-lead">Sibu’s profile references EU Organic, NOP Organic, JAS Organic, Rainforest Alliance and C.A.F.E. Practices programs. Current certificates and lot eligibility must be confirmed directly with the Sibu team before purchase.</p>
+      <div class="section-heading-row">
+        <div>
+          <p class="eyebrow">Certification programs</p>
+          <h2 id="certification-title" class="section-title">Confirm eligibility for every crop and lot</h2>
+        </div>
+        <p class="section-lead">The programs below are referenced in Sibu’s company profile. Official certificates will replace these status cards when supplied.</p>
+      </div>
+      <div class="certification-grid">
+        {certifications.map((certification) => (
+          <article class="certification-card">
+            <div class="certification-card__top">
+              <span>{certification.number}</span>
+              <small>Program referenced</small>
+            </div>
+            <h3>{certification.name}</h3>
+            <p>{certification.description}</p>
+            <strong>Official document pending</strong>
+          </article>
+        ))}
+      </div>
+      <p class="certification-note">Certification status and individual lot eligibility must be confirmed directly with Sibu according to crop year, farm, station and export requirements.</p>
     </div>
   </section>
 </BaseLayout>

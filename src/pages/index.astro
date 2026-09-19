@@ -1,9 +1,10 @@
 ---
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import HeroMedia from "../components/HeroMedia";
-import StoryJourney from "../components/StoryJourney";
-import { generations } from "../data/site";
+import GalleryPreview from "../components/GalleryPreview.astro";
+import ProfileMetrics from "../components/ProfileMetrics.astro";
+import ScrollHero from "../components/ScrollHero";
+import { certifications, companyStats } from "../data/site";
 import { withBase } from "../lib/paths";
 import heroAerial from "../assets/media/hero-aerial.webp";
 import coffeePicker from "../assets/media/coffee-picker.webp";
@@ -20,48 +21,44 @@ import aerialScale from "../assets/media/aerial-scale.webp";
   description="Three generations of Ethiopian coffee experience, connecting Guji origins with specialty buyers around the world."
   image={heroAerial.src}
 >
-  <section class="hero">
-    <HeroMedia client:load poster={heroAerial.src} videoSrc={withBase("/video/hero-guji.mp4")} />
-    <div class="shell hero__content">
-      <div class="hero__copy">
-        <p class="eyebrow">Ethiopian green Arabica coffee</p>
-        <h1 class="display-title">Three generations. One origin. One legacy.</h1>
-        <p>Sibu connects the coffee-growing communities of Guji with buyers who value quality, reliability and a clear relationship to origin.</p>
-        <div class="hero__actions">
-          <a class="button" href={withBase("/coffee-processing/")}>Explore our coffee</a>
-          <a class="button button--outline" href={withBase("/our-story/")}>Discover our story</a>
+  <ScrollHero
+    client:load
+    poster={withBase("/video/coffee-poster.jpg")}
+    lowVideoSrc={withBase("/video/coffee-scrub-low.mp4")}
+    sdVideoSrc={withBase("/video/coffee-scrub-sd.mp4")}
+    hdVideoSrc={withBase("/video/coffee-scrub-hd.mp4")}
+  />
+
+  <section class="section story-intro" aria-labelledby="sibu-story-title">
+    <div class="shell split story-intro__grid">
+      <div class="story-intro__copy">
+        <p class="eyebrow">The Sibu story</p>
+        <h2 id="sibu-story-title" class="section-title story-intro__title">Before Sibu became a company, coffee was already our heritage.</h2>
+        <p class="section-lead">The family’s relationship with coffee began through production, collection and trade in Guji. In 2014, that experience became Sibu Trading PLC—connecting inherited knowledge with modern specialty coffee and international buyers.</p>
+        <div class="story-intro__facts" aria-label="Sibu story facts">
+          <div><strong>2014</strong><span>Sibu Trading PLC established</span></div>
+          <div><strong>Guji</strong><span>The origin of the family legacy</span></div>
         </div>
+        <a class="text-link story-intro__link" href={withBase("/our-story/")}>Read the complete story</a>
       </div>
-      <div class="hero__index" aria-label="Sibu values">
-        <span>Coffee</span>
-        <span>Guji</span>
-        <span>Heritage</span>
-        <span>Trust</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="shell split">
-      <div>
-        <p class="eyebrow">Identity & heritage</p>
-        <h2 class="section-title">Before Sibu became a company, coffee was already our heritage.</h2>
-        <p class="section-lead">The Sibu identity is inspired by Buna Qalaa and by coffee’s place within Oromo cultural life—hospitality, gathering, blessing, respect and continuity.</p>
-        <p class="story-callout">For Sibu, every coffee carries an origin and a responsibility: honour the knowledge inherited from earlier generations while building its future.</p>
-        <a class="text-link" href={withBase("/our-story/")}>Read the Sibu story</a>
-      </div>
-      <div class="image-frame image-frame--portrait">
+      <figure class="image-frame story-intro__media">
         <Image src={coffeePicker} alt="Coffee picker harvesting ripe cherries in a forested coffee farm" widths={[560, 900, 1200]} sizes="(max-width: 980px) 100vw, 50vw" />
-      </div>
+        <figcaption>Coffee harvesting in Ethiopia’s highlands</figcaption>
+      </figure>
     </div>
   </section>
 
-  <section class="section section--dark">
+  <section id="company-scale" class="section section--dark profile-proof" aria-labelledby="profile-proof-title">
     <div class="shell">
-      <p class="eyebrow">A continuing story</p>
-      <h2 class="section-title">Built across three generations</h2>
-      <p class="section-lead">Each generation has carried the same foundation forward while responding to a changing coffee industry.</p>
-      <StoryJourney client:visible generations={generations} />
+      <div class="section-heading-row">
+        <div>
+          <p class="eyebrow">Sibu at a glance</p>
+          <h2 id="profile-proof-title" class="section-title">Built to protect quality at scale</h2>
+        </div>
+        <p class="section-lead">A vertically connected operation across farmers, processing, preparation and export.</p>
+      </div>
+      <ProfileMetrics stats={companyStats} />
+      <p class="profile-note">Figures reported in Sibu’s company profile. Current operating figures are confirmed directly for buyer due diligence.</p>
     </div>
   </section>
 
@@ -99,7 +96,7 @@ import aerialScale from "../assets/media/aerial-scale.webp";
     </div>
   </section>
 
-  <section class="section">
+  <section id="coffee-portfolio" class="section">
     <div class="shell split">
       <div class="image-frame image-frame--portrait">
         <Image src={greenCoffee} alt="Close view of prepared Ethiopian green coffee" widths={[560, 900, 1200]} sizes="(max-width: 980px) 100vw, 50vw" />
@@ -108,7 +105,7 @@ import aerialScale from "../assets/media/aerial-scale.webp";
         <p class="eyebrow">Coffee portfolio</p>
         <h2 class="section-title">Distinctive lots and reliable programs</h2>
         <p class="section-lead">Sibu works with specialty roasters, importers, traders, distributors and commercial buyers seeking Ethiopian coffee prepared to clear specifications.</p>
-        <div class="stats-row">
+        <div class="stats-row coffee-programs">
           <div class="stat"><strong>Natural</strong><span>Fruit intensity and sweetness</span></div>
           <div class="stat"><strong>Washed</strong><span>Clean, bright cup profiles</span></div>
           <div class="stat"><strong>Honey</strong><span>Clarity with retained sweetness</span></div>
@@ -118,6 +115,32 @@ import aerialScale from "../assets/media/aerial-scale.webp";
       </div>
     </div>
   </section>
+
+  <section class="section section--cream certification-preview" aria-labelledby="certification-preview-title">
+    <div class="shell">
+      <div class="section-heading-row">
+        <div>
+          <p class="eyebrow">Certification programs</p>
+          <h2 id="certification-preview-title" class="section-title">Structured for responsible sourcing</h2>
+        </div>
+        <div>
+          <p class="section-lead">Programs referenced in the company profile. Eligibility remains specific to crop year, farm, station and lot.</p>
+          <a class="text-link" href={withBase("/quality-impact/")}>Review certification status</a>
+        </div>
+      </div>
+      <div class="certification-mini-grid">
+        {certifications.map((certification) => (
+          <article>
+            <span>{certification.number}</span>
+            <h3>{certification.name}</h3>
+            <p>Program referenced</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <GalleryPreview />
 
   <section class="section section--cream">
     <div class="shell split">
@@ -133,13 +156,13 @@ import aerialScale from "../assets/media/aerial-scale.webp";
     </div>
   </section>
 
-  <section class="section section--dark">
-    <div class="shell split">
-      <div>
+  <section id="contact-cta" class="section section--dark buyer-cta">
+    <div class="shell split buyer-cta__grid">
+      <div class="buyer-cta__heading">
         <p class="eyebrow">Start a conversation</p>
         <h2 class="section-title">Looking for Ethiopian coffee with a clear connection to origin?</h2>
       </div>
-      <div>
+      <div class="buyer-cta__action">
         <p class="section-lead">Tell us the origin, process, preparation and volume you need. Sibu will respond with relevant availability and next steps.</p>
         <a class="button button--light" href={withBase("/contact/")}>Request samples</a>
       </div>

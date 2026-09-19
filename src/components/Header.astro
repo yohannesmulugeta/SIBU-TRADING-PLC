@@ -1,35 +1,96 @@
 ---
 import logo from "../assets/brand/sibu-logo.png";
+import navCoffee from "../assets/media/nav-coffee-cherries.webp";
 import { navigation } from "../data/site";
 import { withBase } from "../lib/paths";
 
 const currentPath = Astro.url.pathname;
 const items = navigation.map((item) => ({ ...item, href: withBase(item.href) }));
+const shortLabels = new Map([
+  [withBase("/origins/"), "Origins"],
+  [withBase("/coffee-processing/"), "Coffee"],
+  [withBase("/quality-impact/"), "Quality"],
+]);
+const primaryItems = items
+  .filter((item) => item.href !== withBase("/contact/"))
+  .map((item) => ({ ...item, label: shortLabels.get(item.href) ?? item.label }));
 const normalizedCurrent = currentPath.endsWith("/") ? currentPath : `${currentPath}/`;
+const isHome = normalizedCurrent === withBase("/");
 ---
 
-<header class="site-header">
+<header class:list={["site-header", { "site-header--hero-gated": isHome }]} data-hero-gated={isHome ? "true" : undefined}>
   <div class="shell site-header__inner">
     <a class="brand" href={withBase("/")} aria-label="Sibu Trading PLC home">
       <img src={logo.src} width="108" height="66" alt="Sibu Trading" />
+      <span><strong>Green coffee</strong><small>Guji · Ethiopia</small></span>
     </a>
     <nav class="desktop-nav" aria-label="Primary navigation">
-      {items.map((item) => (
-        <a href={item.href} aria-current={normalizedCurrent === item.href ? "page" : undefined}>{item.label}</a>
+      {primaryItems.map((item, index) => (
+        <a href={item.href} aria-current={normalizedCurrent === item.href ? "page" : undefined}>
+          <span>{String(index + 1).padStart(2, "0")}</span>{item.label}
+        </a>
       ))}
     </nav>
-    <a class="header-cta" href={withBase("/contact/")}>Request samples</a>
-    <details class="mobile-menu">
+    <a class="header-cta" href={withBase("/contact/")}><span>Request samples</span><i aria-hidden="true">↗</i></a>
+    <details class="mobile-menu" data-mobile-menu>
       <summary class="mobile-menu__trigger">
         <span class="sr-only">Toggle navigation</span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </summary>
-      <nav id="mobile-navigation" class="mobile-menu__panel" aria-label="Mobile navigation">
-        {items.map((item) => (
-          <a href={item.href} aria-current={normalizedCurrent === item.href ? "page" : undefined}>{item.label}</a>
-        ))}
-      </nav>
+      <div class="mobile-menu__panel">
+        <div class="mobile-menu__visual" aria-hidden="true">
+          <img src={navCoffee.src} alt="" width="1600" height="1067" />
+          <span>From cherry to prepared coffee</span>
+        </div>
+        <div class="mobile-menu__content">
+          <p>Explore Sibu</p>
+          <nav id="mobile-navigation" aria-label="Mobile navigation">
+            {items.map((item, index) => (
+              <a href={item.href} aria-current={normalizedCurrent === item.href ? "page" : undefined}>
+                <span>{String(index + 1).padStart(2, "0")}</span><strong>{item.label}</strong><i aria-hidden="true">↗</i>
+              </a>
+            ))}
+          </nav>
+          <a class="mobile-menu__cta" href={withBase("/contact/")}>Talk coffee with Sibu <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
     </details>
   </div>
 </header>
+
+<script>
+  document.querySelectorAll<HTMLDetailsElement>("[data-mobile-menu]").forEach((menu) => {
+    const setOpenState = () => document.documentElement.classList.toggle("mobile-nav-open", menu.open);
+    menu.addEventListener("toggle", setOpenState);
+    menu.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => {
+      menu.open = false;
+      setOpenState();
+    }));
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && menu.open) {
+        menu.open = false;
+        setOpenState();
+        menu.querySelector<HTMLElement>("summary")?.focus();
+      }
+    });
+  });
+
+  const gatedHeader = document.querySelector<HTMLElement>("[data-hero-gated]");
+  const scrollStory = document.querySelector<HTMLElement>(".scroll-story");
+  if (gatedHeader && scrollStory) {
+    let frame = 0;
+    const updateHeader = () => {
+      frame = 0;
+      const heroHasEnded = scrollStory.getBoundingClientRect().bottom <= gatedHeader.offsetHeight;
+      gatedHeader.classList.toggle("site-header--revealed", heroHasEnded);
+    };
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(updateHeader);
+    };
+    updateHeader();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+  }
+</script>

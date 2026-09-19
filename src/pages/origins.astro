@@ -2,7 +2,8 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
-import { origins } from "../data/site";
+import WorldReachMap from "../components/WorldReachMap.astro";
+import { exportMarkets, originFacilities, origins } from "../data/site";
 import hero from "../assets/media/hero-aerial.webp";
 import aerialStation from "../assets/media/aerial-station.webp";
 import aerialScale from "../assets/media/aerial-scale.webp";
@@ -32,6 +33,30 @@ import coffeePicker from "../assets/media/coffee-picker.webp";
 
   <section class="section section--cream">
     <div class="shell">
+      <div class="section-heading-row">
+        <div>
+          <p class="eyebrow">Stations & preparation sites</p>
+          <h2 class="section-title">A network connected to origin</h2>
+        </div>
+        <p class="section-lead">Named locations recorded in Sibu’s company profile across its principal producing areas.</p>
+      </div>
+      <div class="facility-grid">
+        {originFacilities.map((facility, index) => (
+          <article class="facility-card">
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <h3>{facility.region}</h3>
+            <p>{facility.description}</p>
+            <ul>
+              {facility.sites.map((site) => <li>{site}</li>)}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
       <p class="eyebrow">At origin</p>
       <h2 class="section-title">Coffee landscapes shaped by work</h2>
       <div class="mosaic">
@@ -40,6 +65,19 @@ import coffeePicker from "../assets/media/coffee-picker.webp";
         <div class="image-frame"><Image src={dryingLandscape} alt="Coffee drying beds across a forested landscape" widths={[520, 850]} sizes="50vw" /></div>
         <div class="image-frame"><Image src={aerialScale} alt="Wide view of coffee drying infrastructure" widths={[520, 850]} sizes="50vw" /></div>
       </div>
+    </div>
+  </section>
+
+  <section id="global-reach" class="section section--dark global-reach" aria-labelledby="global-reach-title">
+    <div class="shell">
+      <div class="global-reach__intro">
+        <div>
+        <p class="eyebrow">Global reach</p>
+        <h2 id="global-reach-title" class="section-title">From Ethiopia to international buyers</h2>
+        </div>
+        <p class="section-lead">Sibu works with specialty roasters, green-coffee importers, traders, distributors and commercial coffee buyers across established international markets.</p>
+      </div>
+      <WorldReachMap markets={exportMarkets} />
     </div>
   </section>
 </BaseLayout>
