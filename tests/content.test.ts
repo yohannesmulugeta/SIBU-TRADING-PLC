@@ -62,10 +62,10 @@ describe("Sibu website content model", () => {
   });
 
   it("keeps team-page placeholders centralized and explicitly labelled", () => {
-    expect(teamDemoNotice).toMatch(/fictional placeholders/i);
-    expect(featuredTeamMember.alt).toMatch(/AI-generated fictional demo portrait/i);
+    expect(teamDemoNotice).toMatch(/demo team layout/i);
+    expect(featuredTeamMember.alt).toMatch(/temporary demo portrait/i);
     expect(teamMembers).toHaveLength(3);
-    expect(teamMembers.every((member) => member.alt.includes("AI-generated fictional demo portrait"))).toBe(true);
+    expect(teamMembers.every((member) => member.alt.includes("Temporary demo portrait"))).toBe(true);
   });
 
   it("defines a complete, deduplicated recognition archive", () => {

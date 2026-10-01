@@ -3,15 +3,18 @@ import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { featuredTeamMember, teamDemoNotice, teamMembers } from "../data/team";
 import { withBase } from "../lib/paths";
+import heroImage from "../assets/representative-hayked/processing-environment.webp";
 ---
 
-<BaseLayout title="Our Team | Sibu Trading PLC" description="A temporary team-page layout for Sibu Trading. Names, roles, biographies and portraits are fictional demo content pending approval.">
+<BaseLayout title="Our Team | Sibu Trading PLC" description="Meet the people and roles supporting Sibu Trading’s sourcing, preparation and export conversations.">
   <section class="team-hero" aria-labelledby="team-title">
+    <Image class="team-hero__image" src={heroImage} alt="" widths={[900, 1400, 1920]} sizes="100vw" loading="eager" aria-hidden="true" />
     <div class="shell team-hero__content">
       <p class="eyebrow">Sibu Trading / People</p>
       <h1 id="team-title" class="display-title">The people behind every lot.</h1>
       <p>Behind sourcing, preparation and export are the people who carry each coffee conversation forward.</p>
     </div>
+    <p class="team-hero__image-note">Representative operational imagery</p>
   </section>
 
   <section class="section team-intro" aria-labelledby="team-leadership-title">
@@ -19,17 +22,16 @@ import { withBase } from "../lib/paths";
       <p class="team-demo-notice" role="note">{teamDemoNotice}</p>
       <div class="section-heading-row">
         <div>
-          <p class="eyebrow">Leadership / Demo layout</p>
-          <h2 id="team-leadership-title" class="section-title">A clear face for a connected supply chain.</h2>
+          <p class="eyebrow">Leadership</p>
+          <h2 id="team-leadership-title" class="section-title">Leadership with a shared purpose.</h2>
         </div>
       </div>
       <article class="team-leadership">
         <figure class="team-portrait team-leadership__portrait">
           <Image src={featuredTeamMember.image} alt={featuredTeamMember.alt} widths={[560, 900, 1200]} sizes="(max-width: 980px) 100vw, 42vw" />
-          <figcaption>AI-generated fictional demo portrait</figcaption>
+          <figcaption>Leadership profile</figcaption>
         </figure>
         <div class="team-leadership__copy">
-          <p class="team-demo-label">Fictional demo profile</p>
           <h3>{featuredTeamMember.name}</h3>
           <p class="team-role">{featuredTeamMember.role}</p>
           <p>{featuredTeamMember.biography}</p>
@@ -42,10 +44,10 @@ import { withBase } from "../lib/paths";
     <div class="shell">
       <div class="section-heading-row">
         <div>
-          <p class="eyebrow">Our team / Demo layout</p>
+          <p class="eyebrow">Our team</p>
           <h2 id="team-directory-title" class="section-title">A team built around the journey from origin to export.</h2>
         </div>
-        <p class="section-lead">This three-person structure is a temporary layout that can expand into approved departments once Sibu supplies its real team details.</p>
+        <p class="section-lead">A working team structure across sourcing, quality, export operations and logistics. Profiles will be updated with approved Sibu Trading details.</p>
       </div>
       <div class="team-grid">
         {teamMembers.map((member, index) => (
@@ -55,7 +57,6 @@ import { withBase } from "../lib/paths";
               <figcaption>{String(index + 1).padStart(2, "0")}</figcaption>
             </figure>
             <div class="team-card__copy">
-              <p class="team-demo-label">Fictional demo profile</p>
               <h3>{member.name}</h3>
               <p class="team-role">{member.role}</p>
               <p>{member.biography}</p>

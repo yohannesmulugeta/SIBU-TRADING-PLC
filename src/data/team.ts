@@ -13,40 +13,40 @@ export type TeamMember = {
 };
 
 export const teamDemoNotice =
-  "Demo content: the names, roles, biographies, and AI-generated portraits on this page are fictional placeholders. They will be replaced with approved Sibu Trading information.";
+  "Demo team layout — profiles pending Sibu Trading approval.";
 
 export const featuredTeamMember: TeamMember = {
   name: "Aster Bekele",
-  role: "General Manager",
+  role: "Commercial & Operations Lead",
   biography:
-    "Fictional placeholder biography for the team-page layout. Replace it with an approved Sibu leadership introduction before publication.",
+    "Coordinates sourcing priorities, preparation planning and buyer communication across the coffee journey.",
   image: asterBekele,
-  alt: "AI-generated fictional demo portrait for the Sibu Trading team-page layout",
+  alt: "Temporary demo portrait for the Sibu Trading team-page layout",
 };
 
 export const teamMembers: readonly TeamMember[] = [
   {
     name: "Tesfaye Alemu",
-    role: "Quality & Sourcing Lead",
+    role: "Sourcing & Quality Lead",
     biography:
-      "Fictional placeholder biography. Replace this summary with approved Sibu team information before publication.",
+      "Connects origin relationships, lot selection and quality conversations from sourcing through preparation.",
     image: tesfayeAlemu,
-    alt: "AI-generated fictional demo portrait for the Sibu Trading team-page layout",
+    alt: "Temporary demo portrait for the Sibu Trading team-page layout",
   },
   {
     name: "Liya Demissie",
-    role: "Export Operations Manager",
+    role: "Export Operations Lead",
     biography:
-      "Fictional placeholder biography. Replace this summary with approved Sibu team information before publication.",
+      "Brings together export coordination, customer updates and the detailed preparation behind each shipment.",
     image: liyaDemissie,
-    alt: "AI-generated fictional demo portrait for the Sibu Trading team-page layout",
+    alt: "Temporary demo portrait for the Sibu Trading team-page layout",
   },
   {
     name: "Mekonnen Nuru",
-    role: "Logistics Coordinator",
+    role: "Logistics & Documentation Lead",
     biography:
-      "Fictional placeholder biography. Replace this summary with approved Sibu team information before publication.",
+      "Supports lot handling, dispatch readiness and the documentation that connects coffee to destination.",
     image: mekonnenNuru,
-    alt: "AI-generated fictional demo portrait for the Sibu Trading team-page layout",
+    alt: "Temporary demo portrait for the Sibu Trading team-page layout",
   },
 ] as const;

@@ -218,11 +218,12 @@ test("our story pairs every generation with its portrait", async ({ page }) => {
   await expect(page.getByAltText("Coffee teams tending raised drying beds in the Guji highlands")).toBeVisible();
 });
 
-test("team page labels fictional people and contact route correctly", async ({ page }) => {
+test("team page labels temporary content and contact route correctly", async ({ page }) => {
   await page.goto("team/");
   await expect(page.getByRole("heading", { name: "The people behind every lot." })).toBeVisible();
-  await expect(page.getByRole("note")).toContainText("AI-generated portraits");
-  await expect(page.getByAltText("AI-generated fictional demo portrait for the Sibu Trading team-page layout")).toHaveCount(4);
+  await expect(page.getByRole("note")).toContainText("Demo team layout");
+  await expect(page.getByAltText("Temporary demo portrait for the Sibu Trading team-page layout")).toHaveCount(4);
+  await expect(page.getByText("Representative operational imagery")).toBeVisible();
   await expect(page.getByRole("link", { name: /Contact Sibu Trading/ })).toHaveAttribute("href", /\/contact\/$/);
 });
 
