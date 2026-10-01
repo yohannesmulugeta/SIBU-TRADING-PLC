@@ -3,6 +3,7 @@ import { expect, test } from "@playwright/test";
 const routes = [
   "",
   "our-story/",
+  "team/",
   "origins/",
   "coffee-processing/",
   "quality-impact/",
@@ -62,15 +63,16 @@ for (const route of routes) {
   });
 }
 
-test("mobile navigation exposes all eight routes", async ({ page, isMobile }) => {
+test("mobile navigation exposes all nine routes", async ({ page, isMobile }) => {
   test.skip(!isMobile, "Mobile navigation test");
   await page.goto("");
   const trigger = page.locator(".mobile-menu__trigger");
   await expect(trigger).toHaveAccessibleName("Toggle navigation");
   await trigger.click();
   await expect(page.locator("details.mobile-menu")).toHaveAttribute("open", "");
+  await page.locator(".mobile-nav__group > summary").click();
   const links = page.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link");
-  await expect(links).toHaveCount(8);
+  await expect(links).toHaveCount(9);
   await expect(links.first()).toBeVisible();
   const finalAction = page.locator(".mobile-menu__cta");
   await finalAction.focus();
@@ -190,6 +192,15 @@ test("homepage includes profile proof and a three-panel scroll gallery", async (
   await expect(gallery.getByRole("link", { name: "Explore the gallery" })).toHaveAttribute("href", /\/gallery\/$/);
 });
 
+test("gallery page includes a five-image operations gallery after the main collection", async ({ page }) => {
+  await page.goto("gallery/");
+  const gallery = page.getByRole("region", { name: /Operations and quality gallery/ });
+  await expect(gallery).toBeVisible();
+  await expect(gallery.locator(".operations-gallery__item")).toHaveCount(5);
+  await expect(page.getByText(/does not confirm a Sibu facility, employee, or process/)).toBeVisible();
+  await expect(page.locator(".gallery-grid")).toBeVisible();
+});
+
 test("operational figures count up when they enter the viewport", async ({ page }) => {
   await page.goto("");
   const metrics = page.locator("#company-scale [data-profile-metrics]");
@@ -205,6 +216,53 @@ test("our story pairs every generation with its portrait", async ({ page }) => {
   await expect(journey.locator(".generation-card__portrait img")).toHaveCount(3);
   await expect(page.getByAltText("Traditional carved Buna Qalaa coffee bowl filled with coffee beans")).toBeVisible();
   await expect(page.getByAltText("Coffee teams tending raised drying beds in the Guji highlands")).toBeVisible();
+});
+
+test("team page labels fictional people and contact route correctly", async ({ page }) => {
+  await page.goto("team/");
+  await expect(page.getByRole("heading", { name: "The people behind every lot." })).toBeVisible();
+  await expect(page.getByRole("note")).toContainText("AI-generated portraits");
+  await expect(page.getByAltText("AI-generated fictional demo portrait for the Sibu Trading team-page layout")).toHaveCount(4);
+  await expect(page.getByRole("link", { name: /Contact Sibu Trading/ })).toHaveAttribute("href", /\/contact\/$/);
+});
+
+test("desktop navigation reaches the team page", async ({ page, isMobile }) => {
+  test.skip(isMobile, "Desktop navigation test");
+  await page.goto("");
+  const aboutMenu = page.locator(".desktop-nav__group");
+  await aboutMenu.locator("summary").click();
+  await aboutMenu.getByRole("link", { name: "Team" }).click();
+  await expect(page).toHaveURL(/\/team\/$/);
+});
+
+test("mobile generational journey is a swipeable, keyboard-accessible rail", async ({ page, isMobile }) => {
+  test.skip(!isMobile || (page.viewportSize()?.width ?? Number.POSITIVE_INFINITY) > 700, "Narrow mobile journey test");
+  await page.goto("our-story/");
+  const journey = page.getByRole("region", { name: "Sibu's generational journey chapters" });
+  await journey.scrollIntoViewIfNeeded();
+  await expect(journey).toBeVisible();
+  await expect(journey).toHaveCSS("scroll-snap-type", "x mandatory");
+  await expect(page.getByText("Swipe left to explore")).toBeVisible();
+  await expect(page.locator(".generation-journey__cue strong")).toHaveText("01 / 03");
+
+  await journey.focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(page.locator(".generation-journey__cue strong")).toHaveText("02 / 03");
+});
+
+test("mobile gallery preview is a swipeable, keyboard-accessible rail", async ({ page, isMobile }) => {
+  test.skip(!isMobile || (page.viewportSize()?.width ?? Number.POSITIVE_INFINITY) > 700, "Narrow mobile gallery preview test");
+  await page.goto("");
+  const preview = page.locator("[data-gallery-scroll]");
+  const rail = preview.getByRole("region", { name: "Three views of the coffee journey" });
+  await preview.scrollIntoViewIfNeeded();
+  await expect(rail).toHaveCSS("scroll-snap-type", "x mandatory");
+  await expect(preview.getByText("Swipe left to explore")).toBeVisible();
+  await expect(preview.locator("[data-gallery-current]")).toHaveText("01 / 03");
+
+  await rail.focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(preview.locator("[data-gallery-current]")).toHaveText("02 / 03");
 });
 
 test("gallery filters images and opens the full-screen viewer", async ({ page }) => {

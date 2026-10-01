@@ -47,8 +47,21 @@ const panels = [
       <a class="button button--light" href={withBase("/gallery/")}>Explore the gallery</a>
     </header>
 
-    <div class="gallery-scroll__track" data-gallery-track>
-      {panels.map((panel) => (
+    <p class="gallery-scroll__mobile-cue" aria-live="polite">
+      <span>Swipe left to explore</span>
+      <strong data-gallery-current>01 / 03</strong>
+    </p>
+
+    <div
+      class="gallery-scroll__track"
+      data-gallery-track
+      role="region"
+      aria-label="Three views of the coffee journey"
+      aria-describedby="gallery-scroll-instructions"
+      tabindex="0"
+    >
+      <span id="gallery-scroll-instructions" class="sr-only">On mobile, swipe left or use the left and right arrow keys to browse the coffee journey views.</span>
+      {panels.map((panel, index) => (
         <article class="gallery-scroll__panel">
           <Image
             class="gallery-scroll__primary"
@@ -56,6 +69,7 @@ const panels = [
             alt={panel.primary.alt}
             widths={[900, 1400, 1920]}
             sizes="100vw"
+            loading={index === 0 ? "eager" : "lazy"}
           />
           <div class="gallery-scroll__shade"></div>
           <div class="gallery-scroll__copy">
@@ -69,6 +83,7 @@ const panels = [
               alt={panel.secondary.alt}
               widths={[360, 560, 800]}
               sizes="(max-width: 700px) 38vw, 24vw"
+              loading={index === 0 ? "eager" : "lazy"}
             />
             <figcaption>{panel.secondary.title}</figcaption>
           </figure>
@@ -93,8 +108,65 @@ const panels = [
     root.dataset.galleryEnhanced = "true";
 
     const track = root.querySelector<HTMLElement>("[data-gallery-track]");
+    const panels = Array.from(track?.querySelectorAll<HTMLElement>(".gallery-scroll__panel") ?? []);
+    const current = root.querySelector<HTMLElement>("[data-gallery-current]");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!track || reducedMotion) return;
+    const mobileJourney = window.matchMedia("(max-width: 700px)").matches;
+    if (!track) return;
+
+    if (mobileJourney) {
+      let frame = 0;
+
+      const updateCurrent = () => {
+        const railCenter = track.scrollLeft + track.clientWidth / 2;
+        let activeIndex = 0;
+        let nearestDistance = Number.POSITIVE_INFINITY;
+
+        panels.forEach((panel, index) => {
+          const panelCenter = panel.offsetLeft + panel.offsetWidth / 2;
+          const distance = Math.abs(panelCenter - railCenter);
+          if (distance < nearestDistance) {
+            activeIndex = index;
+            nearestDistance = distance;
+          }
+        });
+
+        if (current) current.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(panels.length).padStart(2, "0")}`;
+      };
+
+      const moveTo = (index: number) => {
+        const nextIndex = Math.max(0, Math.min(panels.length - 1, index));
+        const behavior = reducedMotion ? "auto" : "smooth";
+        track.scrollTo({ left: panels[nextIndex]?.offsetLeft ?? 0, behavior });
+        if (current) current.textContent = `${String(nextIndex + 1).padStart(2, "0")} / ${String(panels.length).padStart(2, "0")}`;
+      };
+
+      track.addEventListener("scroll", () => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(updateCurrent);
+      }, { passive: true });
+      track.addEventListener("keydown", (event) => {
+        const activeIndex = panels.findIndex((panel) => Math.abs(panel.offsetLeft - track.scrollLeft) < panel.offsetWidth / 2);
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          moveTo(activeIndex + 1);
+        } else if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          moveTo(activeIndex - 1);
+        } else if (event.key === "Home") {
+          event.preventDefault();
+          moveTo(0);
+        } else if (event.key === "End") {
+          event.preventDefault();
+          moveTo(panels.length - 1);
+        }
+      });
+      updateCurrent();
+      return;
+    }
+
+    track.removeAttribute("tabindex");
+    if (reducedMotion) return;
 
     gsap.to(track, {
       x: () => -(track.scrollWidth - root.clientWidth),

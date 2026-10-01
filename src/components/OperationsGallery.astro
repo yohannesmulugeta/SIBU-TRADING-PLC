@@ -1,0 +1,34 @@
+---
+import { Image } from "astro:assets";
+import { operationsGallery } from "../data/operationsGallery";
+---
+
+<section id="operations-gallery" class="section operations-gallery" aria-labelledby="operations-gallery-title">
+  <div class="shell">
+    <div class="section-heading-row operations-gallery__heading">
+      <div>
+        <p class="eyebrow">Operations &amp; quality gallery</p>
+        <h2 id="operations-gallery-title" class="section-title">From green bean to export-ready.</h2>
+      </div>
+      <p class="section-lead">A visual study of coffee handling, quality review, preparation and storage across the journey to export.</p>
+    </div>
+
+    <div class="operations-gallery__rail" role="region" aria-label="Operations and quality gallery. Swipe left to explore each image." tabindex="0">
+      {operationsGallery.map((item) => (
+        <figure class:list={["operations-gallery__item", `operations-gallery__item--${item.layout}`]}>
+          <Image src={item.image} alt={item.alt} widths={[480, 760, 1200, 1800]} sizes="(max-width: 700px) 84vw, (max-width: 980px) 46vw, 50vw" loading="lazy" />
+          <figcaption>
+            <span>{item.number}</span>
+            <div>
+              <strong>{item.title}</strong>
+              <p>{item.caption}</p>
+            </div>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <p class="operations-gallery__swipe-cue" aria-hidden="true">Swipe left to explore <span>→</span></p>
+    <p class="operations-gallery__note">Representative coffee-industry imagery from the supplied Hayked image collection. It does not confirm a Sibu facility, employee, or process; facility-specific claims require approval.</p>
+  </div>
+</section>

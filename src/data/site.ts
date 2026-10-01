@@ -1,6 +1,7 @@
 export const navigation = [
   { label: "Home", href: "/" },
   { label: "Our Story", href: "/our-story/" },
+  { label: "Team", href: "/team/" },
   { label: "Origins & Farms", href: "/origins/" },
   { label: "Coffee & Processing", href: "/coffee-processing/" },
   { label: "Quality & Impact", href: "/quality-impact/" },
@@ -26,7 +27,7 @@ export const generations = [
   },
   {
     number: "03",
-    name: "Mr. Salim Kadir Hasan & Mr. Zidan Kadir Hasan Areedo",
+    name: "Mr. Zidan Kadir Hasan Areedo & Mr. Salim Kadir Hasan",
     era: "Taking the legacy forward",
     description:
       "The third generation combines inherited coffee knowledge with specialty processing, traceability, technology and stronger global relationships.",

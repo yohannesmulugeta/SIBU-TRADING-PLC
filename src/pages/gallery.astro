@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import OperationsGallery from "../components/OperationsGallery.astro";
 import PageHero from "../components/PageHero.astro";
 import { galleryCategories, galleryItems } from "../data/gallery";
 import hero from "../assets/media/aerial-drying.webp";
@@ -81,6 +82,8 @@ import hero from "../assets/media/aerial-drying.webp";
       <button class="gallery-dialog__nav gallery-dialog__nav--next" type="button" data-dialog-next aria-label="Next image">→</button>
     </dialog>
   </section>
+
+  <OperationsGallery />
 
   <script>
     const root = document.querySelector<HTMLElement>("[data-gallery-page]");

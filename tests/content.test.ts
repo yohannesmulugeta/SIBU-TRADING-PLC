@@ -10,6 +10,8 @@ import {
   processes,
 } from "../src/data/site";
 import { galleryCategories, galleryItems } from "../src/data/gallery";
+import { operationsGallery } from "../src/data/operationsGallery";
+import { featuredTeamMember, teamDemoNotice, teamMembers } from "../src/data/team";
 import { heroStoryChapters, heroStoryIntro } from "../src/data/heroStory";
 import {
   homepageRecognition,
@@ -19,11 +21,12 @@ import {
 } from "../src/data/recognition";
 
 describe("Sibu website content model", () => {
-  it("defines the approved eight-page navigation", () => {
-    expect(navigation).toHaveLength(8);
+  it("defines the approved nine-page navigation", () => {
+    expect(navigation).toHaveLength(9);
     expect(navigation.map((item) => item.href)).toEqual([
       "/",
       "/our-story/",
+      "/team/",
       "/origins/",
       "/coffee-processing/",
       "/quality-impact/",
@@ -54,6 +57,15 @@ describe("Sibu website content model", () => {
     expect(galleryCategories).toHaveLength(6);
     expect(galleryItems).toHaveLength(22);
     expect(new Set(galleryItems.map((item) => item.id)).size).toBe(galleryItems.length);
+    expect(operationsGallery).toHaveLength(5);
+    expect(new Set(operationsGallery.map((item) => item.id)).size).toBe(operationsGallery.length);
+  });
+
+  it("keeps team-page placeholders centralized and explicitly labelled", () => {
+    expect(teamDemoNotice).toMatch(/fictional placeholders/i);
+    expect(featuredTeamMember.alt).toMatch(/AI-generated fictional demo portrait/i);
+    expect(teamMembers).toHaveLength(3);
+    expect(teamMembers.every((member) => member.alt.includes("AI-generated fictional demo portrait"))).toBe(true);
   });
 
   it("defines a complete, deduplicated recognition archive", () => {

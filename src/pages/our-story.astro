@@ -8,10 +8,10 @@ import aerialDrying from "../assets/media/aerial-drying.webp";
 import coffeeHost from "../assets/media/coffee-host.webp";
 import generationHasan from "../assets/media/generation-hasan.webp";
 import generationKadir from "../assets/media/generation-kadir.webp";
-import generationSalimZidan from "../assets/media/generation-salim-zidan.webp";
+import generationZidanSalim from "../assets/media/generation-zidan-salim.png";
 import bunaQalaaPhoto from "../assets/media/buna-qalaa-heritage-photo.webp";
 
-const generationImages = [generationHasan, generationKadir, generationSalimZidan];
+const generationImages = [generationHasan, generationKadir, generationZidanSalim];
 const generationProfiles = generations.map((generation, index) => ({
   ...generation,
   image: generationImages[index].src,
@@ -20,7 +20,7 @@ const generationProfiles = generations.map((generation, index) => ({
   imageAlt: [
     "Portrait of Mr. Hasan Areedo",
     "Portrait of Mr. Kadir Hasan",
-    "Portrait of Mr. Salim Kadir Hasan and Mr. Zidan Kadir Hasan Areedo",
+    "Portrait of Mr. Zidan Kadir Hasan Areedo and Mr. Salim Kadir Hasan",
   ][index],
 }));
 ---
