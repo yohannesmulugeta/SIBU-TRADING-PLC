@@ -12,6 +12,8 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
+      // Rebuild the dev JSX runtime after a production build.
+      force: true,
       include: ["gsap", "gsap/ScrollTrigger"],
     },
   },

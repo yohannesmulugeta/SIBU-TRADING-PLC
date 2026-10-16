@@ -218,11 +218,14 @@ test("our story pairs every generation with its portrait", async ({ page }) => {
   await expect(page.getByAltText("Coffee teams tending raised drying beds in the Guji highlands")).toBeVisible();
 });
 
-test("team page labels temporary content and contact route correctly", async ({ page }) => {
+test("team page shows the supplied team and contact route", async ({ page }) => {
   await page.goto("team/");
   await expect(page.getByRole("heading", { name: "The people behind every lot." })).toBeVisible();
-  await expect(page.getByRole("note")).toContainText("Demo team layout");
-  await expect(page.getByAltText("Temporary demo portrait for the Sibu Trading team-page layout")).toHaveCount(4);
+  await expect(page.locator(".team-card")).toHaveCount(5);
+  for (const name of ["Melkamu Kenea", "Husnia Muzeyin", "Sileshi Olani", "Helen Assefa Sete", "Isayas Mitiku Fufa"]) {
+    await expect(page.getByRole("heading", { name })).toBeVisible();
+    await expect(page.getByAltText(`Portrait of ${name}`)).toBeVisible();
+  }
   await expect(page.getByText("Representative operational imagery")).toBeVisible();
   await expect(page.getByRole("link", { name: /Contact Sibu Trading/ })).toHaveAttribute("href", /\/contact\/$/);
 });

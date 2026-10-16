@@ -11,7 +11,7 @@ import {
 } from "../src/data/site";
 import { galleryCategories, galleryItems } from "../src/data/gallery";
 import { operationsGallery } from "../src/data/operationsGallery";
-import { featuredTeamMember, teamDemoNotice, teamMembers } from "../src/data/team";
+import { teamMembers } from "../src/data/team";
 import { heroStoryChapters, heroStoryIntro } from "../src/data/heroStory";
 import {
   homepageRecognition,
@@ -61,11 +61,15 @@ describe("Sibu website content model", () => {
     expect(new Set(operationsGallery.map((item) => item.id)).size).toBe(operationsGallery.length);
   });
 
-  it("keeps team-page placeholders centralized and explicitly labelled", () => {
-    expect(teamDemoNotice).toMatch(/demo team layout/i);
-    expect(featuredTeamMember.alt).toMatch(/temporary demo portrait/i);
-    expect(teamMembers).toHaveLength(3);
-    expect(teamMembers.every((member) => member.alt.includes("Temporary demo portrait"))).toBe(true);
+  it("lists the five supplied team members with their roles and portraits", () => {
+    expect(teamMembers.map(({ name, role }) => [name, role])).toEqual([
+      ["Melkamu Kenea", "HR and Administration Head"],
+      ["Husnia Muzeyin", "Finance Head"],
+      ["Sileshi Olani", "Quality Manager"],
+      ["Helen Assefa Sete", "Export Documentation Head"],
+      ["Isayas Mitiku Fufa", "Export Manager"],
+    ]);
+    expect(teamMembers.every(({ name, alt }) => alt === `Portrait of ${name}`)).toBe(true);
   });
 
   it("defines a complete, deduplicated recognition archive", () => {

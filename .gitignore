@@ -7,6 +7,7 @@ dist/
 # High-resolution source media stays local. Only generated web assets are committed.
 image and video/
 media-masters/
+src/assets/team/proposed/
 
 # Browser test output
 playwright-report/

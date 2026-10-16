@@ -1,12 +1,12 @@
 ---
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { featuredTeamMember, teamDemoNotice, teamMembers } from "../data/team";
+import { teamMembers } from "../data/team";
 import { withBase } from "../lib/paths";
 import heroImage from "../assets/representative-hayked/processing-environment.webp";
 ---
 
-<BaseLayout title="Our Team | Sibu Trading PLC" description="Meet the people and roles supporting Sibu Trading’s sourcing, preparation and export conversations.">
+<BaseLayout title="Our Team | Sibu Trading PLC" description="Meet the people behind Sibu Trading’s HR, finance, quality and export work.">
   <section class="team-hero" aria-labelledby="team-title">
     <Image class="team-hero__image" src={heroImage} alt="" widths={[900, 1400, 1920]} sizes="100vw" loading="eager" aria-hidden="true" />
     <div class="shell team-hero__content">
@@ -17,49 +17,25 @@ import heroImage from "../assets/representative-hayked/processing-environment.we
     <p class="team-hero__image-note">Representative operational imagery</p>
   </section>
 
-  <section class="section team-intro" aria-labelledby="team-leadership-title">
-    <div class="shell">
-      <p class="team-demo-notice" role="note">{teamDemoNotice}</p>
-      <div class="section-heading-row">
-        <div>
-          <p class="eyebrow">Leadership</p>
-          <h2 id="team-leadership-title" class="section-title">Leadership with a shared purpose.</h2>
-        </div>
-      </div>
-      <article class="team-leadership">
-        <figure class="team-portrait team-leadership__portrait">
-          <Image src={featuredTeamMember.image} alt={featuredTeamMember.alt} widths={[560, 900, 1200]} sizes="(max-width: 980px) 100vw, 42vw" />
-          <figcaption>Leadership profile</figcaption>
-        </figure>
-        <div class="team-leadership__copy">
-          <h3>{featuredTeamMember.name}</h3>
-          <p class="team-role">{featuredTeamMember.role}</p>
-          <p>{featuredTeamMember.biography}</p>
-        </div>
-      </article>
-    </div>
-  </section>
-
   <section class="section section--cream team-directory" aria-labelledby="team-directory-title">
     <div class="shell">
       <div class="section-heading-row">
         <div>
           <p class="eyebrow">Our team</p>
-          <h2 id="team-directory-title" class="section-title">A team built around the journey from origin to export.</h2>
+          <h2 id="team-directory-title" class="section-title">Meet the people behind Sibu Trading.</h2>
         </div>
-        <p class="section-lead">A working team structure across sourcing, quality, export operations and logistics. Profiles will be updated with approved Sibu Trading details.</p>
+        <p class="section-lead">Our team brings together HR, finance, quality and export expertise.</p>
       </div>
       <div class="team-grid">
         {teamMembers.map((member, index) => (
           <article class="team-card">
             <figure class="team-portrait">
               <Image src={member.image} alt={member.alt} widths={[440, 680, 960]} sizes="(max-width: 700px) 100vw, (max-width: 980px) 48vw, 33vw" loading="lazy" />
-              <figcaption>{String(index + 1).padStart(2, "0")}</figcaption>
+              <figcaption aria-hidden="true">{String(index + 1).padStart(2, "0")}</figcaption>
             </figure>
             <div class="team-card__copy">
               <h3>{member.name}</h3>
               <p class="team-role">{member.role}</p>
-              <p>{member.biography}</p>
             </div>
           </article>
         ))}
