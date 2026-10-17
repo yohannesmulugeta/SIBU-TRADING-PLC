@@ -222,10 +222,13 @@ test("team page shows the supplied team and contact route", async ({ page }) => 
   await page.goto("team/");
   await expect(page.getByRole("heading", { name: "The people behind every lot." })).toBeVisible();
   await expect(page.locator(".team-card")).toHaveCount(5);
-  for (const name of ["Melkamu Kenea", "Husnia Muzeyin", "Sileshi Olani", "Helen Assefa Sete", "Isayas Mitiku Fufa"]) {
+  const names = ["Isayas Mitiku Fufa", "Helen Assefa Sete", "Sileshi Olani", "Husnia Muzeyin", "Melkamu Kenea"];
+  await expect(page.locator(".team-card h3")).toHaveText(names);
+  for (const name of names) {
     await expect(page.getByRole("heading", { name })).toBeVisible();
     await expect(page.getByAltText(`Portrait of ${name}`)).toBeVisible();
   }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await expect(page.getByText("Representative operational imagery")).toBeVisible();
   await expect(page.getByRole("link", { name: /Contact Sibu Trading/ })).toHaveAttribute("href", /\/contact\/$/);
 });

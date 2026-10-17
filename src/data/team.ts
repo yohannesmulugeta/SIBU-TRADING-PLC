@@ -14,22 +14,10 @@ export type TeamMember = {
 
 export const teamMembers: readonly TeamMember[] = [
   {
-    name: "Melkamu Kenea",
-    role: "HR and Administration Head",
-    image: melkamuKenea,
-    alt: "Portrait of Melkamu Kenea",
-  },
-  {
-    name: "Husnia Muzeyin",
-    role: "Finance Head",
-    image: husniaMuzeyin,
-    alt: "Portrait of Husnia Muzeyin",
-  },
-  {
-    name: "Sileshi Olani",
-    role: "Quality Manager",
-    image: sileshiOlani,
-    alt: "Portrait of Sileshi Olani",
+    name: "Isayas Mitiku Fufa",
+    role: "Export Manager",
+    image: isayasMitikuFufa,
+    alt: "Portrait of Isayas Mitiku Fufa",
   },
   {
     name: "Helen Assefa Sete",
@@ -38,9 +26,21 @@ export const teamMembers: readonly TeamMember[] = [
     alt: "Portrait of Helen Assefa Sete",
   },
   {
-    name: "Isayas Mitiku Fufa",
-    role: "Export Manager",
-    image: isayasMitikuFufa,
-    alt: "Portrait of Isayas Mitiku Fufa",
+    name: "Sileshi Olani",
+    role: "Quality Manager",
+    image: sileshiOlani,
+    alt: "Portrait of Sileshi Olani",
+  },
+  {
+    name: "Husnia Muzeyin",
+    role: "Finance Head",
+    image: husniaMuzeyin,
+    alt: "Portrait of Husnia Muzeyin",
+  },
+  {
+    name: "Melkamu Kenea",
+    role: "HR and Administration Head",
+    image: melkamuKenea,
+    alt: "Portrait of Melkamu Kenea",
   },
 ] as const;

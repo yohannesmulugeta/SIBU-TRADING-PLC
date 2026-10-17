@@ -2927,12 +2927,11 @@ a {
 
 .team-portrait figcaption {
   position: absolute;
-  right: 1rem;
-  bottom: 1rem;
+  top: 1rem;
   left: 1rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.35);
-  color: white;
+  padding: 0.3rem 0.7rem;
+  background: var(--forest);
+  color: var(--cream);
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -2940,13 +2939,12 @@ a {
 }
 
 .team-card h3 {
-  margin-top: 0.55rem;
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  line-height: 1;
+  font-size: clamp(2.25rem, 4vw, 4rem);
+  line-height: 1.05;
 }
 
 .team-role {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   color: var(--forest);
   font-size: 0.82rem;
   font-weight: 700;
@@ -2955,30 +2953,40 @@ a {
 }
 
 .team-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.25rem;
-  margin-top: 2.5rem;
+  display: grid;
+  max-width: 1060px;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  margin-inline: auto;
 }
 
 .team-card {
-  display: flex;
-  flex: 0 0 calc((100% - 2.5rem) / 3);
-  flex-direction: column;
+  display: grid;
+  grid-template-areas: "photo text";
+  grid-template-columns: minmax(0, 19rem) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 7vw, 7rem);
   min-width: 0;
-  background: white;
+  padding-block: clamp(1.75rem, 3.5vw, 2.75rem);
+  border-top: 1px solid var(--line);
+}
+
+.team-card:nth-child(even) {
+  grid-template-areas: "text photo";
+  grid-template-columns: minmax(0, 1fr) minmax(0, 19rem);
+}
+
+.team-portrait {
+  grid-area: photo;
 }
 
 .team-card__copy {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  padding: 1.5rem;
+  grid-area: text;
+  width: 100%;
+  max-width: 35rem;
 }
 
-.team-card h3 {
-  font-size: clamp(1.7rem, 2.8vw, 2.35rem);
+.team-card:nth-child(even) .team-card__copy {
+  justify-self: end;
 }
 
 .team-cta {
@@ -3022,10 +3030,6 @@ a {
   .site-header__inner {
     grid-template-columns: 1fr auto;
     min-height: var(--mobile-header-height);
-  }
-
-  .team-card {
-    flex-basis: calc((100% - 1.25rem) / 2);
   }
 
   .gallery-scroll__header {
@@ -4160,8 +4164,16 @@ a {
     bottom: 1.5rem;
   }
 
-  .team-card {
-    flex-basis: 100%;
+  .team-card,
+  .team-card:nth-child(even) {
+    grid-template-areas: "photo" "text";
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  .team-card__copy,
+  .team-card:nth-child(even) .team-card__copy {
+    justify-self: start;
   }
 
   .team-cta__content {

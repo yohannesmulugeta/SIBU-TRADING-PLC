@@ -63,11 +63,11 @@ describe("Sibu website content model", () => {
 
   it("lists the five supplied team members with their roles and portraits", () => {
     expect(teamMembers.map(({ name, role }) => [name, role])).toEqual([
-      ["Melkamu Kenea", "HR and Administration Head"],
-      ["Husnia Muzeyin", "Finance Head"],
-      ["Sileshi Olani", "Quality Manager"],
-      ["Helen Assefa Sete", "Export Documentation Head"],
       ["Isayas Mitiku Fufa", "Export Manager"],
+      ["Helen Assefa Sete", "Export Documentation Head"],
+      ["Sileshi Olani", "Quality Manager"],
+      ["Husnia Muzeyin", "Finance Head"],
+      ["Melkamu Kenea", "HR and Administration Head"],
     ]);
     expect(teamMembers.every(({ name, alt }) => alt === `Portrait of ${name}`)).toBe(true);
   });
