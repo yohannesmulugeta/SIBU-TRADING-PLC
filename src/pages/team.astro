@@ -22,16 +22,15 @@ import heroImage from "../assets/representative-hayked/processing-environment.we
       <div class="section-heading-row">
         <div>
           <p class="eyebrow">Our team</p>
-          <h2 id="team-directory-title" class="section-title">Meet the people behind Sibu Trading.</h2>
+          <h2 id="team-directory-title" class="section-title">Meet the team.</h2>
         </div>
         <p class="section-lead">Our team brings together export, quality, finance and administration expertise.</p>
       </div>
       <div class="team-grid">
-        {teamMembers.map((member, index) => (
+        {teamMembers.map((member) => (
           <article class="team-card">
             <figure class="team-portrait">
-              <Image src={member.image} alt={member.alt} widths={[440, 680, 960]} sizes="(max-width: 700px) 100vw, 304px" loading="lazy" />
-              <figcaption aria-hidden="true">{String(index + 1).padStart(2, "0")}</figcaption>
+              <Image src={member.image} alt={member.alt} widths={[320, 480]} sizes="(max-width: 700px) 148px, 156px" loading="lazy" />
             </figure>
             <div class="team-card__copy">
               <h3>{member.name}</h3>
