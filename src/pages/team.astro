@@ -3,38 +3,123 @@ import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { teamMembers } from "../data/team";
 import { withBase } from "../lib/paths";
-import heroImage from "../assets/representative-hayked/processing-environment.webp";
+
+import kedirPortrait from "../assets/media/generation-kadir.webp";
+import heroPhoto from "../assets/media/community-team.webp";
+import cherrySorting from "../assets/media/cherry-sorting.webp";
+import qualityReview from "../assets/media/quality-review.webp";
+import baggingTeam from "../assets/media/bagging-team.webp";
 ---
 
-<BaseLayout title="Our Team | Sibu Trading PLC" description="Meet the people behind Sibu Trading’s HR, finance, quality and export work.">
-  <section class="team-hero" aria-labelledby="team-title">
-    <Image class="team-hero__image" src={heroImage} alt="" widths={[900, 1400, 1920]} sizes="100vw" loading="eager" aria-hidden="true" />
-    <div class="shell team-hero__content">
-      <p class="eyebrow">Sibu Trading / People</p>
-      <h1 id="team-title" class="display-title">The people behind every lot.</h1>
-      <p>Behind sourcing, preparation and export are the people who carry each coffee conversation forward.</p>
+<BaseLayout
+  title="Our People | Sibu Trading PLC"
+  description="Meet the people behind Sibu Trading PLC: Mr. Kadir Hasan, the family's coffee heritage, and the team supporting quality, export, finance and operations."
+>
+  <section class="people-hero" aria-labelledby="people-hero-title">
+    <Image
+      class="people-hero__image"
+      src={heroPhoto}
+      alt=""
+      widths={[720, 1200, 1800, 2200]}
+      sizes="100vw"
+      loading="eager"
+      aria-hidden="true"
+    />
+    <div class="shell people-hero__inner">
+      <p class="people-eyebrow people-eyebrow--light"><span class="people-eyebrow__rule"></span> The people of Sibu</p>
+      <h1 id="people-hero-title">Behind every bean,<br /><em>there is a story.</em></h1>
+      <p class="people-hero__description">
+        From the coffee-growing communities of Guji to the team preparing every export,
+        Sibu's story is carried forward by people.
+      </p>
+      <a class="people-hero__scroll" href="#kedir-story">
+        Meet the people <span aria-hidden="true">↓</span>
+      </a>
     </div>
-    <p class="team-hero__image-note">Representative operational imagery</p>
+    <div class="people-hero__rail" aria-hidden="true">
+      <span>Heritage</span>
+      <i></i>
+      <span>People</span>
+      <i></i>
+      <span>Coffee</span>
+    </div>
   </section>
 
-  <section class="section section--cream team-directory" aria-labelledby="team-directory-title">
-    <div class="shell">
-      <div class="section-heading-row">
-        <div>
-          <p class="eyebrow">Our team</p>
-          <h2 id="team-directory-title" class="section-title">Meet the team.</h2>
+  <section class="people-introduction" id="kedir-story" aria-labelledby="people-founder-title">
+    <div class="shell people-introduction__layout">
+      <div class="people-introduction__photograph">
+        <div class="people-introduction__image-frame">
+          <Image
+            src={kedirPortrait}
+            alt="Portrait of Mr. Kadir Hasan"
+            widths={[420, 700, 1000]}
+            sizes="(max-width: 840px) 90vw, 46vw"
+            loading="lazy"
+          />
         </div>
-        <p class="section-lead">Our team brings together export, quality, finance and administration expertise.</p>
+        <div class="people-introduction__image-label">
+          <span>02 / Three generations</span>
+          <strong>A continuing legacy</strong>
+        </div>
       </div>
-      <div class="team-grid">
-        {teamMembers.map((member) => (
-          <article class="team-card">
-            <figure class="team-portrait">
-              <Image src={member.image} alt={member.alt} widths={[320, 480]} sizes="(max-width: 700px) 148px, 156px" loading="lazy" />
-            </figure>
-            <div class="team-card__copy">
+
+      <div class="people-introduction__content">
+        <p class="people-eyebrow">The second generation</p>
+        <h2 id="people-founder-title">Mr. Kadir <em>Hasan.</em></h2>
+        <p class="people-introduction__standfirst">
+          Carrying a family coffee tradition from Guji into a new chapter.
+        </p>
+        <p>
+          Sibu's roots lie in a family history of coffee production, collection and
+          domestic trade in Guji, Ethiopia. Building on that foundation, Mr. Kadir
+          Hasan expanded the family business.
+        </p>
+        <p>
+          In 2014, he established Sibu Trading PLC with an international vision —
+          connecting a generational coffee heritage with the company's next chapter.
+        </p>
+        <div class="people-introduction__milestone">
+          <span class="people-introduction__year">2014</span>
+          <span>Establishment of Sibu Trading PLC</span>
+        </div>
+        <a class="people-editorial-link" href={withBase("/our-story/")}>
+          Discover the three-generation story <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="people-leadership" aria-labelledby="people-leadership-title">
+    <div class="shell">
+      <div class="people-leadership__heading">
+        <div>
+          <p class="people-eyebrow">The people leading the work</p>
+          <h2 id="people-leadership-title">Meet the <em>team.</em></h2>
+        </div>
+        <p>
+          Different responsibilities. A shared connection to the journey of
+          Ethiopian coffee — from quality and documentation to finance and administration.
+        </p>
+      </div>
+
+      <div class="people-leadership__grid">
+        {teamMembers.map((member, index) => (
+          <article class="people-profile">
+            <div class="people-profile__portrait">
+              <Image
+                src={member.image}
+                alt={member.alt}
+                widths={[320, 520, 760]}
+                sizes="(max-width: 620px) 90vw, (max-width: 920px) 44vw, 30vw"
+                loading="lazy"
+              />
+              <span class="people-profile__number" aria-hidden="true">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+            </div>
+            <div class="people-profile__details">
               <h3>{member.name}</h3>
-              <p class="team-role">{member.role}</p>
+              <p>{member.role}</p>
             </div>
           </article>
         ))}
@@ -42,13 +127,689 @@ import heroImage from "../assets/representative-hayked/processing-environment.we
     </div>
   </section>
 
-  <section class="team-cta" aria-labelledby="team-cta-title">
-    <div class="shell team-cta__content">
-      <div>
-        <p class="eyebrow">Start a conversation</p>
-        <h2 id="team-cta-title">Let’s make your sourcing conversation useful.</h2>
+  <section class="people-at-work" aria-labelledby="people-at-work-title">
+    <div class="shell">
+      <div class="people-at-work__heading">
+        <p class="people-eyebrow people-eyebrow--light">Beyond the office</p>
+        <h2 id="people-at-work-title">Many hands.<br /><em>One coffee journey.</em></h2>
+        <p>
+          The people behind Sibu's coffee story also include those working with
+          cherries, reviewing quality and preparing coffee for its next destination.
+        </p>
       </div>
-      <a class="button button--light" href={withBase("/contact/")}>Contact Sibu Trading <span aria-hidden="true">↗</span></a>
+      <div class="people-at-work__gallery">
+        <figure class="people-at-work__tile">
+          <Image src={cherrySorting} alt="Workers sorting ripe coffee cherries" widths={[400, 700, 1000]} sizes="(max-width: 700px) 90vw, 31vw" loading="lazy" />
+          <figcaption><span>01</span> Care at origin</figcaption>
+        </figure>
+        <figure class="people-at-work__tile">
+          <Image src={qualityReview} alt="Coffee quality review at a processing operation" widths={[400, 700, 1000]} sizes="(max-width: 700px) 90vw, 31vw" loading="lazy" />
+          <figcaption><span>02</span> Attention to quality</figcaption>
+        </figure>
+        <figure class="people-at-work__tile">
+          <Image src={baggingTeam} alt="Coffee team preparing bags of coffee" widths={[400, 700, 1000]} sizes="(max-width: 700px) 90vw, 31vw" loading="lazy" />
+          <figcaption><span>03</span> Preparation together</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="people-invitation" aria-labelledby="people-invitation-title">
+    <div class="shell people-invitation__inner">
+      <div>
+        <p class="people-eyebrow">Start a conversation</p>
+        <h2 id="people-invitation-title">Get to know the people<br /><em>behind the coffee.</em></h2>
+      </div>
+      <a class="people-invitation__button" href={withBase("/contact/")}>
+        Contact Sibu Trading <span aria-hidden="true">↗</span>
+      </a>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .people-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.4rem;
+    color: var(--gold-text);
+    font-size: 0.72rem;
+    font-weight: 750;
+    letter-spacing: 0.19em;
+    text-transform: uppercase;
+  }
+
+  .people-eyebrow--light {
+    color: #e3c486;
+  }
+
+  .people-eyebrow__rule {
+    width: 2.4rem;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .people-hero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    min-height: 690px;
+    min-height: min(820px, 96svh);
+    align-items: end;
+    overflow: hidden;
+    background: var(--forest-deep);
+    color: var(--paper);
+  }
+
+  .people-hero::after {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(13, 28, 20, 0.94) 0%, rgba(13, 28, 20, 0.72) 43%, rgba(13, 28, 20, 0.22) 100%),
+      linear-gradient(0deg, rgba(13, 28, 20, 0.72), transparent 70%);
+    content: "";
+  }
+
+  .people-hero__image {
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    animation: people-hero-drift 22s ease-in-out infinite alternate;
+  }
+
+  .people-hero__inner {
+    position: relative;
+    z-index: 1;
+    padding-block: 12rem clamp(5rem, 10vw, 8rem);
+  }
+
+  .people-hero h1 {
+    max-width: 13ch;
+    font-size: clamp(3.25rem, 7.8vw, 7.3rem);
+    letter-spacing: -0.055em;
+    line-height: 0.98;
+  }
+
+  .people-hero h1 em,
+  .people-introduction h2 em,
+  .people-leadership h2 em,
+  .people-at-work h2 em,
+  .people-invitation h2 em {
+    font-weight: 400;
+  }
+
+  .people-hero h1 em {
+    color: #e4c898;
+  }
+
+  .people-hero__description {
+    max-width: 41rem;
+    margin-top: 2rem;
+    color: rgba(255, 253, 248, 0.87);
+    font-size: clamp(1.02rem, 1.8vw, 1.25rem);
+    line-height: 1.72;
+  }
+
+  .people-hero__scroll {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-top: 2.6rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 253, 248, 0.65);
+    font-size: 0.73rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .people-hero__scroll span {
+    color: #e4c898;
+    font-size: 1.15rem;
+    transition: transform 240ms ease;
+  }
+
+  .people-hero__scroll:hover span {
+    transform: translateY(5px);
+  }
+
+  .people-hero__rail {
+    position: absolute;
+    right: max(1rem, calc((100vw - 1180px) / 2));
+    bottom: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: rgba(255, 253, 248, 0.68);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .people-hero__rail i {
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .people-introduction {
+    padding-block: clamp(5.5rem, 10vw, 10rem);
+    background: var(--cream);
+  }
+
+  .people-introduction__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(2.5rem, 8vw, 8rem);
+  }
+
+  .people-introduction__photograph {
+    position: relative;
+    padding: 0 1.5rem 1.5rem 0;
+  }
+
+  .people-introduction__image-frame {
+    position: relative;
+    aspect-ratio: 4 / 4.6;
+    overflow: hidden;
+    background: #d9d0c1;
+  }
+
+  .people-introduction__image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transition: transform 800ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .people-introduction__photograph:hover img {
+    transform: scale(1.035);
+  }
+
+  .people-introduction__photograph::before {
+    position: absolute;
+    inset: 1.5rem 0 0 1.5rem;
+    border: 1px solid rgba(133, 99, 24, 0.48);
+    content: "";
+    pointer-events: none;
+  }
+
+  .people-introduction__image-label {
+    position: absolute;
+    right: 2rem;
+    bottom: 3.15rem;
+    display: grid;
+    gap: 0.3rem;
+    padding: 0.85rem 1.2rem;
+    background: rgba(23, 44, 32, 0.95);
+    color: var(--paper);
+    box-shadow: 0 14px 35px rgba(18, 32, 23, 0.16);
+  }
+
+  .people-introduction__image-label span {
+    color: #dfbf7e;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .people-introduction__image-label strong {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.12rem;
+    font-weight: 400;
+  }
+
+  .people-introduction h2,
+  .people-leadership h2,
+  .people-at-work h2,
+  .people-invitation h2 {
+    font-size: clamp(2.7rem, 5vw, 5rem);
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+  }
+
+  .people-introduction h2 {
+    max-width: 13ch;
+    color: var(--forest-deep);
+  }
+
+  .people-introduction__standfirst {
+    margin-top: 1.75rem;
+    color: var(--coffee);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.35rem, 2.15vw, 1.8rem);
+    line-height: 1.35;
+  }
+
+  .people-introduction__content > p:not(.people-eyebrow, .people-introduction__standfirst) {
+    max-width: 54ch;
+    margin-top: 1.25rem;
+    color: #605b52;
+    line-height: 1.85;
+  }
+
+  .people-introduction__milestone {
+    display: flex;
+    align-items: center;
+    gap: 1.3rem;
+    margin-block: 2.2rem 1.8rem;
+    padding-block: 1rem;
+    border-block: 1px solid var(--line);
+    color: var(--coffee);
+    font-size: 0.83rem;
+    line-height: 1.4;
+  }
+
+  .people-introduction__year {
+    color: var(--forest-deep);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 2.4rem;
+    font-variant-numeric: lining-nums;
+    line-height: 1;
+  }
+
+  .people-editorial-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--forest);
+    color: var(--forest-deep);
+    font-size: 0.8rem;
+    font-weight: 750;
+    letter-spacing: 0.03em;
+    transition: gap 200ms ease;
+  }
+
+  .people-editorial-link:hover {
+    gap: 1.4rem;
+  }
+
+  .people-leadership {
+    padding-block: clamp(5rem, 9vw, 9rem);
+    background: var(--paper);
+  }
+
+  .people-leadership__heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2.5rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4.25rem);
+  }
+
+  .people-leadership h2 {
+    color: var(--forest-deep);
+  }
+
+  .people-leadership__heading > p {
+    max-width: 25rem;
+    padding-bottom: 0.4rem;
+    color: var(--muted);
+    font-size: 1.02rem;
+    line-height: 1.7;
+  }
+
+  .people-leadership__grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.7rem);
+  }
+
+  .people-profile {
+    grid-column: span 2;
+    min-width: 0;
+  }
+
+  .people-profile:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+
+  .people-profile:nth-child(5) {
+    grid-column: 4 / span 2;
+  }
+
+  .people-profile__portrait {
+    position: relative;
+    aspect-ratio: 4 / 4.6;
+    overflow: hidden;
+    background: #e8e1d5;
+  }
+
+  .people-profile__portrait::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(14, 26, 17, 0.24), transparent 35%);
+    content: "";
+    pointer-events: none;
+  }
+
+  .people-profile__portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 16%;
+    transition: transform 650ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .people-profile:hover img {
+    transform: scale(1.06);
+  }
+
+  .people-profile__number {
+    position: absolute;
+    z-index: 1;
+    bottom: 1rem;
+    left: 1.1rem;
+    color: white;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .people-profile__details {
+    padding-block: 1.3rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .people-profile h3 {
+    color: var(--forest-deep);
+    font-size: clamp(1.35rem, 2vw, 1.7rem);
+    line-height: 1.2;
+  }
+
+  .people-profile__details p {
+    margin-top: 0.4rem;
+    color: var(--muted);
+    font-size: 0.81rem;
+    font-weight: 650;
+    letter-spacing: 0.025em;
+  }
+
+  .people-at-work {
+    padding-block: clamp(5rem, 8vw, 8rem);
+    background: var(--forest-deep);
+    color: var(--paper);
+  }
+
+  .people-at-work__heading {
+    max-width: 47rem;
+    margin-bottom: clamp(2rem, 4vw, 3.25rem);
+  }
+
+  .people-at-work h2 {
+    color: var(--paper);
+  }
+
+  .people-at-work h2 em {
+    color: #e0c18a;
+  }
+
+  .people-at-work__heading > p:last-child {
+    max-width: 45rem;
+    margin-top: 1.3rem;
+    color: rgba(255, 253, 248, 0.75);
+    font-size: 1.03rem;
+    line-height: 1.75;
+  }
+
+  .people-at-work__gallery {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.7rem, 2vw, 1.5rem);
+  }
+
+  .people-at-work__tile {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    margin: 0;
+    overflow: hidden;
+    background: #344734;
+  }
+
+  .people-at-work__tile::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(10, 20, 12, 0.8), transparent 52%);
+    content: "";
+    pointer-events: none;
+  }
+
+  .people-at-work__tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .people-at-work__tile:hover img {
+    transform: scale(1.05);
+  }
+
+  .people-at-work__tile figcaption {
+    position: absolute;
+    z-index: 1;
+    right: 1.25rem;
+    bottom: 1.4rem;
+    left: 1.25rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.2rem, 1.9vw, 1.7rem);
+    line-height: 1.2;
+  }
+
+  .people-at-work__tile figcaption span {
+    color: #e0c18a;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.67rem;
+    font-weight: 750;
+  }
+
+  .people-invitation {
+    padding-block: clamp(5rem, 8vw, 8rem);
+    background: var(--cream);
+  }
+
+  .people-invitation__inner {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .people-invitation h2 {
+    color: var(--forest-deep);
+    font-size: clamp(2.5rem, 4.6vw, 4.5rem);
+  }
+
+  .people-invitation__button {
+    display: inline-flex;
+    min-height: 3.7rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.7rem;
+    padding: 1rem 1.3rem;
+    background: var(--forest-deep);
+    color: white;
+    font-size: 0.76rem;
+    font-weight: 750;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    transition: background 200ms ease, transform 200ms ease;
+  }
+
+  .people-invitation__button span {
+    color: #e0c18a;
+    font-size: 1.2rem;
+  }
+
+  .people-invitation__button:hover {
+    background: var(--coffee);
+    transform: translateY(-3px);
+  }
+
+  @keyframes people-hero-drift {
+    from { transform: scale(1); }
+    to { transform: scale(1.065); }
+  }
+
+  @media (max-width: 960px) {
+    .people-hero__rail {
+      display: none;
+    }
+
+    .people-introduction__layout {
+      gap: clamp(1.5rem, 5vw, 3.5rem);
+    }
+
+    .people-leadership__heading {
+      display: block;
+    }
+
+    .people-leadership__heading > p {
+      margin-top: 1.4rem;
+    }
+  }
+
+  @media (max-width: 840px) {
+    .people-introduction__layout {
+      grid-template-columns: 1fr;
+      max-width: 640px;
+    }
+
+    .people-introduction__photograph {
+      width: min(100%, 490px);
+    }
+
+    .people-introduction__content {
+      padding-top: 1rem;
+    }
+
+    .people-leadership__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .people-profile,
+    .people-profile:nth-child(4),
+    .people-profile:nth-child(5) {
+      grid-column: auto;
+    }
+
+    .people-profile:last-child {
+      grid-column: 1 / -1;
+      width: min(100%, 380px);
+      justify-self: center;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .people-hero {
+      min-height: 660px;
+      min-height: 88svh;
+    }
+
+    .people-hero::after {
+      background: linear-gradient(0deg, rgba(13, 28, 20, 0.95) 0%, rgba(13, 28, 20, 0.73) 50%, rgba(13, 28, 20, 0.3) 100%);
+    }
+
+    .people-hero__inner {
+      padding-block: 9rem 4rem;
+    }
+
+    .people-hero h1 {
+      font-size: clamp(2.75rem, 10vw, 4.5rem);
+    }
+
+    .people-introduction,
+    .people-leadership,
+    .people-at-work,
+    .people-invitation {
+      padding-block: 4.8rem;
+    }
+
+    .people-at-work__gallery {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+
+    .people-at-work__tile {
+      aspect-ratio: 5 / 4;
+    }
+
+    .people-invitation__inner {
+      align-items: start;
+      flex-direction: column;
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .people-leadership__grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .people-profile:last-child {
+      grid-column: auto;
+      width: 100%;
+    }
+
+    .people-profile__portrait {
+      aspect-ratio: 5 / 5;
+    }
+
+    .people-profile__portrait img {
+      object-position: center 11%;
+    }
+
+    .people-introduction__image-label {
+      right: 2rem;
+      bottom: 2.6rem;
+    }
+
+    .people-at-work__tile {
+      aspect-ratio: 5 / 4.4;
+    }
+
+    .people-invitation__button {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .people-hero__image {
+      animation: none;
+    }
+
+    .people-hero__scroll span,
+    .people-introduction__image-frame img,
+    .people-editorial-link,
+    .people-profile__portrait img,
+    .people-at-work__tile img,
+    .people-invitation__button {
+      transition: none;
+    }
+
+    .people-hero__scroll:hover span,
+    .people-introduction__photograph:hover img,
+    .people-profile:hover img,
+    .people-at-work__tile:hover img,
+    .people-invitation__button:hover {
+      transform: none;
+    }
+  }
+</style>
