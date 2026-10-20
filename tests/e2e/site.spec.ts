@@ -218,18 +218,22 @@ test("our story pairs every generation with its portrait", async ({ page }) => {
   await expect(page.getByAltText("Coffee teams tending raised drying beds in the Guji highlands")).toBeVisible();
 });
 
-test("team page shows the supplied team and contact route", async ({ page }) => {
+test("team page shows Kadir Hasan's verified story, the supplied team and contact route", async ({ page }) => {
   await page.goto("team/");
-  await expect(page.getByRole("heading", { name: "The people behind every lot." })).toBeVisible();
-  await expect(page.locator(".team-card")).toHaveCount(5);
+  await expect(page.getByRole("heading", { level: 1, name: /Behind every bean/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Mr\. Kadir Hasan/ })).toBeVisible();
+  await expect(page.getByAltText("Portrait of Mr. Kadir Hasan")).toBeVisible();
+  await expect(page.getByText("Establishment of Sibu Trading PLC")).toBeVisible();
+  await expect(page.getByRole("link", { name: /Discover the three-generation story/ })).toHaveAttribute("href", /\/our-story\/$/);
+  await expect(page.locator(".people-profile")).toHaveCount(5);
   const names = ["Isayas Mitiku Fufa", "Helen Assefa Sete", "Sileshi Olani", "Husnia Muzeyin", "Melkamu Kenea"];
-  await expect(page.locator(".team-card h3")).toHaveText(names);
+  await expect(page.locator(".people-profile h3")).toHaveText(names);
   for (const name of names) {
     await expect(page.getByRole("heading", { name })).toBeVisible();
     await expect(page.getByAltText(`Portrait of ${name}`)).toBeVisible();
   }
+  await expect(page.locator(".people-at-work__tile")).toHaveCount(3);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  await expect(page.getByText("Representative operational imagery")).toBeVisible();
   await expect(page.getByRole("link", { name: /Contact Sibu Trading/ })).toHaveAttribute("href", /\/contact\/$/);
 });
 
