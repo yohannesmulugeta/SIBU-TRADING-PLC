@@ -4,8 +4,7 @@ import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  site: "https://yohannesmulugeta.github.io",
-  base: "/SIBU-TRADING-PLC",
+  site: "https://sibutradingplc.com",
   output: "static",
   devToolbar: { enabled: false },
   integrations: [react(), sitemap()],

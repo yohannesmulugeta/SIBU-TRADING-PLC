@@ -4,7 +4,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import GalleryPreview from "../components/GalleryPreview.astro";
 import ProfileMetrics from "../components/ProfileMetrics.astro";
 import RecognitionPreviewGrid from "../components/RecognitionPreviewGrid.astro";
-import ScrollHero from "../components/ScrollHero";
 import CinematicVideo from "../components/CinematicVideo.astro";
 import { companyStats } from "../data/site";
 import { homepageRecognition } from "../data/recognition";
@@ -24,13 +23,32 @@ import processingPoster from "../assets/media/processing-poster.webp";
   description="Three generations of Ethiopian coffee experience, connecting Guji origins with specialty buyers around the world."
   image={heroAerial.src}
 >
-  <ScrollHero
-    client:load
-    poster={withBase("/video/coffee-poster.jpg")}
-    lowVideoSrc={withBase("/video/coffee-scrub-low.mp4")}
-    sdVideoSrc={withBase("/video/coffee-scrub-sd.mp4")}
-    hdVideoSrc={withBase("/video/coffee-scrub-hd.mp4")}
-  />
+  <section class="hero" aria-labelledby="home-hero-title" data-video-hero>
+    <div class="hero-media" aria-hidden="true">
+      <Image class="hero-media__poster" src={heroAerial} alt="" widths={[720, 1200, 1800, 2200]} sizes="100vw" loading="eager" fetchpriority="high" />
+      <video
+        class="hero-media__video"
+        data-video-src={withBase("/video/hero-guji.mp4")}
+        muted
+        loop
+        playsinline
+        preload="none"
+        tabindex="-1"
+      ></video>
+      <div class="hero-media__shade"></div>
+    </div>
+    <div class="shell hero__content">
+      <div class="hero__copy">
+        <p class="eyebrow">Ethiopian coffee · A family legacy</p>
+        <h1 class="display-title" id="home-hero-title">Three generations.<br />One origin. One legacy.</h1>
+        <p>A coffee story rooted in Guji, carried through generations and continuing into the future.</p>
+        <div class="hero__actions">
+          <a class="button" href={withBase("/our-story/")}>Explore our story</a>
+          <a class="button button--light" href={withBase("/contact/")}>Request samples</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section class="section story-intro" aria-labelledby="sibu-story-title">
     <div class="shell split story-intro__grid">
@@ -148,3 +166,27 @@ import processingPoster from "../assets/media/processing-poster.webp";
   </section>
 
 </BaseLayout>
+
+<script>
+  const hero = document.querySelector<HTMLElement>("[data-video-hero]");
+  const video = hero?.querySelector<HTMLVideoElement>("[data-video-src]");
+  const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+
+  if (hero && video && !matchMedia("(prefers-reduced-motion: reduce)").matches && !connection?.saveData) {
+    video.addEventListener("playing", () => hero.classList.add("is-playing"));
+    video.addEventListener("error", () => hero.classList.remove("is-playing"));
+
+    const startVideo = () => {
+      video.src = video.dataset.videoSrc ?? "";
+      video.play().catch(() => {});
+    };
+    if (document.readyState === "complete") startVideo();
+    else window.addEventListener("load", startVideo, { once: true });
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) video.pause();
+      else if (video.currentSrc) video.play().catch(() => {});
+    });
+    observer.observe(hero);
+  }
+</script>

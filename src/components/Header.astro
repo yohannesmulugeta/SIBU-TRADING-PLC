@@ -12,14 +12,12 @@ const shortLabels = new Map([
   [withBase("/quality-impact/"), "Quality"],
   [withBase("/recognition/"), "Awards"],
 ]);
-const aboutItems = items.filter((item) => [withBase("/our-story/"), withBase("/team/")].includes(item.href));
-const homeItem = items.find((item) => item.href === withBase("/"));
+const aboutItem = items.find((item) => item.href === withBase("/our-story/"));
 const primaryItems = items
-  .filter((item) => ![withBase("/"), withBase("/our-story/"), withBase("/team/"), withBase("/contact/")].includes(item.href))
+  .filter((item) => ![withBase("/our-story/"), withBase("/contact/")].includes(item.href))
   .map((item) => ({ ...item, label: shortLabels.get(item.href) ?? item.label }));
 const normalizedCurrent = currentPath.endsWith("/") ? currentPath : `${currentPath}/`;
 const isHome = normalizedCurrent === withBase("/");
-const isAboutCurrent = aboutItems.some((item) => item.href === normalizedCurrent);
 ---
 
 <header
@@ -38,16 +36,10 @@ const isAboutCurrent = aboutItems.some((item) => item.href === normalizedCurrent
       <span><strong>Green coffee</strong><small>Guji · Ethiopia</small></span>
     </a>
     <nav class="desktop-nav" aria-label="Primary navigation">
-      {homeItem && <a href={homeItem.href} aria-current={normalizedCurrent === homeItem.href ? "page" : undefined}><span>01</span>Home</a>}
-      <details class="desktop-nav__group" data-about-menu>
-        <summary aria-current={isAboutCurrent ? "page" : undefined}><span>02</span>About<i aria-hidden="true">⌄</i></summary>
-        <div class="desktop-nav__submenu" aria-label="About pages">
-          {aboutItems.map((item) => <a href={item.href} aria-current={normalizedCurrent === item.href ? "page" : undefined}>{item.label}</a>)}
-        </div>
-      </details>
-      {primaryItems.map((item, index) => (
+      {aboutItem && <a href={aboutItem.href} aria-current={normalizedCurrent === aboutItem.href ? "page" : undefined}>About</a>}
+      {primaryItems.map((item) => (
         <a href={item.href} aria-current={normalizedCurrent === item.href ? "page" : undefined}>
-          <span>{String(index + 3).padStart(2, "0")}</span>{item.label}
+          {item.label}
         </a>
       ))}
     </nav>
@@ -66,19 +58,13 @@ const isAboutCurrent = aboutItems.some((item) => item.href === normalizedCurrent
         <div class="mobile-menu__content">
           <p>Explore Sibu</p>
           <nav id="mobile-navigation" aria-label="Mobile navigation">
-            {homeItem && <a href={homeItem.href} aria-current={normalizedCurrent === homeItem.href ? "page" : undefined}><span>01</span><strong>Home</strong><i aria-hidden="true">↗</i></a>}
-            <details class="mobile-nav__group" open={isAboutCurrent}>
-              <summary><span>02</span><strong>About</strong><i aria-hidden="true">⌄</i></summary>
-              <div>
-                {aboutItems.map((item) => <a href={item.href} aria-current={normalizedCurrent === item.href ? "page" : undefined}><span></span><strong>{item.label}</strong><i aria-hidden="true">↗</i></a>)}
-              </div>
-            </details>
-            {primaryItems.map((item, index) => (
+            {aboutItem && <a href={aboutItem.href} aria-current={normalizedCurrent === aboutItem.href ? "page" : undefined}><strong>About</strong><i aria-hidden="true">↗</i></a>}
+            {primaryItems.map((item) => (
               <a href={item.href} aria-current={normalizedCurrent === item.href ? "page" : undefined}>
-                <span>{String(index + 3).padStart(2, "0")}</span><strong>{item.label}</strong><i aria-hidden="true">↗</i>
+                <strong>{item.label}</strong><i aria-hidden="true">↗</i>
               </a>
             ))}
-            <a href={withBase("/contact/")} aria-current={normalizedCurrent === withBase("/contact/") ? "page" : undefined}><span>08</span><strong>Contact</strong><i aria-hidden="true">↗</i></a>
+            <a href={withBase("/contact/")} aria-current={normalizedCurrent === withBase("/contact/") ? "page" : undefined}><strong>Contact</strong><i aria-hidden="true">↗</i></a>
           </nav>
           <a class="mobile-menu__cta" href={withBase("/contact/")}>Talk coffee with Sibu <span aria-hidden="true">→</span></a>
         </div>
@@ -138,25 +124,13 @@ const isAboutCurrent = aboutItems.some((item) => item.href === normalizedCurrent
     });
   });
 
-  document.querySelectorAll<HTMLDetailsElement>("[data-about-menu]").forEach((menu) => {
-    document.addEventListener("click", (event) => {
-      if (menu.open && event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
-    });
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && menu.open) {
-        menu.open = false;
-        menu.querySelector<HTMLElement>("summary")?.focus();
-      }
-    });
-  });
-
   const gatedHeader = document.querySelector<HTMLElement>("[data-hero-gated]");
-  const scrollStory = document.querySelector<HTMLElement>(".scroll-story");
-  if (gatedHeader && scrollStory) {
+  const hero = document.querySelector<HTMLElement>(".hero");
+  if (gatedHeader && hero) {
     let frame = 0;
     const updateHeader = () => {
       frame = 0;
-      const heroHasEnded = scrollStory.getBoundingClientRect().bottom <= gatedHeader.offsetHeight;
+      const heroHasEnded = hero.getBoundingClientRect().bottom <= gatedHeader.offsetHeight;
       gatedHeader.classList.toggle("site-header--revealed", heroHasEnded);
     };
     const requestUpdate = () => {

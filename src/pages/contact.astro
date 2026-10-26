@@ -3,9 +3,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
 import EnquiryForm from "../components/EnquiryForm";
 import { contact } from "../data/site";
+import { withBase } from "../lib/paths";
 import warehouse from "../assets/media/warehouse-coffee.webp";
 
 const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT?.trim() || undefined;
+const officeMapUrl = "https://www.google.com/maps?q=8.9933233,38.7279965&z=17&output=embed";
+const officeDirectionsUrl = "https://maps.app.goo.gl/hTur8ZZs6Cmp1NLH8";
 ---
 
 <BaseLayout title="Contact & Request Samples | Sibu Trading PLC" description="Contact Sibu Trading PLC about Ethiopian coffee availability, samples and buyer requirements.">
@@ -23,7 +26,33 @@ const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT?.trim() || undefined;
           <div><dt>Email</dt><dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd></div>
         </dl>
       </div>
-      <EnquiryForm client:visible email={contact.email} endpoint={formEndpoint} />
+      <div>
+        <EnquiryForm client:visible email={contact.email} endpoint={formEndpoint} />
+        <p class="contact-privacy-note">We use your details to respond to your enquiry. Read our <a href={withBase("/privacy/")}>Privacy Policy</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section contact-location" aria-labelledby="contact-location-title">
+    <div class="shell">
+      <div class="section-heading-row">
+        <div>
+          <p class="eyebrow">Visit our office</p>
+          <h2 class="section-title" id="contact-location-title">Find Sibu in Addis Ababa</h2>
+        </div>
+        <div>
+          <p class="section-lead">4th Floor, Adot Building, South African Street, Addis Ababa, Ethiopia.</p>
+          <a class="text-link" href={officeDirectionsUrl} target="_blank" rel="noopener noreferrer">Open directions in Google Maps</a>
+        </div>
+      </div>
+      <iframe
+        class="contact-location__map"
+        title="Map showing Adot Building in Addis Ababa"
+        src={officeMapUrl}
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
     </div>
   </section>
 </BaseLayout>

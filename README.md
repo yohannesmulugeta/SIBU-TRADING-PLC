@@ -1,6 +1,6 @@
 # Sibu Trading PLC website
 
-A six-page, static Astro website for Sibu Trading PLC. It is designed for GitHub Pages first and can later move to another static or server-capable host without a redesign.
+A static Astro website for Sibu Trading PLC, published at https://sibutradingplc.com/ through Cloudflare Pages.
 
 ## Commands
 
@@ -13,7 +13,7 @@ npm.cmd run build
 npm.cmd run test:e2e
 ```
 
-The local site is served under `/SIBU-TRADING-PLC/` to match the GitHub Pages repository path.
+The local site is served at `/`, matching the production domain.
 
 ## Media workflow
 
@@ -23,10 +23,10 @@ Video masters are also ignored. `scripts/prepare-video.mjs` creates four lightwe
 
 ## Publishing
 
-Pushing `main` triggers `.github/workflows/deploy.yml`. In GitHub repository settings, Pages must use **GitHub Actions** as its source.
+Pushing `main` triggers the GitHub verification workflow. Cloudflare Pages builds the same branch with `npm run build` and publishes `dist`.
 
 ## Content boundaries
 
 - Cultural wording around Buna Qalaa should receive family or cultural-adviser approval before final publication.
 - Certifications and lot eligibility must be confirmed for the current crop year.
-- The GitHub Pages enquiry form prepares an email draft; it does not send or store submissions.
+- The enquiry form prepares an email draft; it does not send or store submissions unless a verified `PUBLIC_FORM_ENDPOINT` is configured.

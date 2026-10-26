@@ -57,7 +57,10 @@ import { withBase } from "../lib/paths";
   </div>
   <div class="shell footer-bottom">
     <span>© {new Date().getFullYear()} Sibu Trading PLC</span>
-    <span>Green coffee · Guji · Ethiopia</span>
+    <nav class="footer-legal" aria-label="Website information">
+      <a href={withBase("/privacy/")}>Privacy Policy</a>
+      <a href={withBase("/terms/")}>Terms of Use</a>
+    </nav>
     <a href="#main-content">Back to top <span aria-hidden="true">↑</span></a>
   </div>
 </footer>

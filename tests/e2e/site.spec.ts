@@ -3,14 +3,49 @@ import { expect, test } from "@playwright/test";
 const routes = [
   "",
   "our-story/",
-  "team/",
   "origins/",
   "coffee-processing/",
   "quality-impact/",
   "recognition/",
   "gallery/",
   "contact/",
+  "privacy/",
+  "terms/",
 ];
+
+test("unknown routes show the branded 404 with working recovery links", async ({ page }) => {
+  const response = await page.goto("page-that-does-not-exist/");
+  expect(response?.status()).toBe(404);
+  await expect(page.getByRole("heading", { name: "Let’s get you back to Sibu." })).toBeVisible();
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex");
+  await expect(page.getByRole("link", { name: "Go to Home" })).toHaveAttribute("href", "/");
+  await expect(page.getByRole("link", { name: "Contact Sibu" })).toHaveAttribute("href", "/contact/");
+});
+
+test("contact form links to the privacy policy and footer links to both policies", async ({ page }) => {
+  await page.goto("contact/");
+  await expect(page.locator(".contact-privacy-note a")).toHaveAttribute("href", "/privacy/");
+  const policyLinks = page.getByRole("navigation", { name: "Website information" });
+  await expect(policyLinks.getByRole("link", { name: "Privacy Policy" })).toHaveAttribute("href", "/privacy/");
+  await expect(policyLinks.getByRole("link", { name: "Terms of Use" })).toHaveAttribute("href", "/terms/");
+});
+
+test("contact page shows the supplied office location and directions", async ({ page }) => {
+  await page.goto("contact/");
+  const map = page.getByTitle("Map showing Adot Building in Addis Ababa");
+  await expect(map).toHaveAttribute("src", /q=8\.9933233,38\.7279965.*output=embed/);
+  await expect(map).toHaveAttribute("loading", "lazy");
+  await expect(page.getByRole("link", { name: "Open directions in Google Maps" })).toHaveAttribute(
+    "href", "https://maps.app.goo.gl/hTur8ZZs6Cmp1NLH8",
+  );
+});
+
+test("team page and navigation are removed", async ({ page }) => {
+  const response = await page.goto("team/");
+  expect(response?.status()).toBe(404);
+  await page.goto("");
+  await expect(page.getByRole("link", { name: "Team", exact: true })).toHaveCount(0);
+});
 
 for (const route of routes) {
   test(`${route || "home"} renders without horizontal overflow`, async ({ page }) => {
@@ -63,16 +98,18 @@ for (const route of routes) {
   });
 }
 
-test("mobile navigation exposes all nine routes", async ({ page, isMobile }) => {
+test("mobile navigation exposes seven unnumbered routes and the logo links home", async ({ page, isMobile }) => {
   test.skip(!isMobile, "Mobile navigation test");
   await page.goto("");
   const trigger = page.locator(".mobile-menu__trigger");
   await expect(trigger).toHaveAccessibleName("Toggle navigation");
   await trigger.click();
   await expect(page.locator("details.mobile-menu")).toHaveAttribute("open", "");
-  await page.locator(".mobile-nav__group > summary").click();
   const links = page.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link");
-  await expect(links).toHaveCount(9);
+  await expect(links).toHaveCount(7);
+  await expect(links.getByText("Home", { exact: true })).toHaveCount(0);
+  await expect(page.locator(".mobile-menu__content nav a > span")).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Sibu Trading PLC home" })).toHaveAttribute("href", "/");
   await expect(links.first()).toBeVisible();
   const finalAction = page.locator(".mobile-menu__cta");
   await finalAction.focus();
@@ -83,29 +120,29 @@ test("mobile navigation exposes all nine routes", async ({ page, isMobile }) => 
   await expect(trigger).toBeFocused();
 });
 
-test("homepage exposes the scroll story and responsive video sources", async ({ page }) => {
+test("homepage has an aerial image and a normally playing video hero", async ({ page }) => {
   await page.goto("");
-  const story = page.getByRole("region", { name: "Three generations of Sibu coffee heritage" });
-  await expect(story).toBeVisible();
-  await expect(story.getByRole("heading", { level: 1 })).toContainText("Three generations");
-
-  const video = story.locator("video");
-  await expect(video).toHaveAttribute("data-src-low", /coffee-scrub-low\.mp4$/);
-  await expect(video).toHaveAttribute("data-src-sd", /coffee-scrub-sd\.mp4$/);
-  await expect(video).toHaveAttribute("data-src-hd", /coffee-scrub-hd\.mp4$/);
-  await expect(story.locator("[data-progress-item]")).toHaveCount(3);
+  const hero = page.locator("[data-video-hero]");
+  await expect(hero).toBeVisible();
+  await expect(hero.getByRole("heading", { level: 1 })).toContainText("Three generations");
+  await expect(hero.locator(".eyebrow")).toHaveCSS("color", "rgb(255, 255, 255)");
+  await expect(hero.locator(".hero-media__poster")).toHaveAttribute("src", /hero-aerial/);
+  const video = hero.locator("video");
+  await expect(video).toHaveAttribute("data-video-src", /hero-guji\.mp4$/);
+  await expect.poll(() => video.evaluate((element) => !(element as HTMLVideoElement).paused)).toBe(true);
+  await expect(hero).toHaveClass(/is-playing/);
+  await expect(page.locator(".scroll-story")).toHaveCount(0);
 });
 
-test("homepage defers the hero film until the visitor interacts", async ({ page }) => {
+test("hero keeps its image visible when video cannot load", async ({ page }) => {
+  await page.route("**/video/hero-guji.mp4", (route) => route.abort());
   await page.goto("");
-  const video = page.locator(".scroll-story__video");
-  await expect.poll(() => video.evaluate((element) => (element as HTMLVideoElement).currentSrc)).toBe("");
-
-  await page.mouse.wheel(0, 240);
-  await expect.poll(() => video.evaluate((element) => (element as HTMLVideoElement).currentSrc), { timeout: 10_000 }).toMatch(/coffee-scrub-.*\.mp4$/);
+  const hero = page.locator("[data-video-hero]");
+  await expect(hero.locator(".hero-media__poster")).toBeVisible();
+  await expect(hero).not.toHaveClass(/is-playing/);
 });
 
-test("homepage keeps the full navigation visible over the scroll story", async ({ page, isMobile }) => {
+test("homepage keeps the full navigation visible over the video hero", async ({ page, isMobile }) => {
   test.skip(isMobile, "Desktop navigation visibility test");
   await page.goto("");
   const header = page.locator(".site-header");
@@ -119,7 +156,7 @@ test("homepage keeps the full navigation visible over the scroll story", async (
   await expect(navigation).toBeVisible();
 });
 
-test("data saver keeps the scroll story poster-only", async ({ page }) => {
+test("data saver keeps the hero poster-only", async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "connection", {
       configurable: true,
@@ -133,22 +170,23 @@ test("data saver keeps the scroll story poster-only", async ({ page }) => {
   });
 
   await page.goto("");
-  const story = page.getByRole("region", { name: "Three generations of Sibu coffee heritage" });
-  await expect(story).toHaveAttribute("data-media-mode", "poster");
+  const hero = page.locator("[data-video-hero]");
+  await expect(hero.locator(".hero-media__poster")).toBeVisible();
+  await expect(hero.locator("video")).not.toHaveAttribute("src", /.+/);
   await page.locator(".video-panel").scrollIntoViewIfNeeded();
   await page.waitForTimeout(400);
   expect(videoRequests).toEqual([]);
 });
 
-test("reduced motion renders a static story without hydration errors", async ({ page }) => {
+test("reduced motion keeps the hero poster-only", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("");
 
-  const story = page.getByRole("region", { name: "Three generations of Sibu coffee heritage" });
-  await expect(story).toHaveClass(/scroll-story--static/);
-  await expect(story.locator("[data-story-copy]")).toHaveCount(4);
+  const hero = page.locator("[data-video-hero]");
+  await expect(hero.locator(".hero-media__poster")).toBeVisible();
+  await expect(hero.locator("video")).not.toHaveAttribute("src", /.+/);
   expect(errors).toEqual([]);
 });
 
@@ -172,8 +210,7 @@ test("origins visualizes Ethiopia-to-market connections", async ({ page }) => {
 
 test("homepage continues from the hero into one concise Sibu story", async ({ page }) => {
   await page.goto("");
-  const story = page.getByRole("region", { name: "Three generations of Sibu coffee heritage" });
-  await expect(story).toBeVisible();
+  await expect(page.locator("[data-video-hero]")).toBeVisible();
 
   const sibuStory = page.locator(".story-intro");
   await expect(sibuStory.getByRole("heading", { level: 2 })).toHaveText(
@@ -218,32 +255,14 @@ test("our story pairs every generation with its portrait", async ({ page }) => {
   await expect(page.getByAltText("Coffee teams tending raised drying beds in the Guji highlands")).toBeVisible();
 });
 
-test("team page shows Kadir Hasan's verified story, the supplied team and contact route", async ({ page }) => {
-  await page.goto("team/");
-  await expect(page.getByRole("heading", { level: 1, name: /Behind every bean/ })).toBeVisible();
-  await expect(page.getByRole("heading", { name: /Mr\. Kadir Hasan/ })).toBeVisible();
-  await expect(page.getByAltText("Portrait of Mr. Kadir Hasan")).toBeVisible();
-  await expect(page.getByText("Establishment of Sibu Trading PLC")).toBeVisible();
-  await expect(page.getByRole("link", { name: /Discover the three-generation story/ })).toHaveAttribute("href", /\/our-story\/$/);
-  await expect(page.locator(".people-profile")).toHaveCount(5);
-  const names = ["Isayas Mitiku Fufa", "Helen Assefa Sete", "Sileshi Olani", "Husnia Muzeyin", "Melkamu Kenea"];
-  await expect(page.locator(".people-profile h3")).toHaveText(names);
-  for (const name of names) {
-    await expect(page.getByRole("heading", { name })).toBeVisible();
-    await expect(page.getByAltText(`Portrait of ${name}`)).toBeVisible();
-  }
-  await expect(page.locator(".people-at-work__tile")).toHaveCount(3);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  await expect(page.getByRole("link", { name: /Contact Sibu Trading/ })).toHaveAttribute("href", /\/contact\/$/);
-});
-
-test("desktop navigation reaches the team page", async ({ page, isMobile }) => {
+test("desktop navigation reaches the Our Story page", async ({ page, isMobile }) => {
   test.skip(isMobile, "Desktop navigation test");
   await page.goto("");
-  const aboutMenu = page.locator(".desktop-nav__group");
-  await aboutMenu.locator("summary").click();
-  await aboutMenu.getByRole("link", { name: "Team" }).click();
-  await expect(page).toHaveURL(/\/team\/$/);
+  const navigation = page.getByRole("navigation", { name: "Primary navigation" });
+  await expect(navigation.getByRole("link", { name: "Home" })).toHaveCount(0);
+  await expect(navigation.locator("a span")).toHaveCount(0);
+  await navigation.getByRole("link", { name: "About" }).click();
+  await expect(page).toHaveURL(/\/our-story\/$/);
 });
 
 test("mobile generational journey is a swipeable, keyboard-accessible rail", async ({ page, isMobile }) => {

@@ -1,7 +1,5 @@
 export const navigation = [
-  { label: "Home", href: "/" },
   { label: "Our Story", href: "/our-story/" },
-  { label: "Team", href: "/team/" },
   { label: "Origins & Farms", href: "/origins/" },
   { label: "Coffee & Processing", href: "/coffee-processing/" },
   { label: "Quality & Impact", href: "/quality-impact/" },

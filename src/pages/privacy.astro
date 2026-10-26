@@ -1,0 +1,59 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { contact } from "../data/site";
+---
+
+<BaseLayout title="Privacy Policy | Sibu Trading PLC" description="How Sibu Trading PLC handles website enquiries and personal information.">
+  <header class="utility-hero">
+    <div class="shell utility-hero__inner">
+      <p class="eyebrow">Your information</p>
+      <h1>Privacy Policy</h1>
+      <p>How we handle the information you share when contacting Sibu Trading PLC.</p>
+      <span class="utility-date">Last updated 26 October 2026</span>
+    </div>
+  </header>
+
+  <article class="section section--cream">
+    <div class="shell policy-content">
+      <section aria-labelledby="privacy-who">
+        <h2 id="privacy-who">Who handles your information</h2>
+        <p>Sibu Trading PLC, at {contact.address}, handles enquiries sent through this website. For privacy questions or requests, email <a href={`mailto:${contact.email}`}>{contact.email}</a>.</p>
+      </section>
+
+      <section aria-labelledby="privacy-collect">
+        <h2 id="privacy-collect">What we receive</h2>
+        <p>If you email us or use the enquiry form, we may receive your name, business email, company, coffee interests, estimated volume, destination market, message, and anything else you choose to include. You can contact us directly by email without using the form.</p>
+        <p>At present, the form prepares an email in your own email application; it does not submit your answers to a Sibu website database. The email reaches us only if you send it. We do not currently run Sibu advertising trackers or a site analytics service.</p>
+        <p>Cloudflare hosts this website and handles technical requests needed to deliver and protect its pages. Learn how Cloudflare handles that data in its <a href="https://www.cloudflare.com/privacypolicy/">Privacy Policy</a>.</p>
+        <p>The Contact page includes a Google Maps embed showing our office. Loading the map sends your browser request to Google, which handles technical information under its own privacy policy.</p>
+      </section>
+
+      <section aria-labelledby="privacy-use">
+        <h2 id="privacy-use">Why we use it</h2>
+        <p>We use enquiry information to answer your questions, discuss coffee availability and samples, prepare requested commercial information, and keep a record of our correspondence. We do not use enquiry details for unrelated marketing without a separate basis to do so.</p>
+      </section>
+
+      <section aria-labelledby="privacy-share">
+        <h2 id="privacy-share">Where it goes</h2>
+        <!-- Before publication, confirm mailbox access, forwarding, and every provider that receives enquiries. -->
+        <p>Enquiry emails are received at Sibu’s published Gmail address and may be accessed by Sibu staff who need them to respond. Google provides the mailbox service. Your own email provider also handles the message you send. We do not sell enquiry information. We may share information with service providers where necessary to operate our communications, or where disclosure is required by law.</p>
+        <p>These providers may process information outside Ethiopia. Please do not send sensitive personal information through a general coffee enquiry.</p>
+      </section>
+
+      <section aria-labelledby="privacy-retain">
+        <h2 id="privacy-retain">How long we keep it</h2>
+        <p>We keep enquiry correspondence for as long as needed to respond and manage related business records. Contractual, accounting, or legal requirements may require us to keep some records longer. You can ask us about or request deletion of information using the contact details above.</p>
+      </section>
+
+      <section aria-labelledby="privacy-choices">
+        <h2 id="privacy-choices">Your choices and requests</h2>
+        <p>You may email us to ask what personal information we hold about you, request a correction or deletion, or raise a concern about how it is used. We will review your request under applicable law and explain if we must retain particular records. Please use <a href={`mailto:${contact.email}`}>{contact.email}</a>.</p>
+      </section>
+
+      <section aria-labelledby="privacy-changes">
+        <h2 id="privacy-changes">Changes to this policy</h2>
+        <p>We will update this page when our website, contact process, service providers, or retention practice changes. The date above shows the latest published version.</p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

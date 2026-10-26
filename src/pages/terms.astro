@@ -1,0 +1,50 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { contact } from "../data/site";
+import { withBase } from "../lib/paths";
+---
+
+<BaseLayout title="Website Terms of Use | Sibu Trading PLC" description="Terms for using the Sibu Trading PLC website and its coffee information.">
+  <header class="utility-hero">
+    <div class="shell utility-hero__inner">
+      <p class="eyebrow">Website information</p>
+      <h1>Website Terms of Use</h1>
+      <p>These terms explain how to use the Sibu Trading PLC website and its content.</p>
+      <span class="utility-date">Last updated 22 October 2026</span>
+    </div>
+  </header>
+
+  <article class="section section--cream">
+    <div class="shell policy-content">
+      <section aria-labelledby="terms-use">
+        <h2 id="terms-use">Using this website</h2>
+        <p>This website provides general information about Sibu Trading PLC and its coffee activities. Please use it lawfully and do not attempt to interfere with its operation or misuse its content.</p>
+      </section>
+
+      <section aria-labelledby="terms-coffee">
+        <h2 id="terms-coffee">Coffee and commercial information</h2>
+        <p>Descriptions of origins, processes, certifications, coffee, and export capabilities are for information. Availability, grades, specifications, samples, prices, and shipment terms depend on the particular offer and must be confirmed directly with Sibu. Sending an enquiry or viewing this website does not create a sale or supply agreement.</p>
+      </section>
+
+      <section aria-labelledby="terms-content">
+        <h2 id="terms-content">Content and brand</h2>
+        <p>Text, photographs, graphics, logos, and other material on this site belong to Sibu or their respective rights holders. You may view and share links to the site for ordinary business reference. Please ask for permission before copying, republishing, or using site material for your own commercial purposes.</p>
+      </section>
+
+      <section aria-labelledby="terms-links">
+        <h2 id="terms-links">External links</h2>
+        <p>Some pages may link to websites operated by others. Their content and privacy practices are controlled by those operators. Review their terms before relying on them.</p>
+      </section>
+
+      <section aria-labelledby="terms-accuracy">
+        <h2 id="terms-accuracy">Updates and accuracy</h2>
+        <p>We aim to keep site information current, but details may change. Contact us for confirmation before making a purchasing or shipping decision. We may update this website and these terms; the date above identifies the latest version.</p>
+      </section>
+
+      <section aria-labelledby="terms-contact">
+        <h2 id="terms-contact">Contact</h2>
+        <p>Questions about this website or a coffee enquiry can be sent through our <a href={withBase("/contact/")}>Contact page</a> or by email to <a href={`mailto:${contact.email}`}>{contact.email}</a>. For information about personal data, read our <a href={withBase("/privacy/")}>Privacy Policy</a>.</p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

@@ -6,7 +6,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: "list",
   use: {
-    baseURL: "http://127.0.0.1:4321/SIBU-TRADING-PLC/",
+    baseURL: "http://127.0.0.1:4321/",
     trace: "on-first-retry",
   },
   projects: [
@@ -16,7 +16,7 @@ export default defineConfig({
   ],
   webServer: {
     command: "npm run dev -- --host 127.0.0.1 --ignore-lock",
-    url: "http://127.0.0.1:4321/SIBU-TRADING-PLC/",
+    url: "http://127.0.0.1:4321/",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },
