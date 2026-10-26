@@ -19,8 +19,8 @@ import {
 } from "../src/data/recognition";
 
 describe("Sibu website content model", () => {
-  it("defines the seven-page navigation without home or team links", () => {
-    expect(navigation).toHaveLength(7);
+  it("defines the eight-page navigation without home or team links", () => {
+    expect(navigation).toHaveLength(8);
     expect(navigation.map((item) => item.href)).toEqual([
       "/our-story/",
       "/origins/",
@@ -28,6 +28,7 @@ describe("Sibu website content model", () => {
       "/quality-impact/",
       "/recognition/",
       "/gallery/",
+      "/faq/",
       "/contact/",
     ]);
   });

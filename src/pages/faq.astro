@@ -1,0 +1,156 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import { contact } from "../data/site";
+import { withBase } from "../lib/paths";
+import beanInspection from "../assets/media/bean-inspection.webp";
+
+const whatsappUrl = `https://wa.me/${contact.whatsapp.replace(/\D/g, "")}`;
+---
+
+<BaseLayout title="Frequently Asked Questions | Sibu Trading PLC" description="Answers about Sibu Trading PLC, Ethiopian coffee origins, processing, samples and historical certification documents.">
+  <PageHero eyebrow="Frequently asked questions" title="Your questions, answered." description="A starting point for learning about Sibu and its coffee. Contact our team for current lot details and buyer enquiries." image={beanInspection} alt="Person inspecting a green coffee bean" />
+
+  <section class="section section--cream" aria-labelledby="faq-title">
+    <div class="shell faq-layout">
+      <div class="faq-intro">
+        <p class="eyebrow">Good to know</p>
+        <h2 class="section-title" id="faq-title">Clear answers. Direct conversations.</h2>
+        <p class="section-lead">For current availability and lot-specific information, speak with Sibu directly.</p>
+        <a class="text-link" href={withBase("/contact/")}>Contact Sibu</a>
+      </div>
+
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary><span class="faq-number" aria-hidden="true">01</span><span>What does Sibu Trading PLC do?</span><span class="faq-toggle" aria-hidden="true">+</span></summary>
+          <div class="faq-answer"><p>Sibu Trading PLC is an Ethiopian green coffee company established in 2014. Its family coffee story began in Guji and spans three generations.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary><span class="faq-number" aria-hidden="true">02</span><span>Which Ethiopian origins does Sibu work with?</span><span class="faq-toggle" aria-hidden="true">+</span></summary>
+          <div class="faq-answer"><p>The site features Guji and Kercha, Hambella Wamena, Gelana and Abaya, and selected coffees from Yirgacheffe and Lemo. Ask Sibu which origins and lots are currently available.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary><span class="faq-number" aria-hidden="true">03</span><span>Which coffee preparations are described?</span><span class="faq-toggle" aria-hidden="true">+</span></summary>
+          <div class="faq-answer"><p>Sibu describes natural and washed coffees, selected honey preparations, and specialty lots separated by origin, process and quality potential. The team can confirm the process and availability of a specific lot.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary><span class="faq-number" aria-hidden="true">04</span><span>How can I request samples?</span><span class="faq-toggle" aria-hidden="true">+</span></summary>
+          <div class="faq-answer"><p>Use the <a href={withBase("/contact/")}>enquiry form</a> or <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">WhatsApp Sibu</a>. Share the origin, process, preparation and approximate volume you need. The team will confirm availability and next steps.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary><span class="faq-number" aria-hidden="true">05</span><span>Are the certificates shown on the website current?</span><span class="faq-toggle" aria-hidden="true">+</span></summary>
+          <div class="faq-answer"><p>The <a href={withBase("/recognition/")}>Recognition archive</a> includes dated historical documents. Expired certificates do not establish current certification. Confirm status and lot eligibility with Sibu for the relevant crop year, farm or station, lot and destination market.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary><span class="faq-number" aria-hidden="true">06</span><span>Where can I learn more about the company?</span><span class="faq-toggle" aria-hidden="true">+</span></summary>
+          <div class="faq-answer"><p>Read <a href={withBase("/our-story/")}>Sibu’s story</a> or <a href={withBase("/Sibu-Trading-PLC-Company-Profile.pdf")} download>download the company profile (PDF)</a>. For current operating figures, contact Sibu directly.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .faq-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2.5rem, 7vw, 7rem);
+    align-items: start;
+  }
+
+  .faq-intro {
+    position: sticky;
+    top: 8rem;
+  }
+
+  .faq-intro .text-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+  }
+
+  .faq-list {
+    border-top: 1px solid var(--line);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .faq-item summary {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr) 1.5rem;
+    gap: 1rem;
+    align-items: start;
+    padding-block: 1.5rem;
+    cursor: pointer;
+    list-style: none;
+    color: var(--coffee);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.15rem, 1.65vw, 1.4rem);
+    line-height: 1.3;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-number,
+  .faq-toggle {
+    color: var(--gold-text);
+  }
+
+  .faq-number {
+    font-size: 0.9rem;
+  }
+
+  .faq-toggle {
+    justify-self: end;
+    font-family: inherit;
+    font-size: 1.5rem;
+    line-height: 1;
+    transition: transform 180ms ease;
+  }
+
+  .faq-item[open] .faq-toggle {
+    transform: rotate(45deg);
+  }
+
+  .faq-answer {
+    padding: 0 2.5rem 1.6rem 3.5rem;
+    color: var(--muted);
+  }
+
+  .faq-answer a {
+    color: var(--forest);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  @media (max-width: 800px) {
+    .faq-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .faq-intro {
+      position: static;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .faq-item summary {
+      grid-template-columns: 1.7rem minmax(0, 1fr) 1.25rem;
+      gap: 0.65rem;
+    }
+
+    .faq-answer {
+      padding-right: 0.5rem;
+      padding-left: 2.35rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-toggle {
+      transition: none;
+    }
+  }
+</style>

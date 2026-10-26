@@ -8,6 +8,7 @@ const routes = [
   "quality-impact/",
   "recognition/",
   "gallery/",
+  "faq/",
   "contact/",
   "privacy/",
   "terms/",
@@ -65,6 +66,22 @@ test("company contact and profile download are available", async ({ page, reques
   await page.goto("coffee-processing/");
   await expect(page.locator(".card-grid--four .editorial-card")).toHaveCount(4);
   await expect(page.getByRole("heading", { name: "Honey" })).toBeVisible();
+});
+
+test("FAQ answers open and link to the relevant pages", async ({ page }) => {
+  await page.goto("faq/");
+  const questions = page.locator(".faq-item");
+  await expect(questions).toHaveCount(6);
+  const samples = questions.nth(3);
+  await samples.locator("summary").click();
+  await expect(samples).toHaveAttribute("open", "");
+  await expect(samples.getByRole("link", { name: "enquiry form" })).toHaveAttribute("href", "/contact/");
+  await expect(samples.getByRole("link", { name: "WhatsApp Sibu" })).toHaveAttribute("href", "https://wa.me/251944303070");
+  const profile = questions.nth(5);
+  await profile.locator("summary").click();
+  await expect(profile.getByRole("link", { name: "download the company profile (PDF)" })).toHaveAttribute(
+    "href", "/Sibu-Trading-PLC-Company-Profile.pdf",
+  );
 });
 
 test("home hero actions fit a short laptop screen", async ({ page }) => {
@@ -133,7 +150,7 @@ for (const route of routes) {
   });
 }
 
-test("mobile navigation exposes seven unnumbered routes and the logo links home", async ({ page, isMobile }) => {
+test("mobile navigation exposes eight unnumbered routes and the logo links home", async ({ page, isMobile }) => {
   test.skip(!isMobile, "Mobile navigation test");
   await page.goto("");
   const trigger = page.locator(".mobile-menu__trigger");
@@ -141,7 +158,7 @@ test("mobile navigation exposes seven unnumbered routes and the logo links home"
   await trigger.click();
   await expect(page.locator("details.mobile-menu")).toHaveAttribute("open", "");
   const links = page.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link");
-  await expect(links).toHaveCount(7);
+  await expect(links).toHaveCount(8);
   await expect(links.getByText("Home", { exact: true })).toHaveCount(0);
   await expect(page.locator(".mobile-menu__content nav a > span")).toHaveCount(0);
   await expect(page.getByRole("link", { name: "Sibu Trading PLC home" })).toHaveAttribute("href", "/");
