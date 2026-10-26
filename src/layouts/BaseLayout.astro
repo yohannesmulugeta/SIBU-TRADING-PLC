@@ -3,6 +3,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { withBase } from "../lib/paths";
 import socialPreview from "../assets/media/hero-aerial.webp";
+import { contact } from "../data/site";
 import "../styles/global.css";
 
 interface Props {
@@ -15,6 +16,21 @@ interface Props {
 const { title, description, image = socialPreview.src, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const socialImage = new URL(image, Astro.site);
+const organization = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://sibutradingplc.com/#organization",
+  name: "Sibu Trading PLC",
+  url: "https://sibutradingplc.com/",
+  email: contact.email,
+  telephone: contact.telephone,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "4th Floor, Adot Building, South African Street",
+    addressLocality: "Addis Ababa",
+    addressCountry: "ET",
+  },
+};
 ---
 
 <!doctype html>
@@ -40,6 +56,8 @@ const socialImage = new URL(image, Astro.site);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImage} />
     <title>{title}</title>
+    {!noindex && <script type="application/ld+json" set:html={JSON.stringify(organization).replace(/</g, "\\u003c")} />}
+    {import.meta.env.PROD && <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"d209cd9f32b24fbbbbeeec94b18b2095"}'></script>}
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>

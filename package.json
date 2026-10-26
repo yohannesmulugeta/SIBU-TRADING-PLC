@@ -6,12 +6,16 @@
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
-    "build": "npm run check && astro build",
+    "build": "npm run check && npm run check:worker && astro build",
     "preview": "astro preview",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "media:prepare": "node scripts/prepare-media.mjs",
-    "media:recognition": "node scripts/prepare-recognition-media.mjs"
+    "media:recognition": "node scripts/prepare-recognition-media.mjs",
+    "deploy": "wrangler deploy",
+    "dev:worker": "wrangler dev",
+    "types:worker": "wrangler types --include-runtime false",
+    "check:worker": "tsc --project tsconfig.worker.json"
   },
   "dependencies": {
     "@astrojs/react": "^6.0.6",
@@ -25,9 +29,11 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@cloudflare/workers-types": "^5.20261026.1",
     "@playwright/test": "^1.63.0",
     "sharp": "^0.35.4",
     "typescript": "^6.0.3",
-    "vitest": "^5.0.1"
+    "vitest": "^5.0.1",
+    "wrangler": "^4.153.0"
   }
 }

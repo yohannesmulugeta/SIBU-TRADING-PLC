@@ -6,7 +6,7 @@ import { contact } from "../data/site";
 import { withBase } from "../lib/paths";
 import warehouse from "../assets/media/warehouse-coffee.webp";
 
-const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT?.trim() || undefined;
+const turnstileSitekey = "0x4AAAAAAFm-9A5kNe1el_X6";
 const officeMapUrl = "https://www.google.com/maps?q=8.9933233,38.7279965&z=17&output=embed";
 const officeDirectionsUrl = "https://maps.app.goo.gl/hTur8ZZs6Cmp1NLH8";
 ---
@@ -27,7 +27,7 @@ const officeDirectionsUrl = "https://maps.app.goo.gl/hTur8ZZs6Cmp1NLH8";
         </dl>
       </div>
       <div>
-        <EnquiryForm client:visible email={contact.email} endpoint={formEndpoint} />
+        <EnquiryForm client:visible email={contact.email} sitekey={turnstileSitekey} />
         <p class="contact-privacy-note">We use your details to respond to your enquiry. Read our <a href={withBase("/privacy/")}>Privacy Policy</a>.</p>
       </div>
     </div>

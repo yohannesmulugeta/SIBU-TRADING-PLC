@@ -27,5 +27,5 @@ jobs:
         run: npm run build
       - name: Install browser
         run: npx playwright install --with-deps chromium
-      - name: Run desktop browser tests
-        run: npm run test:e2e -- --project=desktop-chromium
+      - name: Run desktop and mobile browser tests
+        run: npm run test:e2e -- --project=desktop-chromium --project=mobile-chromium
