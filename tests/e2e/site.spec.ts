@@ -40,6 +40,32 @@ test("contact page shows the supplied office location and directions", async ({ 
   );
 });
 
+test("company contact and profile download are available", async ({ page, request }) => {
+  await page.goto("");
+  await expect(page.locator(".brand strong")).toHaveText("Sibu Trading PLC");
+  await expect(page.getByRole("link", { name: /Message Sibu Trading PLC on WhatsApp/ })).toHaveAttribute(
+    "href", "https://wa.me/251944303070",
+  );
+  await expect(page.getByRole("link", { name: /Download company profile/ })).toHaveAttribute(
+    "href", "/Sibu-Trading-PLC-Company-Profile.pdf",
+  );
+  const profile = await request.get("Sibu-Trading-PLC-Company-Profile.pdf");
+  expect(profile.ok()).toBe(true);
+  expect(profile.headers()["content-type"]).toContain("application/pdf");
+  expect((await profile.body()).subarray(0, 4).toString()).toBe("%PDF");
+  await page.goto("coffee-processing/");
+  await expect(page.locator(".card-grid--four .editorial-card")).toHaveCount(4);
+  await expect(page.getByRole("heading", { name: "Honey" })).toBeVisible();
+});
+
+test("home hero actions fit a short laptop screen", async ({ page }) => {
+  await page.setViewportSize({ width: 1366, height: 720 });
+  await page.goto("");
+  const actions = page.locator(".hero__actions");
+  await expect(actions).toBeVisible();
+  expect(await actions.evaluate((element) => element.getBoundingClientRect().bottom)).toBeLessThanOrEqual(720);
+});
+
 test("team page and navigation are removed", async ({ page }) => {
   const response = await page.goto("team/");
   expect(response?.status()).toBe(404);

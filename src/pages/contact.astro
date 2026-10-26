@@ -24,7 +24,9 @@ const officeDirectionsUrl = "https://maps.app.goo.gl/hTur8ZZs6Cmp1NLH8";
           <div><dt>Telephone</dt><dd><a href={`tel:${contact.telephone.replace(/\s/g, "")}`}>{contact.telephone}</a></dd></div>
           <div><dt>Mobile</dt><dd>{contact.mobiles.map((mobile) => <a style="display:block" href={`tel:${mobile.replace(/\s/g, "")}`}>{mobile}</a>)}</dd></div>
           <div><dt>Email</dt><dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd></div>
+          <div><dt>WhatsApp</dt><dd><a href={`https://wa.me/${contact.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer">Message {contact.whatsapp}</a></dd></div>
         </dl>
+        <a class="text-link" href={withBase("/Sibu-Trading-PLC-Company-Profile.pdf")} download>Download company profile (PDF)</a>
       </div>
       <div>
         <EnquiryForm client:visible email={contact.email} endpoint={formEndpoint} />

@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import logo from "../assets/brand/heritage/heritage-bowl-light.png";
+import logo from "../assets/brand/heritage/heritage-bowl-light.webp";
 import footerCoffee from "../assets/media/footer-coffee-beans.webp";
 import footerOrigin from "../assets/media/footer-origin-drying.webp";
 import { contact, navigation } from "../data/site";
@@ -35,6 +35,7 @@ import { withBase } from "../lib/paths";
       <img class="footer-logo" src={logo.src} width="132" height="85" alt="Sibu Trading heritage bowl" />
       <p class="footer-statement">Rooted in Guji. Built through generations. Shared with the world.</p>
       <a class="footer-brand__link" href={withBase("/our-story/")}>Discover the Sibu story <span aria-hidden="true">→</span></a>
+      <a class="footer-brand__link" href={withBase("/Sibu-Trading-PLC-Company-Profile.pdf")} download>Download company profile (PDF) <span aria-hidden="true">↓</span></a>
     </div>
     <figure class="footer-origin-photo">
       <Image src={footerOrigin} alt="Coffee teams tending raised drying beds in the Guji highlands" widths={[480, 720, 960]} sizes="(max-width: 700px) 100vw, (max-width: 980px) 50vw, 24vw" />
@@ -52,6 +53,7 @@ import { withBase } from "../lib/paths";
         <span>{contact.address}</span>
         <a href={`tel:${contact.telephone.replace(/\s/g, "")}`}>{contact.telephone}</a>
         <a href={`mailto:${contact.email}`}>{contact.email}</a>
+        <a href={`https://wa.me/${contact.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer">WhatsApp {contact.whatsapp}</a>
       </address>
     </div>
   </div>

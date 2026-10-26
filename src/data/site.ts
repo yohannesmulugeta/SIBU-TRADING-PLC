@@ -177,4 +177,5 @@ export const contact = {
   telephone: "+251 11 558 0299",
   mobiles: ["+251 911 514 946", "+251 930 337 334"],
   email: "sibucoffee.ethio@gmail.com",
+  whatsapp: "+251 94 430 3070",
 } as const;

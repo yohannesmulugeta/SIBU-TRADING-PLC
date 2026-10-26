@@ -274,7 +274,7 @@ a {
 
 .brand strong,
 .brand small {
-  font-size: 0.58rem;
+  font-size: 0.7rem;
   font-style: normal;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -282,6 +282,7 @@ a {
 
 .brand small {
   color: rgba(255, 255, 255, 0.62);
+  font-size: 0.58rem;
 }
 
 .desktop-nav {
@@ -398,11 +399,16 @@ a {
 .hero__content {
   position: relative;
   z-index: 2;
-  padding-block: 10rem 5rem;
+  padding-block: 8rem 3rem;
 }
 
 .hero__copy {
   max-width: 760px;
+}
+
+.hero .display-title {
+  max-width: 17ch;
+  font-size: clamp(2.6rem, 5.2vw, 5.2rem);
 }
 
 .hero__copy p:not(.eyebrow) {
@@ -416,7 +422,37 @@ a {
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
-  margin-top: 2rem;
+  margin-top: 1.4rem;
+}
+
+.whatsapp-button {
+  position: fixed;
+  right: max(1.25rem, env(safe-area-inset-right));
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  background: #1f7a4e;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+  color: white;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.whatsapp-button:hover {
+  background: #17613d;
+}
+
+.whatsapp-button svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.mobile-nav-open .whatsapp-button {
+  display: none;
 }
 
 .hero__index {
@@ -1724,6 +1760,10 @@ a {
   margin-top: 3rem;
 }
 
+.card-grid--four {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .editorial-card {
   position: relative;
   min-height: 480px;
@@ -2738,6 +2778,10 @@ a {
     grid-column: 1 / -1;
   }
 
+  .card-grid--four .editorial-card:last-child {
+    grid-column: auto;
+  }
+
   .stats-row {
     grid-template-columns: 1fr 1fr;
   }
@@ -2889,12 +2933,20 @@ a {
   }
 
   .brand img {
-    width: 92px;
+    width: 70px;
     height: auto;
   }
 
   .brand > span {
-    display: none;
+    padding-left: 0.55rem;
+  }
+
+  .brand strong {
+    font-size: 0.64rem;
+  }
+
+  .brand small {
+    font-size: 0.5rem;
   }
 
   .mobile-nav-open .site-header {
@@ -2961,6 +3013,20 @@ a {
 
   .display-title {
     font-size: clamp(2.7rem, 14vw, 4.4rem);
+  }
+
+  .hero .display-title {
+    font-size: clamp(2.7rem, 14vw, 4.4rem);
+  }
+
+  .whatsapp-button {
+    right: 1rem;
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    padding: 0.8rem;
+  }
+
+  .whatsapp-button span {
+    display: none;
   }
 
   .card-grid,

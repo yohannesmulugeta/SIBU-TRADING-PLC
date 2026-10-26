@@ -3,6 +3,7 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { withBase } from "../lib/paths";
 import socialPreview from "../assets/media/hero-aerial.webp";
+import { contact } from "../data/site";
 import "../styles/global.css";
 
 interface Props {
@@ -48,5 +49,9 @@ const socialImage = new URL(image, Astro.site);
       <slot />
     </main>
     <Footer />
+    <a class="whatsapp-button" href={`https://wa.me/${contact.whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" aria-label={`Message Sibu Trading PLC on WhatsApp at ${contact.whatsapp}`} title="Message Sibu on WhatsApp">
+      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3Zm0 23.6a10.5 10.5 0 0 1-5.4-1.5l-.4-.2-3.9 1 1-3.8-.3-.4A10.6 10.6 0 1 1 16 26.6Zm5.8-7.9c-.3-.2-1.8-.9-2.1-1s-.5-.2-.7.2c-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1a8.6 8.6 0 0 1-2.5-1.6 9.3 9.3 0 0 1-1.8-2.2c-.2-.3 0-.5.2-.7l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4s-1.1 1.1-1.1 2.5 1.1 2.9 1.2 1.6 3.6 4.2 6.2 4.5c.9.1 1.6.1 2.2-.1.7-.2 1.8-1 2-2 .2-1 .2-1.8.1-2-.1-.2-.3-.3-.6-.5Z"/></svg>
+      <span>WhatsApp</span>
+    </a>
   </body>
 </html>

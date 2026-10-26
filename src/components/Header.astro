@@ -1,5 +1,5 @@
 ---
-import logo from "../assets/brand/heritage/heritage-bowl-light.png";
+import logo from "../assets/brand/heritage/heritage-bowl-light.webp";
 import navCoffee from "../assets/media/nav-coffee-cherries.webp";
 import { navigation } from "../data/site";
 import { withBase } from "../lib/paths";
@@ -33,7 +33,7 @@ const isHome = normalizedCurrent === withBase("/");
   <div class="shell site-header__inner">
     <a class="brand" href={withBase("/")} aria-label="Sibu Trading PLC home">
       <img src={logo.src} width="108" height="69" alt="Sibu Trading heritage bowl" />
-      <span><strong>Green coffee</strong><small>Guji · Ethiopia</small></span>
+      <span><strong>Sibu Trading PLC</strong><small>Green coffee · Guji, Ethiopia</small></span>
     </a>
     <nav class="desktop-nav" aria-label="Primary navigation">
       {aboutItem && <a href={aboutItem.href} aria-current={normalizedCurrent === aboutItem.href ? "page" : undefined}>About</a>}
