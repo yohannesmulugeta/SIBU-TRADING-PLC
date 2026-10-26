@@ -13,6 +13,15 @@ const routes = [
   "terms/",
 ];
 
+// Browser tests exercise our form without calling the live anti-spam service.
+// The production Worker validates real tokens in addition to the API security tests.
+test.beforeEach(async ({ page }) => {
+  await page.route("https://challenges.cloudflare.com/turnstile/v0/api.js**", (route) => route.fulfill({
+    contentType: "application/javascript",
+    body: "window.turnstile={render:function(){return 'test-widget';},reset:function(){},remove:function(){}};",
+  }));
+});
+
 test("unknown routes show the branded 404 with working recovery links", async ({ page }) => {
   const response = await page.goto("page-that-does-not-exist/");
   expect(response?.status()).toBe(404);
@@ -220,8 +229,8 @@ test("contact form has progressive validation and a delivery fallback", async ({
   await page.goto("contact/");
   const form = page.locator(".enquiry-form");
   await form.scrollIntoViewIfNeeded();
-  await expect(form).toHaveAttribute("action", /^mailto:/);
-  await form.getByRole("button", { name: "Prepare email enquiry" }).click();
+  await expect(form).toHaveAttribute("action", "/api/contact");
+  await form.getByRole("button", { name: "Send enquiry" }).click();
   await expect(form.locator(":invalid")).not.toHaveCount(0);
 });
 
@@ -255,12 +264,9 @@ test("homepage includes profile proof and a three-panel scroll gallery", async (
   await expect(gallery.getByRole("link", { name: "Explore the gallery" })).toHaveAttribute("href", /\/gallery\/$/);
 });
 
-test("gallery page includes a five-image operations gallery after the main collection", async ({ page }) => {
+test("gallery publishes the Sibu collection without representative Hayked imagery", async ({ page }) => {
   await page.goto("gallery/");
-  const gallery = page.getByRole("region", { name: /Operations and quality gallery/ });
-  await expect(gallery).toBeVisible();
-  await expect(gallery.locator(".operations-gallery__item")).toHaveCount(5);
-  await expect(page.getByText(/does not confirm a Sibu facility, employee, or process/)).toBeVisible();
+  await expect(page.locator(".operations-gallery__item")).toHaveCount(0);
   await expect(page.locator(".gallery-grid")).toBeVisible();
 });
 

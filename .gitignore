@@ -25,3 +25,6 @@ src/assets/recognition/registrar-corp-fda-registration-2024.webp
 # Local environment files
 .env
 .env.local
+
+.dev.vars*
+.wrangler/
