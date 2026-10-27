@@ -1,0 +1,67 @@
+---
+import { Image } from "astro:assets";
+import { generations } from "../data/site";
+import generationHasan from "../assets/media/generation-hasan.webp";
+import generationKadir from "../assets/media/generation-kadir.webp";
+import generationZidanSalim from "../assets/media/generation-zidan-salim.webp";
+
+const portraits = [
+  { image: generationHasan, alt: "Portrait of Mr. Hasan Areedo" },
+  { image: generationKadir, alt: "Portrait of Mr. Kadir Hasan" },
+  { image: generationZidanSalim, alt: "Portrait of Mr. Zidan Kadir Hasan Areedo and Mr. Salim Kadir Hasan" },
+];
+---
+
+<div class="generation-journey-wrap" data-generation-journey>
+  <p class="generation-journey__cue" aria-live="polite">
+    <span>Swipe left to explore</span>
+    <strong data-generation-current>01 / 03</strong>
+  </p>
+  <div class="generation-journey" role="region" aria-label="Sibu's generational journey chapters" aria-describedby="generation-journey-instructions" tabindex="0">
+    <span id="generation-journey-instructions" class="sr-only">On mobile, swipe left or use the left and right arrow keys to browse the family story.</span>
+    {generations.map((generation, index) => (
+      <article class="generation-card" data-generation>
+        <span class="generation-card__number">{generation.number}</span>
+        <figure class="generation-card__portrait">
+          <Image src={portraits[index].image} alt={portraits[index].alt} widths={[400, 720]} sizes="(max-width: 700px) 84vw, 15rem" loading="lazy" />
+        </figure>
+        <div class="generation-card__content">
+          <p class="generation-card__era">{generation.era}</p>
+          <h3>{generation.name}</h3>
+          <p>{generation.description}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-generation-journey]").forEach((root) => {
+    const rail = root.querySelector<HTMLElement>(".generation-journey");
+    const cards = Array.from(root.querySelectorAll<HTMLElement>("[data-generation]"));
+    const current = root.querySelector<HTMLElement>("[data-generation-current]");
+    if (!rail || !current) return;
+
+    const updateCurrent = () => {
+      const center = rail.scrollLeft + rail.clientWidth / 2 + cards[0].offsetLeft;
+      let active = 0;
+      cards.forEach((card, index) => {
+        if (Math.abs(card.offsetLeft + card.offsetWidth / 2 - center) < Math.abs(cards[active].offsetLeft + cards[active].offsetWidth / 2 - center)) active = index;
+      });
+      current.textContent = `${String(active + 1).padStart(2, "0")} / ${String(cards.length).padStart(2, "0")}`;
+    };
+
+    rail.addEventListener("scroll", updateCurrent, { passive: true });
+    rail.addEventListener("keydown", (event) => {
+      if (!window.matchMedia("(max-width: 700px)").matches) return;
+      const active = Number(current.textContent?.slice(0, 2)) - 1 || 0;
+      const next = event.key === "ArrowRight" ? active + 1 : event.key === "ArrowLeft" ? active - 1 : event.key === "Home" ? 0 : event.key === "End" ? cards.length - 1 : null;
+      if (next === null) return;
+      event.preventDefault();
+      const index = Math.max(0, Math.min(cards.length - 1, next));
+      rail.scrollTo({ left: cards[index].offsetLeft - cards[0].offsetLeft, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      current.textContent = `${String(index + 1).padStart(2, "0")} / ${String(cards.length).padStart(2, "0")}`;
+    });
+    updateCurrent();
+  });
+</script>

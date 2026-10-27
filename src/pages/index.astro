@@ -52,7 +52,7 @@ import processingPoster from "../assets/media/processing-poster.webp";
 
   <section class="section story-intro" aria-labelledby="sibu-story-title">
     <div class="shell split story-intro__grid">
-      <div class="story-intro__copy">
+      <div class="story-intro__copy" data-reveal>
         <p class="eyebrow">The Sibu story</p>
         <h2 id="sibu-story-title" class="section-title story-intro__title">Before Sibu became a company, coffee was already our heritage.</h2>
         <p class="section-lead">The family’s relationship with coffee began through production, collection and trade in Guji. In 2014, that experience became Sibu Trading PLC—connecting inherited knowledge with modern specialty coffee and international buyers.</p>
@@ -62,7 +62,7 @@ import processingPoster from "../assets/media/processing-poster.webp";
         </div>
         <a class="text-link story-intro__link" href={withBase("/our-story/")}>Read the complete story</a>
       </div>
-      <figure class="image-frame story-intro__media">
+      <figure class="image-frame story-intro__media" data-reveal>
         <Image src={coffeePicker} alt="Coffee picker harvesting ripe cherries in a forested coffee farm" widths={[560, 900, 1200]} sizes="(max-width: 980px) 100vw, 50vw" />
         <figcaption>Coffee harvesting in Ethiopia’s highlands</figcaption>
       </figure>
@@ -85,9 +85,9 @@ import processingPoster from "../assets/media/processing-poster.webp";
   <section class="section section--cream">
     <div class="shell">
       <p class="eyebrow">From farm to export</p>
-      <h2 class="section-title">Quality protected at every stage</h2>
+      <h2 class="section-title" data-reveal>Quality protected at every stage</h2>
       <p class="section-lead">Sibu participates across the value chain, connecting harvest, processing, drying, quality control, warehousing and export preparation.</p>
-      <div class="card-grid">
+      <div class="card-grid" data-reveal>
         <article class="editorial-card">
           <Image src={sortingLine} alt="Coffee workers sorting parchment on raised drying beds" widths={[540, 900]} sizes="(max-width: 700px) 100vw, 33vw" />
           <div class="editorial-card__content"><h3>People</h3><p>Skilled hands protect quality from the first selection.</p></div>
@@ -114,10 +114,10 @@ import processingPoster from "../assets/media/processing-poster.webp";
 
   <section id="coffee-portfolio" class="section">
     <div class="shell split">
-      <div class="image-frame image-frame--portrait">
+      <div class="image-frame image-frame--portrait" data-reveal>
         <Image src={greenCoffee} alt="Close view of prepared Ethiopian green coffee" widths={[560, 900, 1200]} sizes="(max-width: 980px) 100vw, 50vw" />
       </div>
-      <div>
+      <div data-reveal>
         <p class="eyebrow">Coffee portfolio</p>
         <h2 class="section-title">Distinctive lots and reliable programs</h2>
         <p class="section-lead">Sibu works with specialty roasters, importers, traders, distributors and commercial buyers seeking Ethiopian coffee prepared to clear specifications.</p>
@@ -152,13 +152,13 @@ import processingPoster from "../assets/media/processing-poster.webp";
 
   <section class="section section--cream">
     <div class="shell split">
-      <div>
+      <div data-reveal>
         <p class="eyebrow">People behind the coffee</p>
         <h2 class="section-title">The value of Ethiopian coffee is human.</h2>
         <p class="section-lead">Behind each prepared lot are farming families, seasonal teams, station workers, quality professionals and export coordinators.</p>
         <a class="button" href={withBase("/quality-impact/")}>Quality & impact</a>
       </div>
-      <div class="image-frame image-frame--portrait">
+      <div class="image-frame image-frame--portrait" data-reveal>
         <Image src={communityTeam} alt="Members of a coffee-producing community at a drying station" widths={[560, 900, 1200]} sizes="(max-width: 980px) 100vw, 50vw" />
       </div>
     </div>

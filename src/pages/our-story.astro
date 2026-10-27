@@ -2,31 +2,22 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/PageHero.astro";
-import StoryJourney from "../components/StoryJourney";
-import { generations } from "../data/site";
+import StoryJourney from "../components/StoryJourney.astro";
 import aerialDrying from "../assets/media/aerial-drying.webp";
 import coffeeHost from "../assets/media/coffee-host.webp";
-import generationHasan from "../assets/media/generation-hasan.webp";
-import generationKadir from "../assets/media/generation-kadir.webp";
-import generationZidanSalim from "../assets/media/generation-zidan-salim.webp";
 import bunaQalaaPhoto from "../assets/media/buna-qalaa-heritage-photo.webp";
-
-const generationImages = [generationHasan, generationKadir, generationZidanSalim];
-const generationProfiles = generations.map((generation, index) => ({
-  ...generation,
-  image: generationImages[index].src,
-  imageWidth: generationImages[index].width,
-  imageHeight: generationImages[index].height,
-  imageAlt: [
-    "Portrait of Mr. Hasan Areedo",
-    "Portrait of Mr. Kadir Hasan",
-    "Portrait of Mr. Zidan Kadir Hasan Areedo and Mr. Salim Kadir Hasan",
-  ][index],
-}));
 ---
 
 <BaseLayout title="Our Story | Sibu Trading PLC" description="Discover Sibu Trading PLC’s three-generation coffee legacy and its roots in Guji.">
   <PageHero eyebrow="Our story" title="A coffee legacy across three generations" description="Long before Sibu Trading PLC was established in 2014, coffee was already part of a longer family journey." image={aerialDrying} alt="Aerial view of Sibu coffee drying beds surrounded by Guji forest" />
+
+  <section class="section section--dark">
+    <div class="shell">
+      <p class="eyebrow">The generational continuum</p>
+      <h2 class="section-title">Different chapters. One continuing legacy.</h2>
+      <StoryJourney />
+    </div>
+  </section>
 
   <section class="section">
     <div class="shell split">
@@ -56,11 +47,4 @@ const generationProfiles = generations.map((generation, index) => ({
     </div>
   </section>
 
-  <section class="section section--dark">
-    <div class="shell">
-      <p class="eyebrow">The generational continuum</p>
-      <h2 class="section-title">Different chapters. One continuing legacy.</h2>
-      <StoryJourney client:visible generations={generationProfiles} />
-    </div>
-  </section>
 </BaseLayout>
