@@ -26,7 +26,7 @@ export const generations = [
   },
   {
     number: "03",
-    name: "Mr. Zidan Kadir Hasan Areedo & Mr. Salim Kadir Hasan",
+    name: "Mr. Zidan Kadir Hasan & Mr. Salim Kadir Hasan",
     era: "Taking the legacy forward",
     description:
       "The third generation combines inherited coffee knowledge with specialty processing, traceability, technology and stronger global relationships.",

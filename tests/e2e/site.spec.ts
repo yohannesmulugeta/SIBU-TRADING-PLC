@@ -303,7 +303,7 @@ test("our story pairs every generation with its portrait", async ({ page }) => {
   await journey.scrollIntoViewIfNeeded();
   await expect(journey.getByRole("heading", { name: "Mr. Hasan Areedo" })).toBeVisible();
   await expect(journey.getByRole("heading", { name: "Mr. Kadir Hasan" })).toBeAttached();
-  await expect(journey.getByRole("heading", { name: /Mr. Zidan.*Mr. Salim/ })).toBeAttached();
+  await expect(journey.getByRole("heading", { name: "Mr. Zidan Kadir Hasan & Mr. Salim Kadir Hasan" })).toBeAttached();
   await expect(journey.locator(".generation-card")).toHaveCount(3);
   await expect(page.getByAltText("Traditional carved Buna Qalaa coffee bowl filled with coffee beans")).toBeVisible();
   await expect(page.getByAltText("Coffee teams tending raised drying beds in the Guji highlands")).toBeVisible();
