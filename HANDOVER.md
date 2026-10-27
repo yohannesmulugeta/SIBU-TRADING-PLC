@@ -10,7 +10,7 @@
 
 ## Enquiries and content
 
-- Contact email shown on the site and configured as the enquiry recipient: Salimhassen40@gmail.com. The form submits to the same-origin `/api/contact` Worker, which relies on Cloudflare Email Routing and a verified destination. Assign a person to monitor the inbox and confirm delivery with a real external test.
+- Contact email shown on the site and configured as the enquiry recipient: sibucoffee.ethio@gmail.com. The form submits to the same-origin `/api/contact` Worker, which relies on Cloudflare Email Routing and a verified destination. Assign a person to monitor the inbox and confirm delivery with a real external test.
 - WhatsApp link: +251 94 430 3070. Assign a person to monitor it and test the link on a phone.
 - The downloadable company profile is `public/Sibu-Trading-PLC-Company-Profile.pdf`. It is based on the supplied 13-page profile, with the current email, website and WhatsApp contact. Confirm the names, operational figures, photographs, and certification descriptions with management before treating the profile as final.
 - Confirm current certificate validity and lot eligibility directly with Sibu for each crop year and buyer requirement. Historical and expired documents on the site remain labelled as such.

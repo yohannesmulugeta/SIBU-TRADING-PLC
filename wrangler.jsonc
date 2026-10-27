@@ -19,7 +19,7 @@
     "namespace_id": "73120481",
     "simple": { "limit": 10, "period": 60 }
   }],
-  "vars": { "CONTACT_EMAIL": "Salimhassen40@gmail.com" },
+  "vars": { "CONTACT_EMAIL": "sibucoffee.ethio@gmail.com" },
   "observability": {
     "enabled": true,
     "logs": { "enabled": true, "invocation_logs": false },

@@ -6,7 +6,7 @@ const limit = vi.fn();
 const verify = vi.fn();
 const env: Env = {
   ENQUIRY_EMAIL: { send }, ENQUIRY_LIMITER: { limit }, ASSETS: { fetch: vi.fn(), connect: vi.fn() },
-  CONTACT_EMAIL: "Salimhassen40@gmail.com", TURNSTILE_SECRET_KEY: "test-secret",
+  CONTACT_EMAIL: "sibucoffee.ethio@gmail.com", TURNSTILE_SECRET_KEY: "test-secret",
 };
 
 function request(overrides: Partial<Record<string, string>> = {}, origin = "https://sibutradingplc.com") {
@@ -28,7 +28,7 @@ describe("protected enquiry delivery", () => {
   it("sends only to the configured inbox with the buyer as Reply-To", async () => {
     const response = await handleEnquiry(request({ message: "Please review <b>coffee</b>" }), env);
     expect(response.status).toBe(200);
-    expect(send).toHaveBeenCalledWith(expect.objectContaining({ to: "Salimhassen40@gmail.com", replyTo: "buyer@example.com", from: { email: "enquiries@sibutradingplc.com", name: "Sibu website enquiries" } }));
+    expect(send).toHaveBeenCalledWith(expect.objectContaining({ to: "sibucoffee.ethio@gmail.com", replyTo: "buyer@example.com", from: { email: "enquiries@sibutradingplc.com", name: "Sibu website enquiries" } }));
     expect(send.mock.calls[0][0].html).toContain("&lt;b&gt;coffee&lt;/b&gt;");
     expect(response.headers.get("cache-control")).toBe("no-store");
   });
